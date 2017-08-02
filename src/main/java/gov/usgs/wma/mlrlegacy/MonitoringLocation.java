@@ -268,6 +268,14 @@ public class MonitoringLocation {
         this.aquiferTypeCode = aquiferTypeCode;
     }
 
+    public String getAgencyUseCode() {
+        return agencyUseCode;
+    }
+
+    public void setAgencyUseCode(String agencyUseCode) {
+        this.agencyUseCode = agencyUseCode;
+    }
+
     public String getDataReliabilityCode() {
         return dataReliabilityCode;
     }
