@@ -3,6 +3,8 @@ package gov.usgs.wma.mlrlegacy;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,26 +17,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/monitoringLocations")
 public class Controller {
     
+    @Autowired
+    public MonitoringLocationDao mLDao;
     
     @GetMapping()
     public List<MonitoringLocation> getMonitoringLocations() {
-        return new ArrayList<>();
+        return mLDao.getByMap(null);
     }
     
     @GetMapping("/{id}")
     public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id) {
-        return new MonitoringLocation();
+        return mLDao.getById(id);
     }
     
     @PostMapping()
     public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml) {
-        return ml;
+        return mLDao.create(ml);
     }
     
     @PutMapping("/{id}")
     public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml) {
         ml.setId(id);
-        return ml;
+        return mLDao.update(ml);
     }
     
 }
