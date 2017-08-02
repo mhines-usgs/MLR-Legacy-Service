@@ -1,0 +1,8 @@
+
+mybatis:
+    type-aliases-package: gov.usgs.wma.mlrLegacy
+    configuration:
+        cache-enabled: false
+        lazy-loading-enabled: false
+        aggressive-lazy-loading: false
+    mapper-locations: "classpath:mybatis-config.xml"

@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +31,15 @@ public class Controller {
     
     @PostMapping()
     public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml) {
-        return mLDao.create(ml);
+        String newId = mLDao.create(ml);
+        return mLDao.getById(newId);
     }
     
     @PutMapping("/{id}")
     public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml) {
         ml.setId(id);
-        return mLDao.update(ml);
+        mLDao.update(ml);
+        return mLDao.getById(id);
     }
     
 }

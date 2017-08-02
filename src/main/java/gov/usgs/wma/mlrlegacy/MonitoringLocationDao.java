@@ -1,26 +1,38 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.ibatis.session.SqlSession;
+import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MonitoringLocationDao {
+public class MonitoringLocationDao extends SqlSessionDaoSupport {
+    
+    private final SqlSession sqlSession;
+    
+    public MonitoringLocationDao(SqlSession sqlSession) {
+        this.sqlSession = sqlSession;
+    }
     
     public List<MonitoringLocation> getByMap(Map<String, String> queryParams) {
-        return new ArrayList<>();
+        return sqlSession.selectList("getByMap", queryParams);
     }
     
     public MonitoringLocation getById(String id) {
-        return new MonitoringLocation();
+        Map <String,String> map = new HashMap<>();
+        map.put("id", id);
+        
+        return sqlSession.selectOne("getById", map);
     }
     
-    public MonitoringLocation create(MonitoringLocation ml) {
-        return new MonitoringLocation();
+    public String create(MonitoringLocation ml) {
+        sqlSession.insert("create", ml);
+        return ml.getId();
     }
     
-    public MonitoringLocation update(MonitoringLocation ml) {
-        return ml;
+    public void update(MonitoringLocation ml) {
+        sqlSession.update("update", ml);
     }
 }
