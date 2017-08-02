@@ -5,13 +5,22 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
+@RequestMapping("/monitoringLocations")
 public class Controller {
     
-    @GetMapping("/")
+    
+    @GetMapping()
     public List<MonitoringLocation> getMonitoringLocations() {
         return new ArrayList<>();
+    }
+    
+    @GetMapping("/{id}")
+    public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id) {
+        return new MonitoringLocation();
     }
     
 }
