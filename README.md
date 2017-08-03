@@ -7,6 +7,6 @@ needs to be set by exporting it in the MAVEN_OPTS and then using the
 ```mvn spring-boot:run``` command.
 For example:
 ```
-export export MAVEN_OPTS=-DmlrLegacyPasswd=yourpassword
+export MAVEN_OPTS=-DmlrLegacyPasswd=yourpassword
 mvn spring-boot:run
 ```
