@@ -1,0 +1,14 @@
+
+mybatis:
+    type-aliases-package: gov.usgs.wma.mlrlegacy
+    configuration:
+        cache-enabled: false
+        lazy-loading-enabled: false
+        aggressive-lazy-loading: false
+    mapper-locations: "classpath:mybatis-config.xml"
+spring:
+    datasource:
+        url: "jdbc:postgresql://localhost:5435/mlr_legacy"
+        username: mlr_legacy_data
+        password: ${mlrLegacyPasswd}
+        driver-class-name: org.postgresql.Driver
