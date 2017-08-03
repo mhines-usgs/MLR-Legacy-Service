@@ -1,7 +1,9 @@
 package gov.usgs.wma.mlrlegacy;
 
+import java.math.BigInteger;
+
 public class MonitoringLocation {
-    private String id;
+    private BigInteger id;
     private String agencyCode;
     private String siteNumber;
     private String stationName;
@@ -61,11 +63,11 @@ public class MonitoringLocation {
     private String updated;
     private String updatedBy;
     
-    public String getId() {
+    public BigInteger getId() {
         return id;
     }
     
-    public void setId(String id) {
+    public void setId(BigInteger id) {
         this.id = id;
     }
     

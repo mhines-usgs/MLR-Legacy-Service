@@ -1,8 +1,10 @@
 package gov.usgs.wma.mlrlegacy;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.NumberUtils;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,20 +28,21 @@ public class Controller {
     
     @GetMapping("/{id}")
     public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id) {
-        return mLDao.getById(id);
+        return mLDao.getById(NumberUtils.parseNumber(id, BigInteger.class));
     }
     
     @PostMapping()
     public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml) {
-        String newId = mLDao.create(ml);
+        BigInteger newId = mLDao.create(ml);
         return mLDao.getById(newId);
     }
     
     @PutMapping("/{id}")
     public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml) {
-        ml.setId(id);
+        BigInteger idInt = NumberUtils.parseNumber(id, BigInteger.class);
+        ml.setId(idInt);
         mLDao.update(ml);
-        return mLDao.getById(id);
+        return mLDao.getById(idInt);
     }
     
 }

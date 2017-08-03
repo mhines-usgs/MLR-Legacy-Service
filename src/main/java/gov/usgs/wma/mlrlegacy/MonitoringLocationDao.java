@@ -1,6 +1,6 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.util.HashMap;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
@@ -20,14 +20,11 @@ public class MonitoringLocationDao {
         return sqlSession.selectList("getByMap", queryParams);
     }
     
-    public MonitoringLocation getById(String id) {
-        Map <String,String> map = new HashMap<>();
-        map.put("id", id);
-        
-        return sqlSession.selectOne("getById", map);
+    public MonitoringLocation getById(BigInteger id) {
+        return sqlSession.selectOne("getById", id);
     }
     
-    public String create(MonitoringLocation ml) {
+    public BigInteger create(MonitoringLocation ml) {
         sqlSession.insert("create", ml);
         return ml.getId();
     }

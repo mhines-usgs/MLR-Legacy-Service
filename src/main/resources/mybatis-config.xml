@@ -5,6 +5,9 @@
     <resultMap id="result" type="MonitoringLocation">
 	<id property="id" column="legacy_location_id" />
 	<result property="agencyCode" column="agency_cd" />
+	<result property="siteNumber" column="site_no" />
+	<result property="stationName" column="station_nm" />
+	
     </resultMap>
     
     <sql id="dataCols">
@@ -25,7 +28,7 @@
 	legacy_location_id, <include refid="dataCols" />
     </sql>
     
-    <select id="getById" parameterType="String" resultMap="result">
+    <select id="getById" parameterType="BigInteger" resultMap="result">
 	select <include refid="baseCols"/> from mlr_legacy_data.legacy_location
 	where legacy_location_id = #{value, jdbcType=BIGINT}
     </select>
