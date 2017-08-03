@@ -7,8 +7,22 @@
 	<result property="agencyCode" column="agency_cd" />
     </resultMap>
     
+    <sql id="dataCols">
+	agency_cd, site_no, station_nm, station_ix,
+	lat_va, long_va, dec_lat_va, dec_long_va, coord_meth_cd, coord_acy_cd,
+	coord_datum_cd, district_cd, land_net_ds, map_nm, country_cd,
+	state_cd, county_cd, map_scale_fc, alt_va, alt_meth_cd, alt_acy_va,
+	alt_datum_cd, huc_cd, agency_use_cd, basin_cd, site_tp_cd, topo_cd,
+	data_types_cd, instruments_cd, site_rmks_tx, inventory_dt, drain_area_va,
+	contrib_drain_area_va, tz_cd, local_time_fg, gw_file_cd, construction_dt,
+	reliability_cd, aqfr_cd, nat_aqfr_cd, site_use_1_cd, site_use_2_cd,
+	site_use_3_cd, water_use_1_cd, water_use_2_cd, water_use_3_cd,
+	nat_water_use_cd, aqfr_type_cd, well_depth_va, hole_depth_va, 
+	depth_src_cd, project_no, site_web_cd, site_cn, site_cr, site_mn,
+	site_md, mcd_cd
+    </sql>
     <sql id="baseCols">
-	legacy_location_id, agency_cd
+	legacy_location_id, <include refid="dataCols" />
     </sql>
     
     <select id="getById" parameterType="String" resultMap="result">
@@ -27,13 +41,128 @@
     
     <insert id="create" parameterType="MonitoringLocation"
 	    useGeneratedKeys="true" keyProperty="id">
-	insert into mlr_legacy_data.legacy_location(agency_cd)
-	    values(#{agencyCode, jdbcType=CHAR})
+	insert into mlr_legacy_data.legacy_location(<include refid="dataCols" />)
+	    values(#{agencyCode, jdbcType=CHAR},
+		#{siteNumber, jdbcType=CHAR},
+		#{stationName, jdbcType=VARCHAR},
+		#{stationIx, jdbcType=VARCHAR},
+		#{latitude, jdbcType=CHAR},
+		#{longitude, jdbcType=CHAR},
+		#{decimalLatitude, jdbcType=NUMERIC},
+		#{decimalLongitude, jdbcType=NUMERIC},
+		#{coordinateMethodCode, jdbcType=CHAR},
+		#{coordinateAccuracyCode, jdbcType=CHAR},
+		#{coordinateDatumCode, jdbcType=CHAR},
+		#{districtCode, jdbcType=CHAR},
+		#{landNet, jdbcType=VARCHAR},
+		#{mapName, jdbcType=VARCHAR},
+		#{countryCode, jdbcType=CHAR},
+		#{stateFipsCode, jdbcType=CHAR},
+		#{countyCode, jdbcType=CHAR},
+		#{mapScale, jdbcType=CHAR},
+		#{altitude, jdbcType=CHAR},
+		#{altitudeMethodCode, jdbcType=CHAR},
+		#{altitudeAccuracyValue, jdbcType=CHAR},
+		#{altitudeDatumCode, jdbcType=CHAR},
+		#{hydrologicUnitCode, jdbcType=VARCHAR},
+		#{agencyUseCode, jdbcType=CHAR},
+		#{basinCode, jdbcType=CHAR},
+		#{siteTypeCode, jdbcType=VARCHAR},
+		#{topographicCode, jdbcType=CHAR},
+		#{dataTypesCode, jdbcType=CHAR},
+		#{instrumentsCode, jdbcType=CHAR},
+		#{remarks, jdbcType=VARCHAR},
+	        #{siteEstablishmentDate, jdbcType=CHAR},
+		#{drainageArea, jdbcType=CHAR},
+		#{contributingDrainageArea, jdbcType=CHAR},
+		#{timeZoneCode, jdbcType=CHAR},
+		#{daylightSavingsTimeFlag, jdbcType=CHAR},
+		#{gwFileCode, jdbcType=CHAR},
+		#{firstConstructionDate, jdbcType=CHAR},
+		#{dataReliabilityCode, jdbcType=CHAR},
+		#{aquiferCode, jdbcType=CHAR},
+		#{nationalAquiferCode, jdbcType=CHAR},
+		#{primaryUseOfSite, jdbcType=CHAR},
+		#{secondaryUseOfSite, jdbcType=CHAR},
+		#{tertiaryUseOfSiteCode, jdbcType=CHAR},
+		#{primaryUseOfWaterCode, jdbcType=CHAR},
+		#{secondaryUseOfWaterCode, jdbcType=CHAR},
+		#{tertiaryUseOfWaterCode, jdbcType=CHAR},
+		#{nationalWaterUseCode, jdbcType=CHAR},
+		#{aquiferTypeCode, jdbcType=CHAR},
+		#{wellDepth, jdbcType=CHAR},
+		#{holeDepth, jdbcType=CHAR},
+		#{sourceOfDepthCode, jdbcType=CHAR},
+		#{projectNumber, jdbcType=CHAR},
+		#{siteWebReadyCode, jdbcType=CHAR},
+		#{createdBy, jdbcType=CHAR},
+		#{created, jdbcType=DATE},
+		#{updatedBy, jdbcType=CHAR},
+		#{updated, jdbcType=DATE},
+	        #{minorCivilDivisionCode, jdbcType=CHAR}
+	    )
     </insert>
     
     <update id="update" parameterType="MonitoringLocation">
 	update mlr_legacy_data.legacy_location 
-	set agency_cd = #{agencyCode, jdbcType=CHAR}
-	where legacy_location_id = #{id, jdbcType=BIGINT}
+	set agency_cd = #{agencyCode, jdbcType=CHAR},
+	    site_no = #{siteNumber, jdbcType=CHAR},
+		station_nm = #{stationName, jdbcType=VARCHAR},
+		station_ix = #{stationIx, jdbcType=VARCHAR},
+		lat_va = #{latitude, jdbcType=CHAR},
+		long_va = #{longitude, jdbcType=CHAR},
+		dec_lat_va = #{decimalLatitude, jdbcType=NUMERIC},
+		dec_long_va = #{decimalLongitude, jdbcType=NUMERIC},
+		coord_meth_cd = #{coordinateMethodCode, jdbcType=CHAR},
+		coord_acy_cd = #{coordinateAccuracyCode, jdbcType=CHAR},
+		coord_datum_cd = #{coordinateDatumCode, jdbcType=CHAR},
+		district_cd = #{districtCode, jdbcType=CHAR},
+		land_net_ds = #{landNet, jdbcType=VARCHAR},
+		map_nm = #{mapName, jdbcType=VARCHAR},
+		country_cd = #{countryCode, jdbcType=CHAR},
+		state_cd = #{stateFipsCode, jdbcType=CHAR},
+		county_cd = #{countyCode, jdbcType=CHAR},
+		map_scale_fc = #{mapScale, jdbcType=CHAR},
+		alt_va = #{altitude, jdbcType=CHAR},
+		alt_meth_cd = #{altitudeMethodCode, jdbcType=CHAR},
+		alt_acy_va = #{altitudeAccuracyValue, jdbcType=CHAR},
+		alt_datum_cd = #{altitudeDatumCode, jdbcType=CHAR},
+		huc_cd = #{hydrologicUnitCode, jdbcType=VARCHAR},
+		agency_use_cd = #{agencyUseCode, jdbcType=CHAR},
+		basin_cd = #{basinCode, jdbcType=CHAR},
+		site_tp_cd = #{siteTypeCode, jdbcType=VARCHAR},
+		topo_cd = #{topographicCode, jdbcType=CHAR},
+		data_types_cd = #{dataTypesCode, jdbcType=CHAR},
+		instruments_cd = #{instrumentsCode, jdbcType=CHAR},
+		site_rmks_tx = #{remarks, jdbcType=VARCHAR},
+		inventory_dt = #{siteEstablishmentDate, jdbcType=CHAR},
+		drain_area_va = #{drainageArea, jdbcType=CHAR},
+		contrib_drain_area_va = #{contributingDrainageArea, jdbcType=CHAR},
+		tz_cd = #{timeZoneCode, jdbcType=CHAR},
+	        local_time_fg = #{daylightSavingsTimeFlag, jdbcType=CHAR},
+		gw_file_cd = #{gwFileCode, jdbcType=CHAR},
+		construction_dt = #{firstConstructionDate, jdbcType=CHAR},
+		reliability_cd = #{dataReliabilityCode, jdbcType=CHAR},
+		aqfr_cd = #{aquiferCode, jdbcType=CHAR},
+		nat_aqfr_cd = #{nationalAquiferCode, jdbcType=CHAR},
+		site_use_1_cd = #{primaryUseOfSite, jdbcType=CHAR},
+		site_use_2_cd = #{secondaryUseOfSite, jdbcType=CHAR},
+		site_use_3_cd = #{tertiaryUseOfSiteCode, jdbcType=CHAR},
+		water_use_1_cd = #{primaryUseOfWaterCode, jdbcType=CHAR},
+		water_use_2_cd = #{secondaryUseOfWaterCode, jdbcType=CHAR},
+		water_use_3_cd = #{tertiaryUseOfWaterCode, jdbcType=CHAR},
+		nat_water_use_cd = #{nationalWaterUseCode, jdbcType=CHAR},
+		aqfr_type_cd = #{aquiferTypeCode, jdbcType=CHAR},
+		well_depth_va = #{wellDepth, jdbcType=CHAR},
+		hole_depth_va = #{holeDepth, jdbcType=CHAR},
+		depth_src_cd = #{sourceOfDepthCode, jdbcType=CHAR},
+		project_no = #{projectNumber, jdbcType=CHAR},
+		site_web_cd = #{siteWebReadyCode, jdbcType=CHAR},
+		site_cn = #{createdBy, jdbcType=CHAR},
+		site_cr = #{created, jdbcType=DATE},
+		site_mn = #{updatedBy, jdbcType=CHAR},
+		site_md = #{updated, jdbcType=DATE},
+	        mcd_cd = #{minorCivilDivisionCode, jdbcType=CHAR}
+	where legacy_location_id = #{id, jdbcType=NUMERIC}
     </update>
 </mapper>

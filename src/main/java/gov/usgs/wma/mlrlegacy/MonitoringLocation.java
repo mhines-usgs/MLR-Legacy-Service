@@ -5,6 +5,7 @@ public class MonitoringLocation {
     private String agencyCode;
     private String siteNumber;
     private String stationName;
+    private String stationIx;
     private String siteTypeCode;
     private String decimalLatitude;
     private String decimalLongitude;
@@ -92,6 +93,14 @@ public class MonitoringLocation {
         this.stationName = stationName;
     }
 
+    public String getStationIx() {
+        return stationIx;
+    }
+
+    public void setStationIx(String stationIx) {
+        this.stationIx = stationIx;
+    }
+    
     public String getSiteTypeCode() {
         return siteTypeCode;
     }

@@ -8,7 +8,7 @@ import org.mybatis.spring.support.SqlSessionDaoSupport;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MonitoringLocationDao extends SqlSessionDaoSupport {
+public class MonitoringLocationDao {
     
     private final SqlSession sqlSession;
     
