@@ -7,7 +7,61 @@
 	<result property="agencyCode" column="agency_cd" />
 	<result property="siteNumber" column="site_no" />
 	<result property="stationName" column="station_nm" />
-	
+	<result property="stationIx" column="station_ix" />
+	<result property="latitude" column="lat_va" />
+	<result property="longitude" column="long_va" />
+	<result property="decimalLatitude" column="dec_lat_va" />
+	<result property="decimalLongitude" column="dec_long_va" />
+	<result property="coordinateMethodCode" column="coord_meth_cd" />
+	<result property="coordinateAccuracyCode" column="coord_acy_cd" />
+	<result property="coordinateDatumCode" column="coord_datum_cd" />
+	<result property="districtCode" column="district_cd" />
+	<result property="landNet" column="land_net_ds" />
+	<result property="mapName" column="map_nm" />
+	<result property="countryCode" column="country_cd" />
+	<result property="stateFipsCode" column="state_cd" />
+	<result property="countyCode" column="county_cd" />
+	<result property="mapScale" column="map_scale_fc" />
+	<result property="altitude" column="alt_va" />
+	<result property="altitudeMethodCode" column="alt_meth_cd" />
+	<result property="altitudeAccuracyValue" column="alt_acy_va" />
+	<result property="altitudeDatumCode" column="alt_datum_cd" />
+	<result property="hydrologicUnitCode" column="huc_cd" />
+	<result property="agencyUseCode" column="agency_use_cd" />
+	<result property="basinCode" column="basin_cd" />
+	<result property="siteTypeCode" column="site_tp_cd" />
+	<result property="topographicCode" column="topo_cd" />
+	<result property="dataTypesCode" column="data_types_cd" />
+	<result property="instrumentsCode" column="instruments_cd" />
+	<result property="remarks" column="site_rmks_tx" />
+	<result property="siteEstablishmentDate" column="inventory_dt" />
+	<result property="drainageArea" column="drain_area_va" />
+	<result property="contributingDrainageArea" column="contrib_drain_area_va" />
+	<result property="timeZoneCode" column="tz_cd" />
+	<result property="daylightSavingsTimeFlag" column="local_time_fg" />
+	<result property="gwFileCode" column="gw_file_cd" />
+	<result property="firstConstructionDate" column="construction_dt" />
+	<result property="dataReliabilityCode" column="reliability_cd" />
+	<result property="aquiferCode" column="aqfr_cd" />
+	<result property="nationalAquiferCode" column="nat_aqfr_cd" />
+	<result property="primaryUseOfSite" column="site_use_1_cd" />
+	<result property="secondaryUseOfSite" column="site_use_2_cd" />
+	<result property="tertiaryUseOfSiteCode" column="site_use_3_cd" />
+	<result property="primaryUseOfWaterCode" column="water_use_1_cd" />
+	<result property="secondaryUseOfWaterCode" column="water_use_2_cd" />
+	<result property="tertiaryUseOfWaterCode" column="water_use_3_cd" />
+	<result property="nationalWaterUseCode" column="nat_water_use_cd" />
+	<result property="aquiferTypeCode" column="aqfr_type_cd" />
+	<result property="wellDepth" column="well_depth_va" />
+	<result property="holeDepth" column="hole_depth_va" />
+	<result property="sourceOfDepthCode" column="depth_src_cd" />
+	<result property="projectNumber" column="project_no" />
+	<result property="siteWebReadyCode" column="site_web_cd" />
+	<result property="createdBy" column="site_cn" />
+	<result property="created" column="site_cr" />
+	<result property="updatedBy" column="site_mn" />
+	<result property="updated" column="site_md" />
+	<result property="minorCivilDivisionCode" column="mcd_cd" />
     </resultMap>
     
     <sql id="dataCols">
