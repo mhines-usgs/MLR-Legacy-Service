@@ -9,7 +9,7 @@ mybatis:
 
 spring:
   datasource:
-    url: "jdbc:postgresql://localhost:5435/mlr_legacy"
-    username: mlr_legacy_data
+    url: ${mlrLegacyDbUrl}
+    username: ${mlrLegacyUsername}
     password: ${mlrLegacyPasswd}
     driver-class-name: org.postgresql.Driver
