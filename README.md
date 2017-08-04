@@ -8,7 +8,7 @@ The connection configuration is located in src/main/results/application.yml. You
 ```
 mlrLegacyDbHost: localhost
 mlrLegacyDbPort: 5435
-mlrLegacyUsername: mlr\_legacy\_data
+mlrLegacyUsername: mlr_legacy_data
 mlrLegacyPasswd: changeMe
 mlrLegacyServicePwd: changeMe
 ```
