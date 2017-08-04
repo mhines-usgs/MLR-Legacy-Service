@@ -2,7 +2,7 @@
 Monitoring Location Legacy CRU Service
 
 ## Database Configuration
-You will need a postgreSQL database to run this application. A Dockerized version is available at https://github.com/dsteinich/MLR\_Legacy\_DB.
+You will need a postgreSQL database to run this application. A Dockerized version is available at https://github.com/dsteinich/MLR_Legacy_DB.
 The connection configuration is located in src/main/results/application.yml. You will need to create an application.yml file in your local project's root directory to provide the variable values. It should contain:
 
 ```
