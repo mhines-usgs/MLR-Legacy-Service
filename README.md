@@ -1,12 +1,23 @@
 # MLR-Legacy-Service
 Monitoring Location Legacy CRU Service
 
-To run this locally, you will need a postgres database. Database configuration 
-is located in src/main/results/application.yml. The password of the database 
-needs to be set by exporting it in the MAVEN_OPTS and then using the 
-```mvn spring-boot:run``` command.
-For example:
+## Database Configuration
+You will need a postgreSQL database to run this application. A Dockerized version is available at https://github.com/dsteinich/MLR\_Legacy\_DB.
+The connection configuration is located in src/main/results/application.yml. You will need to create an application.yml file in your local project's root directory to provide the variable values. It should contain:
+
 ```
-export MAVEN_OPTS=-DmlrLegacyPasswd=yourpassword
-mvn spring-boot:run
+mlrLegacyDbHost: localhost
+mlrLegacyDbPort: 5435
+mlrLegacyUsername: mlr\_legacy\_data
+mlrLegacyPasswd: changeMe
+mlrLegacyServicePwd: changeMe
 ```
+
+## Running the Application
+Open a terminal window and navigate to the project's root directory.
+Use the maven command ```mvn spring-boot:run``` to run the application.
+It will be available at http://localhost:8080/monitoringLocations in you browser.
+
+Swagger documentation is available at http://localhost:8080/swagger-ui.html
+
+ctrl-c will stop the application.
