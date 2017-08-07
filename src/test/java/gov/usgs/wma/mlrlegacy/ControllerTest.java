@@ -10,12 +10,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.mockito.Matchers.any;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,7 +36,32 @@ public class ControllerTest {
 
 	@MockBean
 	private MonitoringLocationDao dao;
-
+	
+	@Test
+	public void givenReturnData_whenGetByMap_thenReturnList() throws Exception {
+		List<MonitoringLocation> mlList = new ArrayList();
+		MonitoringLocation mlOne = new MonitoringLocation();
+		MonitoringLocation mlTwo = new MonitoringLocation();
+		
+		mlOne.setId(BigInteger.ONE);
+		mlOne.setAgencyCode("USGS");
+		mlOne.setSiteNumber("987654321");
+		mlTwo.setId(BigInteger.TEN);
+		mlTwo.setAgencyCode("USGS");
+		mlTwo.setSiteNumber("11112222");
+		
+		mlList.add(mlOne);
+		mlList.add(mlTwo);
+		
+		given(dao.getByMap(null)).willReturn(mlList);
+		
+		mvc.perform(get("/monitoringLocations"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.length()", is(equalTo(2))))
+				.andExpect(jsonPath("$[0].id", is(equalTo(1))))
+				.andExpect(jsonPath("$[1].id", is(equalTo(10))));
+	}
+	
 	@Test
 	public void givenML_whenGetById_thenReturnML() throws Exception {
 		MonitoringLocation ml = new MonitoringLocation();
