@@ -37,8 +37,9 @@ public class Controller {
 	}
 
 	@PostMapping()
-	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml) {
+	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) {
 		BigInteger newId = mLDao.create(ml);
+		response.setStatus(HttpStatus.CREATED.value());
 		return mLDao.getById(newId);
 	}
 
