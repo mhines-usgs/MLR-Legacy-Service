@@ -25,7 +25,7 @@ public class Controller {
 	@GetMapping()
 	public List<MonitoringLocation> getMonitoringLocations() {
 		return mLDao.getByMap(null);
-		}
+	}
 
 	@GetMapping("/{id}")
 	public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id, HttpServletResponse response) {
@@ -53,8 +53,9 @@ public class Controller {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 		}
 		else {
-		ml.setId(idInt);
-		mLDao.update(ml);
+			ml.setId(idInt);
+			mLDao.update(ml);
+		}
 		return mLDao.getById(idInt);
 	}
 
