@@ -25,7 +25,7 @@ public class Controller {
 	@GetMapping()
 	public List<MonitoringLocation> getMonitoringLocations() {
 		return mLDao.getByMap(null);
-	}
+		}
 
 	@GetMapping("/{id}")
 	public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id, HttpServletResponse response) {
@@ -39,13 +39,20 @@ public class Controller {
 	@PostMapping()
 	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) {
 		BigInteger newId = mLDao.create(ml);
+		
 		response.setStatus(HttpStatus.CREATED.value());
 		return mLDao.getById(newId);
 	}
 
 	@PutMapping("/{id}")
-	public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml) {
+	public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml,
+			HttpServletResponse response) {
 		BigInteger idInt = NumberUtils.parseNumber(id, BigInteger.class);
+		
+		if (null == mLDao.getById(idInt)) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+		}
+		else {
 		ml.setId(idInt);
 		mLDao.update(ml);
 		return mLDao.getById(idInt);

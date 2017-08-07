@@ -125,4 +125,13 @@ public class ControllerTest {
 				.andExpect(jsonPath("agencyCode", is(equalTo("USGS"))))
 				.andExpect(jsonPath("siteNumber", is(equalTo("12345678"))));
 	}
+	
+	@Test
+	public void givenNewML_whenUpdate_thenStatusNotFound() throws Exception {
+		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
+		
+		given(dao.getById(BigInteger.ONE)).willReturn(null);
+		mvc.perform(put("/monitoringLocations/1").content(requestBody).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
 }
