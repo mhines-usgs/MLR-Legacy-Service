@@ -109,8 +109,8 @@
                 #{stationIx, jdbcType=VARCHAR},
                 #{latitude, jdbcType=CHAR},
                 #{longitude, jdbcType=CHAR},
-                #{decimalLatitude, jdbcType=NUMERIC},
-                #{decimalLongitude, jdbcType=NUMERIC},
+                cast (#{decimalLatitude, jdbcType=CHAR} as numeric),
+                cast (#{decimalLongitude, jdbcType=CHAR} as numeric),
                 #{coordinateMethodCode, jdbcType=CHAR},
                 #{coordinateAccuracyCode, jdbcType=CHAR},
                 #{coordinateDatumCode, jdbcType=CHAR},
@@ -157,9 +157,9 @@
                 #{projectNumber, jdbcType=CHAR},
                 #{siteWebReadyCode, jdbcType=CHAR},
                 #{createdBy, jdbcType=CHAR},
-                #{created, jdbcType=DATE},
+                cast (#{created, jdbcType=CHAR} as date),
                 #{updatedBy, jdbcType=CHAR},
-                #{updated, jdbcType=DATE},
+                cast (#{updated, jdbcType=CHAR} as date),
                 #{minorCivilDivisionCode, jdbcType=CHAR}
             )
     </insert>

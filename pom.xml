@@ -11,6 +11,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <springfox.version>2.7.0</springfox.version>
+        <cida.maven.url>http://internal.cida.usgs.gov/maven</cida.maven.url>
     </properties>
 
     <parent>
@@ -71,12 +72,43 @@
             <artifactId>postgresql</artifactId>
         </dependency>
 
+        <!-- Testing -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter-test</artifactId>
+            <version>1.3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.springtestdbunit</groupId>
+            <artifactId>spring-test-dbunit</artifactId>
+            <version>1.3.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.dbunit</groupId>
+            <artifactId>dbunit</artifactId>
+            <version>2.5.4</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>plugin-nexus</id>
+            <name>CIDA Plugin repo</name>
+            <url>${cida.maven.url}/content/groups/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <plugins>
@@ -87,6 +119,73 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- //TODO - possibly use pattern for integration/unit tests from other projects -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <environmentVariables>
+                        <mlrLegacyDbHost>localhost</mlrLegacyDbHost>
+                        <mlrLegacyDbPort>${it-database.port}</mlrLegacyDbPort>
+                    </environmentVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.21.0</version>
+                <executions>
+                    <execution>
+                        <id>prepare-it-database</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+<!--                             <registry>cidasdpdasartip.cr.usgs.gov:8445</registry> -->
+                            <images>
+                                <image>
+<!--                                     <name>mlrlegacydb:0.1</name> -->
+                                    <name>mlrlegacydb_mlr_legacy_db</name>
+                                    <alias>it-database</alias>
+                                    <run>
+                                        <env>
+                                            <POSTGRES_PASSWORD>mlr</POSTGRES_PASSWORD>
+                                            <MLR_LEGACY_PASSWORD>mlr</MLR_LEGACY_PASSWORD>
+                                            <MLR_LEGACY_DATA_PASSWORD>mlr</MLR_LEGACY_DATA_PASSWORD>
+                                            <MLR_LEGACY_USER_PASSWORD>mlr</MLR_LEGACY_USER_PASSWORD>
+                                        </env>
+                                        <ports>
+                                            <port>it-database.port:5432</port>
+                                        </ports>
+                                        <wait>
+                                            <log>(?s)Setup Complete</log>
+                                            <time>20000</time>
+                                        </wait>
+                                    </run>
+                                </image>
+                            </images>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>remove-it-database</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
                         </goals>
                     </execution>
                 </executions>

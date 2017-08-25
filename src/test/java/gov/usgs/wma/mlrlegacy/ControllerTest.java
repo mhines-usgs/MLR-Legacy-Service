@@ -39,7 +39,7 @@ public class ControllerTest {
 	
 	@Test
 	public void givenReturnData_whenGetByMap_thenReturnList() throws Exception {
-		List<MonitoringLocation> mlList = new ArrayList();
+		List<MonitoringLocation> mlList = new ArrayList<>();
 		MonitoringLocation mlOne = new MonitoringLocation();
 		MonitoringLocation mlTwo = new MonitoringLocation();
 		
