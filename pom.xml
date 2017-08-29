@@ -144,6 +144,8 @@
                     <environmentVariables>
                         <mlrLegacyDbHost>localhost</mlrLegacyDbHost>
                         <mlrLegacyDbPort>${it-database.port}</mlrLegacyDbPort>
+                        <mlrLegacyDataUsername>${mlrLegacyDataUsername}</mlrLegacyDataUsername>
+                        <mlrLegacyDataPasswd>${mlrLegacyDataPasswd}</mlrLegacyDataPasswd>
                     </environmentVariables>
                 </configuration>
                 <executions>
@@ -175,10 +177,10 @@
                                     <alias>it-database</alias>
                                     <run>
                                         <env>
-                                            <POSTGRES_PASSWORD>mlr</POSTGRES_PASSWORD>
-                                            <MLR_LEGACY_PASSWORD>mlr</MLR_LEGACY_PASSWORD>
-                                            <MLR_LEGACY_DATA_PASSWORD>mlr</MLR_LEGACY_DATA_PASSWORD>
-                                            <MLR_LEGACY_USER_PASSWORD>mlr</MLR_LEGACY_USER_PASSWORD>
+                                            <POSTGRES_PASSWORD>${postgresPassword}</POSTGRES_PASSWORD>
+                                            <MLR_LEGACY_PASSWORD>${mlrLegacyPasswd}</MLR_LEGACY_PASSWORD>
+                                            <MLR_LEGACY_DATA_PASSWORD>${mlrLegacyDataPasswd}</MLR_LEGACY_DATA_PASSWORD>
+                                            <MLR_LEGACY_USER_PASSWORD>${mlrLegacyUserPasswd}</MLR_LEGACY_USER_PASSWORD>
                                         </env>
                                         <ports>
                                             <port>it-database.port:5432</port>

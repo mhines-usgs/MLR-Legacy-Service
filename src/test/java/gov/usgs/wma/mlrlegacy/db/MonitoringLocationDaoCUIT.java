@@ -10,7 +10,7 @@ import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 
-public class MonitoringLocationDaoCUIT extends BaseDBTest {
+public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 
 	@Autowired
 	private MonitoringLocationDao dao;
@@ -19,7 +19,7 @@ public class MonitoringLocationDaoCUIT extends BaseDBTest {
 	@DatabaseSetup("classpath:/testData/emptyDatabase/")
 	@ExpectedDatabase(
 			table="legacy_location",
-			value="classpath:/testResult/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers=IdModifier.class
 			)
 	public void create() {
@@ -30,7 +30,7 @@ public class MonitoringLocationDaoCUIT extends BaseDBTest {
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
 			table="legacy_location",
-			value="classpath:/testResult/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers=IdModifier.class
 			)
 	public void update() {
