@@ -124,7 +124,6 @@
                 </executions>
             </plugin>
 
-            <!-- //TODO - possibly use pattern for integration/unit tests from other projects -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
@@ -173,7 +172,7 @@
                                             <port>it-database.port:5432</port>
                                         </ports>
                                         <wait>
-                                            <log>(?s)Setup Complete</log>
+                                            <log>(?s)Setup Complete.*autovacuum launcher started</log>
                                             <time>20000</time>
                                         </wait>
                                     </run>

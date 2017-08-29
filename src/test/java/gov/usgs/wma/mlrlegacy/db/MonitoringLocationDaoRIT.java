@@ -39,7 +39,6 @@ public class MonitoringLocationDaoRIT extends BaseDBTest {
 		assertEquals("STATIONIX", location.getStationIx());
 		assertEquals("lat_va     ", location.getLatitude());
 		assertEquals("long_va     ", location.getLongitude());
-		//TODO Better data type?
 		assertEquals("43.3836014", location.getDecimalLatitude());
 		assertEquals("-88.9773314", location.getDecimalLongitude());
 		assertEquals("a", location.getCoordinateMethodCode());

@@ -37,8 +37,6 @@ import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 @Transactional(propagation=Propagation.NOT_SUPPORTED)
 public abstract class BaseDBTest {
 
-	//TODO allow run against local container/database
-
 	public static final BigInteger ONE_MILLION = BigInteger.valueOf(1000000);
 
 	protected String id;

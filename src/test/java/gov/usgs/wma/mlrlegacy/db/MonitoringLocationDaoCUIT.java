@@ -19,20 +19,25 @@ public class MonitoringLocationDaoCUIT extends BaseDBTest {
 	@DatabaseSetup("classpath:/testData/emptyDatabase/")
 	@ExpectedDatabase(
 			table="legacy_location",
-//			query="select * from ,
 			value="classpath:/testResult/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers=IdModifier.class
 			)
 	public void create() {
 		id = String.valueOf(dao.create(buildAMonitoringLocation()));
-		//TODO build a complete MonitoringLocation and assert that it matches the database
 	}
 
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			value="classpath:/testResult/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers=IdModifier.class
+			)
 	public void update() {
-		dao.update(new MonitoringLocation());
-		//TODO modify all fields (except id) and assert that it matches the database
+		MonitoringLocation ml = buildAMonitoringLocation();
+		ml.setId(ONE_MILLION);
+		dao.update(ml);
+		id = String.valueOf(ONE_MILLION);
 	}
 
 	public static MonitoringLocation buildAMonitoringLocation() {
@@ -43,7 +48,6 @@ public class MonitoringLocationDaoCUIT extends BaseDBTest {
 		ml.setStationIx("STATIONIXX");
 		ml.setLatitude("lat_va    x");
 		ml.setLongitude("long_va    x");
-		//TODO Better data type?
 		ml.setDecimalLatitude("43.38360141");
 		ml.setDecimalLongitude("-88.97733141");
 		ml.setCoordinateMethodCode("z");
