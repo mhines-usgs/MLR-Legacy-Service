@@ -168,11 +168,10 @@
                             <goal>start</goal>
                         </goals>
                         <configuration>
-<!--                             <registry>cidasdpdasartip.cr.usgs.gov:8445</registry> -->
+                            <registry>cidasdpdasartip.cr.usgs.gov:8445</registry>
                             <images>
                                 <image>
-<!--                                     <name>mlrlegacydb:0.1</name> -->
-                                    <name>mlrlegacydb_mlr_legacy_db</name>
+                                    <name>mlrlegacydb:0.1</name>
                                     <alias>it-database</alias>
                                     <run>
                                         <env>
