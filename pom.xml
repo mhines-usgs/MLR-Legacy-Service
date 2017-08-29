@@ -6,26 +6,26 @@
     <version>0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <distributionManagement>
-        <repository>
-            <id>central</id>
-            <name>cidasdpdasartip.cr.usgs.gov-releases</name>
-            <url>https://cida.usgs.gov/artifactory/mlr-maven</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>cidasdpdasartip.cr.usgs.gov-snapshots</name>
-            <url>https://cida.usgs.gov/artifactory/mlr-maven</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <springfox.version>2.7.0</springfox.version>
-        <cida.maven.url>http://internal.cida.usgs.gov/maven</cida.maven.url>
+        <wma.artifactory.url>https://cida.usgs.gov/artifactory</wma.artifactory.url>
     </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>central</id>
+            <name>cidasdpdasartip.cr.usgs.gov-releases</name>
+            <url>${wma.artifactory.url}/mlr-maven</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>cidasdpdasartip.cr.usgs.gov-snapshots</name>
+            <url>${wma.artifactory.url}/mlr-maven</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -117,9 +117,9 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>plugin-nexus</id>
-            <name>CIDA Plugin repo</name>
-            <url>${cida.maven.url}/content/groups/public/</url>
+            <id>mavencentral</id>
+            <name>Maven Central Mirror</name>
+            <url>${wma.artifactory.url}/mavencentral</url>
         </pluginRepository>
     </pluginRepositories>
 
