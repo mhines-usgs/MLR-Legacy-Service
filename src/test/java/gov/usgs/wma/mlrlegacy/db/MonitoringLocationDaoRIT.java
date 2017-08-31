@@ -13,7 +13,7 @@ import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 
 @DatabaseSetup("classpath:/testData/setupOne/")
-public class MonitoringLocationDaoRIT extends BaseDBTest {
+public class MonitoringLocationDaoRIT extends BaseDaoIT {
 
 	@Autowired
 	private MonitoringLocationDao dao;

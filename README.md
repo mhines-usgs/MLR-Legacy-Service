@@ -2,15 +2,34 @@
 Monitoring Location Legacy CRU Service
 
 ## Database Configuration
-You will need a postgreSQL database to run this application. A Dockerized version is available at https://github.com/dsteinich/MLR_Legacy_DB.
+You will need a postgreSQL database to run this application. A Dockerized version is available at https://github.com/USGS-CIDA/MLR_Legacy_DB.
 The connection configuration is located in src/main/results/application.yml. You will need to create an application.yml file in your local project's root directory to provide the variable values. It should contain:
 
 ```
 mlrLegacyDbHost: localhost
 mlrLegacyDbPort: 5435
-mlrLegacyUsername: mlr_legacy_data
-mlrLegacyPasswd: changeMe
+mlrLegacyDataUsername: mlr_legacy_data
+mlrLegacyDataPasswd: changeMe
 mlrLegacyServicePwd: changeMe
+```
+
+## Automated Testing
+This application has two flavors of automated tests: unit tests (in the gov.usgs.wma.mlrlegacy package) and integration tests (in the gov.usgs.wma.mlrlegacy.db package) requiring a database. The unit tests can be run in isolation according to your normal practices.
+The integration tests can be run in a terminal with the maven command ```mvn verify``` in the project's root directory. Running in this manner will pull the database Docker image from the central repository and run it in a container.
+They can also be run in your IDE against a database accessible to you. (Note that you should not use a shared database as the tests will destroy data and may have contention issues with other processes accessing the database.)
+In either case, configuration information will be pulled from the maven setting.xml file. It will need to contain the following profile:
+```
+  <profile>
+    <id>it</id>
+    <properties>
+      <postgresPassword>changeMe</postgresPassword>
+      <mlrLegacyPasswd>changeMe</mlrLegacyPasswd>
+      <mlrLegacyDataPasswd>changeMe</mlrLegacyDataPasswd>
+      <mlrLegacyUserPasswd>changeMe</mlrLegacyUserPasswd>
+      <mlrLegacyDataUsername>mlr_legacy_data</mlrLegacyDataUsername>
+      <mlrLegacyServicePwd>changeMe</mlrLegacyServicePwd>
+    </properties>
+  </profile>
 ```
 
 ## Running the Application
