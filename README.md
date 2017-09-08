@@ -9,8 +9,8 @@ The connection configuration is located in src/main/results/application.yml. You
 mlrLegacyDbHost: localhost
 mlrLegacyDbPort: 5435
 mlrLegacyDataUsername: mlr_legacy_data
-mlrLegacyDataPasswd: changeMe
-mlrLegacyServicePwd: changeMe
+mlrLegacyDataPassword: changeMe
+mlrLegacyServicePassword: changeMe
 ```
 
 ## Automated Testing
@@ -23,11 +23,11 @@ In either case, configuration information will be pulled from the maven setting.
     <id>it</id>
     <properties>
       <postgresPassword>changeMe</postgresPassword>
-      <mlrLegacyPasswd>changeMe</mlrLegacyPasswd>
-      <mlrLegacyDataPasswd>changeMe</mlrLegacyDataPasswd>
-      <mlrLegacyUserPasswd>changeMe</mlrLegacyUserPasswd>
+      <mlrLegaPassword>changeMe</mlrLegacyPassword>
+      <mlrLegacyDataPassword>changeMe</mlrLegacyDataPassword>
+      <mlrLegacyUserPassword>changeMe</mlrLegacyUserPassword>
       <mlrLegacyDataUsername>mlr_legacy_data</mlrLegacyDataUsername>
-      <mlrLegacyServicePwd>changeMe</mlrLegacyServicePwd>
+      <mlrLegacyServicePassword>changeMe</mlrLegacyServicePassword>
     </properties>
   </profile>
 ```

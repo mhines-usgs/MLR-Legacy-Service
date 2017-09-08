@@ -11,5 +11,5 @@ spring:
   datasource:
     url: "jdbc:postgresql://${mlrLegacyDbHost}:${mlrLegacyDbPort}/mlr_legacy"
     username: ${mlrLegacyDataUsername}
-    password: ${mlrLegacyDataPasswd}
+    password: ${mlrLegacyDataPassword}
     driver-class-name: org.postgresql.Driver
