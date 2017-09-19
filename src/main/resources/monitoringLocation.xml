@@ -157,9 +157,9 @@
                 #{projectNumber, jdbcType=CHAR},
                 #{siteWebReadyCode, jdbcType=CHAR},
                 #{createdBy, jdbcType=CHAR},
-                cast (#{created, jdbcType=CHAR} as date),
+                cast (#{created, jdbcType=CHAR} as timestamp),
                 #{updatedBy, jdbcType=CHAR},
-                cast (#{updated, jdbcType=CHAR} as date),
+                cast (#{updated, jdbcType=CHAR} as timestamp),
                 #{minorCivilDivisionCode, jdbcType=CHAR}
             )
     </insert>
@@ -220,9 +220,9 @@
                project_no = #{projectNumber, jdbcType=CHAR},
                site_web_cd = #{siteWebReadyCode, jdbcType=CHAR},
                site_cn = #{createdBy, jdbcType=CHAR},
-               site_cr = cast (#{created, jdbcType=CHAR} as date),
+               site_cr = cast (#{created, jdbcType=CHAR} as timestamp),
                site_mn = #{updatedBy, jdbcType=CHAR},
-               site_md = cast (#{updated, jdbcType=CHAR} as date),
+               site_md = cast (#{updated, jdbcType=CHAR} as timestamp),
                mcd_cd = #{minorCivilDivisionCode, jdbcType=CHAR}
          where legacy_location_id = #{id, jdbcType=NUMERIC}
     </update>

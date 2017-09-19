@@ -96,9 +96,9 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 		ml.setProjectNumber("project_no x");
 		ml.setSiteWebReadyCode("j");
 		ml.setCreatedBy("site_cnx");
-		ml.setCreated("2017-08-26");
+		ml.setCreated("2017-08-26 07:33:43");
 		ml.setUpdatedBy("site_mnx");
-		ml.setUpdated("2017-08-27");
+		ml.setUpdated("2017-08-27 23:59:59");
 		ml.setMinorCivilDivisionCode("mcd_x");
 		return ml;
 	}
