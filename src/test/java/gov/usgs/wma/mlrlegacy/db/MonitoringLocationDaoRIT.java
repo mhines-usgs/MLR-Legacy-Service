@@ -87,9 +87,9 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		assertEquals("project_no  ", location.getProjectNumber());
 		assertEquals("q", location.getSiteWebReadyCode());
 		assertEquals("site_cn ", location.getCreatedBy());
-		assertEquals("2017-08-24", location.getCreated());
+		assertEquals("2017-08-24 09:15:23", location.getCreated());
 		assertEquals("site_mn ", location.getUpdatedBy());
-		assertEquals("2017-08-25", location.getUpdated());
+		assertEquals("2017-08-25 15:45:59", location.getUpdated());
 		assertEquals("mcd_c", location.getMinorCivilDivisionCode());
 	}
 
