@@ -9,6 +9,8 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.http.ResponseEntity;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
+import java.util.HashMap;
+import java.util.Map;
 
 @DatabaseSetup("classpath:/testData/setupOne/")
 public class ControllerRIT extends BaseControllerIT {
@@ -19,6 +21,54 @@ public class ControllerRIT extends BaseControllerIT {
 
 		assertEquals(200, responseEntity.getStatusCodeValue());
 		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+	
+	@Test
+	public void getMonitoringLocationsByAgencyCodeFound() throws Exception {
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?agencyCode=USGS", String.class);
+
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+	
+	@Test
+	public void getMonitoringLocationsByAgencyCodeNotFound() throws Exception {
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?agencyCode=USEPA", String.class);
+
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+	
+	@Test
+	public void getMonitoringLocationsBySiteNumberFound() throws Exception {
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?siteNumber=123456789012345", String.class);
+
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+	
+	@Test
+	public void getMonitoringLocationsBySiteNumberNotFound() throws Exception {
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?siteNumber=123456789012349", String.class);
+
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+	
+	@Test
+	public void getMonitoringLocationsByAgencyCodeAndSiteNumberFound() throws Exception {
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?agencyCode=USGS&siteNumber=123456789012345", String.class);
+
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+	
+	@Test
+	public void getMonitoringLocationsByAgencyCodeAndSiteNumberNotFound() throws Exception {
+		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?agencyCode=USGS&siteNumber=123456789012349", String.class);
+
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 
 	@Test

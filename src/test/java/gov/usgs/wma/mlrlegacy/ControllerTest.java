@@ -11,7 +11,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,14 +54,59 @@ public class ControllerTest {
 		
 		mlList.add(mlOne);
 		mlList.add(mlTwo);
+		Map<String, String> params = new HashMap();
 		
-		given(dao.getByMap(null)).willReturn(mlList);
+		given(dao.getByMap(params)).willReturn(mlList);
 		
 		mvc.perform(get("/monitoringLocations"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.length()", is(equalTo(2))))
 				.andExpect(jsonPath("$[0].id", is(equalTo(1))))
 				.andExpect(jsonPath("$[1].id", is(equalTo(10))));
+	}
+	
+	@Test
+	public void givenReturnData_whenGetByAgencyCode_theReturnList() throws Exception {
+		List<MonitoringLocation> mlList = new ArrayList<>();
+		MonitoringLocation mlOne = new MonitoringLocation();
+		
+		mlOne.setId(BigInteger.ONE);
+		mlOne.setAgencyCode("USGS");
+		mlOne.setSiteNumber("987654321");
+		
+		mlList.add(mlOne);
+		
+		Map<String, String> params = new HashMap();
+		params.put("agencyCode", "USGS");
+		
+		given(dao.getByMap(params)).willReturn(mlList);
+		
+		mvc.perform(get("/monitoringLocations").param("agencyCode", "USGS"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.length()", is(equalTo(1))))
+				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
+	}
+	
+	@Test
+	public void givenReturnData_whenGetBySiteNumber_theReturnList() throws Exception {
+		List<MonitoringLocation> mlList = new ArrayList<>();
+		MonitoringLocation mlOne = new MonitoringLocation();
+		
+		mlOne.setId(BigInteger.ONE);
+		mlOne.setAgencyCode("USGS");
+		mlOne.setSiteNumber("987654321");
+		
+		mlList.add(mlOne);
+		
+		Map<String, String> params = new HashMap();
+		params.put("siteNumber", "987654321");
+		
+		given(dao.getByMap(params)).willReturn(mlList);
+		
+		mvc.perform(get("/monitoringLocations").param("siteNumber", "987654321"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.length()", is(equalTo(1))))
+				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
 	}
 	
 	@Test

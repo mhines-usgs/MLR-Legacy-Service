@@ -1,7 +1,9 @@
 package gov.usgs.wma.mlrlegacy;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,9 +26,19 @@ public class Controller {
 	public MonitoringLocationDao mLDao;
 
 	@GetMapping()
-	public List<MonitoringLocation> getMonitoringLocations() {
-		return mLDao.getByMap(null);
+	public List<MonitoringLocation> getMonitoringLocations(
+		@RequestParam(name = "agencyCode", required = false) String agencyCode,
+		@RequestParam(name = "siteNumber", required = false) String siteNumber) {
+		Map<String, String> params = new HashMap<>();
+		if (null != agencyCode) {
+			params.put("agencyCode", agencyCode);
+		}
+		if (null != siteNumber) {
+			params.put("siteNumber", siteNumber);
+		}
+		return mLDao.getByMap(params);
 	}
+		
 
 	@GetMapping("/{id}")
 	public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id, HttpServletResponse response) {
