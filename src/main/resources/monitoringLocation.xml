@@ -92,14 +92,14 @@
 
     <select id="getByMap" parameterType="Map" resultMap="result">
         select <include refid="baseCols"/>
-          from legacy_location
+        from legacy_location
         <where>
             <if test="agencyCode != null">
                 and agency_cd = #{agencyCode}
             </if>
-			<if test="siteNumber != null">
-				and site_no = #{siteNumber}
-			</if>
+            <if test="siteNumber != null">
+                and site_no = #{siteNumber}
+            </if>
         </where>
     </select>
 
