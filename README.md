@@ -15,7 +15,7 @@ mlrLegacyServicePassword: changeMe
 
 ## Automated Testing
 This application has two flavors of automated tests: unit tests (in the gov.usgs.wma.mlrlegacy package) and integration tests (in the gov.usgs.wma.mlrlegacy.db package) requiring a database. The unit tests can be run in isolation according to your normal practices.
-The integration tests can be run in a terminal with the maven command ```mvn verify``` in the project's root directory. Running in this manner will pull the database Docker image from the central repository and run it in a container.
+The integration tests can be run in a terminal with the maven command ```mvn verify -P it``` in the project's root directory. Running in this manner will pull the database Docker image from the central repository and run it in a container.
 They can also be run in your IDE against a database accessible to you. (Note that you should not use a shared database as the tests will destroy data and may have contention issues with other processes accessing the database.)
 In either case, configuration information will be pulled from the maven setting.xml file. It will need to contain the following profile:
 ```
@@ -23,7 +23,7 @@ In either case, configuration information will be pulled from the maven setting.
     <id>it</id>
     <properties>
       <postgresPassword>changeMe</postgresPassword>
-      <mlrLegaPassword>changeMe</mlrLegacyPassword>
+      <mlrLegacyPassword>changeMe</mlrLegacyPassword>
       <mlrLegacyDataPassword>changeMe</mlrLegacyDataPassword>
       <mlrLegacyUserPassword>changeMe</mlrLegacyUserPassword>
       <mlrLegacyDataUsername>mlr_legacy_data</mlrLegacyDataUsername>

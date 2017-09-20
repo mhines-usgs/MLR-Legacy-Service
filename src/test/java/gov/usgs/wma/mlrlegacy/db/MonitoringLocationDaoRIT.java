@@ -1,16 +1,19 @@
 package gov.usgs.wma.mlrlegacy.db;
 
-import static org.junit.Assert.assertEquals;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 
 import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
+
 
 @DatabaseSetup("classpath:/testData/setupOne/")
 public class MonitoringLocationDaoRIT extends BaseDaoIT {
@@ -24,7 +27,44 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		assertEquals(1, locations.size());
 		assertOneMillion(locations.get(0));
 	}
-
+	
+	@Test
+	public void getByAgencyCode() {
+		Map<String, String> params = new HashMap();
+		params.put("agencyCode", "USGS");
+		List<MonitoringLocation> locations = dao.getByMap(params);
+		assertEquals(1, locations.size());
+		assertOneMillion(locations.get(0));
+	}
+	
+	@Test
+	public void getBySiteNumber() {
+		Map<String, String> params = new HashMap();
+		params.put("siteNumber", "123456789012345");
+		List<MonitoringLocation> locations = dao.getByMap(params);
+		assertEquals(1, locations.size());
+		assertOneMillion(locations.get(0));
+	}
+	
+	@Test
+	public void getByAgencyCodeAndSiteNumber() {
+		Map<String, String> params = new HashMap();
+		params.put("agencyCode", "USGS");
+		params.put("siteNumber", "123456789012345");
+		List<MonitoringLocation> locations = dao.getByMap(params);
+		assertEquals(1, locations.size());
+		assertOneMillion(locations.get(0));
+	}
+	
+	@Test
+	public void getByAgencyCodeAndSiteNumberNotFound() {
+		Map<String, String> params = new HashMap();
+		params.put("agencyCode", "USEPA");
+		params.put("siteNumber", "123456789012345");
+		List<MonitoringLocation> locations = dao.getByMap(params);
+		assertEquals(0, locations.size());
+	}
+		
 	@Test
 	public void getById() {
 		MonitoringLocation location = dao.getById(ONE_MILLION);
