@@ -76,12 +76,21 @@
         reliability_cd, aqfr_cd, nat_aqfr_cd, site_use_1_cd, site_use_2_cd,
         site_use_3_cd, water_use_1_cd, water_use_2_cd, water_use_3_cd,
         nat_water_use_cd, aqfr_type_cd, well_depth_va, hole_depth_va, 
-        depth_src_cd, project_no, site_web_cd, site_cn, site_cr, site_mn,
-        site_md, mcd_cd
+        depth_src_cd, project_no, site_web_cd, site_cn, site_mn, mcd_cd
+    </sql>
+
+    <sql id="dateTimeCols">
+        date_trunc('second', site_cr) site_cr,
+        date_trunc('second', site_md) site_md
+    </sql>
+
+    <sql id="timestampCols">
+        site_cr,
+        site_md
     </sql>
 
     <sql id="baseCols">
-        legacy_location_id, <include refid="dataCols" />
+        legacy_location_id, <include refid="dataCols" />, <include refid="dateTimeCols" />
     </sql>
 
     <select id="getById" parameterType="BigInteger" resultMap="result">
@@ -104,7 +113,7 @@
     </select>
 
     <insert id="create" parameterType="MonitoringLocation" useGeneratedKeys="true" keyProperty="id">
-        insert into legacy_location(<include refid="dataCols" />)
+        insert into legacy_location(<include refid="dataCols" />, <include refid="timestampCols" />)
             values(
                 #{agencyCode, jdbcType=CHAR},
                 #{siteNumber, jdbcType=CHAR},
@@ -160,10 +169,10 @@
                 #{projectNumber, jdbcType=CHAR, typeHandler=NotNullTypeHandler},
                 #{siteWebReadyCode, jdbcType=CHAR, typeHandler=NotNullTypeHandler},
                 #{createdBy, jdbcType=CHAR},
-                date_trunc('second', now() at time zone 'utc'),
                 #{updatedBy, jdbcType=CHAR},
-                date_trunc('second', now() at time zone 'utc'),
-                #{minorCivilDivisionCode, jdbcType=CHAR}
+                #{minorCivilDivisionCode, jdbcType=CHAR},
+                now() at time zone 'utc',
+                now() at time zone 'utc'
             )
     </insert>
 
@@ -223,7 +232,7 @@
                project_no = #{projectNumber, jdbcType=CHAR, typeHandler=NotNullTypeHandler},
                site_web_cd = #{siteWebReadyCode, jdbcType=CHAR, typeHandler=NotNullTypeHandler},
                site_mn = #{updatedBy, jdbcType=CHAR},
-               site_md = date_trunc('second', now() at time zone 'utc'),
+               site_md = now() at time zone 'utc',
                mcd_cd = #{minorCivilDivisionCode, jdbcType=CHAR}
          where legacy_location_id = #{id, jdbcType=NUMERIC}
     </update>

@@ -44,19 +44,23 @@ public abstract class BaseIT {
 		}
 	}
 
-	protected String created;
+	protected String createdDate;
+	protected String createdBy;
 	protected class CreatedModifier extends ReplacementDataSetModifier {
 		@Override
 		protected void addReplacements(ReplacementDataSet dataset) {
-			dataset.addReplacementSubstring("[created]", created);
+			dataset.addReplacementSubstring("[createdDate]", createdDate);
+			dataset.addReplacementSubstring("[createdBy]", createdBy);
 		}
 	}
 
-	protected String updated;
+	protected String updatedDate;
+	protected String updatedBy;
 	protected class UpdatedModifier extends ReplacementDataSetModifier {
 		@Override
 		protected void addReplacements(ReplacementDataSet dataset) {
-			dataset.addReplacementSubstring("[updated]", updated);
+			dataset.addReplacementSubstring("[updatedDate]", updatedDate);
+			dataset.addReplacementSubstring("[updatedBy]", updatedBy);
 		}
 	}
 

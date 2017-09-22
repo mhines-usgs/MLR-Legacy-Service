@@ -2,8 +2,6 @@ package gov.usgs.wma.mlrlegacy.db;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +15,19 @@ import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 
 public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 
+	public static final String QUERY_ALL_TO_MINUTE = "select legacy_location_id,agency_cd, site_no, station_nm, station_ix,"
+		+ "lat_va, long_va, dec_lat_va, dec_long_va, coord_meth_cd, coord_acy_cd,"
+		+ "coord_datum_cd, district_cd, land_net_ds, map_nm, country_cd,"
+		+ "state_cd, county_cd, map_scale_fc, alt_va, alt_meth_cd, alt_acy_va,"
+		+ "alt_datum_cd, huc_cd, agency_use_cd, basin_cd, site_tp_cd, topo_cd,"
+		+ "data_types_cd, instruments_cd, site_rmks_tx, inventory_dt, drain_area_va,"
+		+ "contrib_drain_area_va, tz_cd, local_time_fg, gw_file_cd, construction_dt,"
+		+ "reliability_cd, aqfr_cd, nat_aqfr_cd, site_use_1_cd, site_use_2_cd,"
+		+ "site_use_3_cd, water_use_1_cd, water_use_2_cd, water_use_3_cd,"
+		+ "nat_water_use_cd, aqfr_type_cd, well_depth_va, hole_depth_va,"
+		+ "depth_src_cd, project_no, site_web_cd, site_cn, site_mn, mcd_cd,"
+		+ "to_char(site_cr,'YYYY-MM-DD HH24:MI') site_crm,to_char(site_md,'YYYY-MM-DD HH24:MI') site_mdm from legacy_location";
+
 	@Autowired
 	private MonitoringLocationDao dao;
 
@@ -24,34 +35,89 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@DatabaseSetup("classpath:/testData/emptyDatabase/")
 	@ExpectedDatabase(
 			table="legacy_location",
+			query=QUERY_ALL_TO_MINUTE,
+			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void createSparce() {
+		id = String.valueOf(dao.create(buildASparseMonitoringLocation()));
+		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
+		createdDate = nowMinutes;
+		createdBy = "site_cnx";
+		updatedDate = nowMinutes;
+		updatedBy = "site_mnx";
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/emptyDatabase/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_MINUTE,
 			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
-	public void create() {
+	public void createFull() {
 		id = String.valueOf(dao.create(buildAMonitoringLocation()));
-		String now = LocalDateTime.now(ZoneId.of("UTC")).format(new DateTimeFormatter(null, null, null, null, null, null, null));
-		created = "";
-		updated = "";
+		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
+		createdDate = nowMinutes;
+		createdBy = "site_cnx";
+		updatedDate = nowMinutes;
+		updatedBy = "site_mnx";
 	}
 
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
 			table="legacy_location",
-			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers=IdModifier.class
+			query=QUERY_ALL_TO_MINUTE,
+			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
-	public void update() {
+	public void updateSparse() {
+		MonitoringLocation ml = buildASparseMonitoringLocation();
+		ml.setId(ONE_MILLION);
+		dao.update(ml);
+		id = String.valueOf(ONE_MILLION);
+		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
+		createdDate = "2017-08-24 09:15";
+		createdBy = "site_cn ";
+		updatedDate = nowMinutes;
+		updatedBy = "site_mnx";
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_MINUTE,
+			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void updateFull() {
 		MonitoringLocation ml = buildAMonitoringLocation();
 		ml.setId(ONE_MILLION);
 		dao.update(ml);
 		id = String.valueOf(ONE_MILLION);
+		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
+		createdDate = "2017-08-24 09:15";
+		createdBy = "site_cn ";
+		updatedDate = nowMinutes;
+		updatedBy = "site_mnx";
 	}
 
-	public static MonitoringLocation buildAMonitoringLocation() {
+	public static MonitoringLocation buildASparseMonitoringLocation() {
 		MonitoringLocation ml = new MonitoringLocation();
 		ml.setAgencyCode("USGSX");
 		ml.setSiteNumber("123456789012346");
+		ml.setCreatedBy("site_cnx");
+		ml.setCreated("2017-08-26 07:33:43");
+		ml.setUpdatedBy("site_mnx");
+		ml.setUpdated("2017-08-27 23:59:59");
+		return ml;
+	}
+
+	public static MonitoringLocation buildAMonitoringLocation() {
+		MonitoringLocation ml = buildASparseMonitoringLocation();
 		ml.setStationName("station_nmx");
 		ml.setStationIx("STATIONIXX");
 		ml.setLatitude("lat_va    x");
@@ -103,10 +169,6 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 		ml.setSourceOfDepthCode("k");
 		ml.setProjectNumber("project_no x");
 		ml.setSiteWebReadyCode("j");
-		ml.setCreatedBy("site_cnx");
-		ml.setCreated("2017-08-26 07:33:43");
-		ml.setUpdatedBy("site_mnx");
-		ml.setUpdated("2017-08-27 23:59:59");
 		ml.setMinorCivilDivisionCode("mcd_x");
 		return ml;
 	}
