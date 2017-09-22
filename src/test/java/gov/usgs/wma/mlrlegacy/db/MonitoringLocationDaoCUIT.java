@@ -1,5 +1,10 @@
 package gov.usgs.wma.mlrlegacy.db;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,10 +25,13 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="legacy_location",
 			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers=IdModifier.class
+			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void create() {
 		id = String.valueOf(dao.create(buildAMonitoringLocation()));
+		String now = LocalDateTime.now(ZoneId.of("UTC")).format(new DateTimeFormatter(null, null, null, null, null, null, null));
+		created = "";
+		updated = "";
 	}
 
 	@Test

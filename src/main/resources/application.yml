@@ -1,6 +1,7 @@
 
 mybatis:
   type-aliases-package: gov.usgs.wma.mlrlegacy
+  type-handlers-package: gov.usgs.wma.mlrlegacy
   configuration:
     cache-enabled: false
     lazy-loading-enabled: false

@@ -37,12 +37,26 @@ public abstract class BaseIT {
 	public static final BigInteger ONE_MILLION = BigInteger.valueOf(1000000);
 
 	protected String id;
-
 	protected class IdModifier extends ReplacementDataSetModifier {
-
 		@Override
 		protected void addReplacements(ReplacementDataSet dataset) {
 			dataset.addReplacementSubstring("[id]", id);
+		}
+	}
+
+	protected String created;
+	protected class CreatedModifier extends ReplacementDataSetModifier {
+		@Override
+		protected void addReplacements(ReplacementDataSet dataset) {
+			dataset.addReplacementSubstring("[created]", created);
+		}
+	}
+
+	protected String updated;
+	protected class UpdatedModifier extends ReplacementDataSetModifier {
+		@Override
+		protected void addReplacements(ReplacementDataSet dataset) {
+			dataset.addReplacementSubstring("[updated]", updated);
 		}
 	}
 
