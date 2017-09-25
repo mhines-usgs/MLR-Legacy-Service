@@ -35,11 +35,11 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
-	public void createMonitoringLocation() throws Exception {
-		HttpEntity<String> entity = new HttpEntity<String>(getCompareFile("testData/", "monitoringLocation.json").replace("\"[id]\"", "1"), getHeaders());
+	public void createSparseMonitoringLocation() throws Exception {
+		HttpEntity<String> entity = new HttpEntity<String>(getCompareFile("testData/", "sparseMonitoringLocation.json").replace("\"[id]\"", "1"), getHeaders());
 
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/monitoringLocations", entity, String.class);
 
@@ -50,7 +50,37 @@ public class ControllerCUIT extends BaseControllerIT {
 		updatedDate = JsonPath.read(responseBody, "$.updated").toString();
 		updatedBy = "unknown ";
 
-		String expectedBody = getCompareFile("testResult/", "monitoringLocation.json").replace("\"[id]\"", id)
+		String expectedBody = getCompareFile("testResult/", "sparseMonitoringLocation.json").replace("\"[id]\"", id)
+			.replace("[createdDate]", createdDate).replace("[createdBy]", createdBy)
+			.replace("[updatedDate]", updatedDate).replace("[updatedBy]", updatedBy);
+
+		assertEquals(201, responseEntity.getStatusCodeValue());
+		assertFalse(createdDate.contentEquals("2017-08-26 07:33:43"));
+		assertFalse(updatedDate.contentEquals("2017-08-27 23:59:59"));
+		JSONAssert.assertEquals(expectedBody, responseBody, JSONCompareMode.STRICT);
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/emptyDatabase/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_SECOND,
+			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void createFullMonitoringLocation() throws Exception {
+		HttpEntity<String> entity = new HttpEntity<String>(getCompareFile("testData/", "fullMonitoringLocation.json").replace("\"[id]\"", "1"), getHeaders());
+
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/monitoringLocations", entity, String.class);
+
+		String responseBody = responseEntity.getBody();
+		id = JsonPath.read(responseBody, "$.id").toString();
+		createdDate = JsonPath.read(responseBody, "$.created").toString();
+		createdBy = "unknown ";
+		updatedDate = JsonPath.read(responseBody, "$.updated").toString();
+		updatedBy = "unknown ";
+
+		String expectedBody = getCompareFile("testResult/", "fullMonitoringLocation.json").replace("\"[id]\"", id)
 			.replace("[createdDate]", createdDate).replace("[createdBy]", createdBy)
 			.replace("[updatedDate]", updatedDate).replace("[updatedBy]", updatedBy);
 
@@ -64,17 +94,51 @@ public class ControllerCUIT extends BaseControllerIT {
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
 			table="legacy_location",
-			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers=IdModifier.class
+			query=QUERY_ALL_TO_SECOND,
+			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
-	public void updateMonitoringLocation() throws Exception {
+	public void updateSparseMonitoringLocation() throws Exception {
 		id = String.valueOf(ONE_MILLION);
-		HttpEntity<String> entity = new HttpEntity<String>(getCompareFile("testData/", "monitoringLocation.json").replace("\"[id]\"", "1"), getHeaders());
+		HttpEntity<String> entity = new HttpEntity<String>(getCompareFile("testData/", "sparseMonitoringLocation.json").replace("\"[id]\"", "1"), getHeaders());
 
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations/" + id, HttpMethod.PUT, entity, String.class);
 
 		String responseBody = responseEntity.getBody();
-		String expectedBody = getCompareFile("testData/", "monitoringLocation.json").replace("\"[id]\"", id);
+		createdDate = "2017-08-24 09:15:23";
+		createdBy = "site_cn ";
+		updatedDate = JsonPath.read(responseBody, "$.updated").toString();
+		updatedBy = "unknown ";
+		String expectedBody = getCompareFile("testResult/", "sparseMonitoringLocation.json").replace("\"[id]\"", id)
+				.replace("[createdDate]", createdDate).replace("[createdBy]", createdBy)
+				.replace("[updatedDate]", updatedDate).replace("[updatedBy]", updatedBy);
+
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals(expectedBody, responseBody, JSONCompareMode.STRICT);
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_SECOND,
+			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void updateFullMonitoringLocation() throws Exception {
+		id = String.valueOf(ONE_MILLION);
+		HttpEntity<String> entity = new HttpEntity<String>(getCompareFile("testData/", "fullMonitoringLocation.json").replace("\"[id]\"", "1"), getHeaders());
+
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations/" + id, HttpMethod.PUT, entity, String.class);
+
+		String responseBody = responseEntity.getBody();
+		createdDate = "2017-08-24 09:15:23";
+		createdBy = "site_cn ";
+		updatedDate = JsonPath.read(responseBody, "$.updated").toString();
+		updatedBy = "unknown ";
+		String expectedBody = getCompareFile("testResult/", "fullMonitoringLocation.json").replace("\"[id]\"", id)
+				.replace("[createdDate]", createdDate).replace("[createdBy]", createdBy)
+				.replace("[updatedDate]", updatedDate).replace("[updatedBy]", updatedBy);
 
 		assertEquals(200, responseEntity.getStatusCodeValue());
 		JSONAssert.assertEquals(expectedBody, responseBody, JSONCompareMode.STRICT);

@@ -56,6 +56,6 @@
 	"gwFileCode": "gw_file_cd                   x",
 	"created": "[createdDate]",
 	"createdBy": "[createdBy]",
-	"updated": "[createdDate]",
-	"updatedBy": "[createdBy]"
+	"updated": "[updatedDate]",
+	"updatedBy": "[updatedBy]"
 }

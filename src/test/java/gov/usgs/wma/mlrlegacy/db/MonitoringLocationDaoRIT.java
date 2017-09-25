@@ -30,7 +30,7 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getByAgencyCode() {
-		Map<String, String> params = new HashMap();
+		Map<String, String> params = new HashMap<>();
 		params.put("agencyCode", "USGS");
 		List<MonitoringLocation> locations = dao.getByMap(params);
 		assertEquals(1, locations.size());
@@ -39,7 +39,7 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getBySiteNumber() {
-		Map<String, String> params = new HashMap();
+		Map<String, String> params = new HashMap<>();
 		params.put("siteNumber", "123456789012345");
 		List<MonitoringLocation> locations = dao.getByMap(params);
 		assertEquals(1, locations.size());
@@ -48,7 +48,7 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getByAgencyCodeAndSiteNumber() {
-		Map<String, String> params = new HashMap();
+		Map<String, String> params = new HashMap<>();
 		params.put("agencyCode", "USGS");
 		params.put("siteNumber", "123456789012345");
 		List<MonitoringLocation> locations = dao.getByMap(params);
@@ -58,7 +58,7 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getByAgencyCodeAndSiteNumberNotFound() {
-		Map<String, String> params = new HashMap();
+		Map<String, String> params = new HashMap<>();
 		params.put("agencyCode", "USEPA");
 		params.put("siteNumber", "123456789012345");
 		List<MonitoringLocation> locations = dao.getByMap(params);
