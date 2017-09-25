@@ -78,7 +78,7 @@ public class Controller {
 		return mLDao.getById(idInt);
 	}
 
-	private String getUsername() {
+	protected String getUsername() {
 		String username = "unknown";
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (null != authentication && !(authentication instanceof AnonymousAuthenticationToken)) {
