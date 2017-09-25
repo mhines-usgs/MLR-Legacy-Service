@@ -1,4 +1,4 @@
-package gov.usgs.wma.mlrlegacy.db;
+package gov.usgs.wma.mlrlegacy;
 
 import static org.mockito.Mockito.verify;
 
