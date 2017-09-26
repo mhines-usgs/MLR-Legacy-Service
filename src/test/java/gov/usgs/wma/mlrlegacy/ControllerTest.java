@@ -197,14 +197,14 @@ public class ControllerTest {
 	@Test
 	public void givenNoSecurityContext_thenUsernameUnknown() {
 		Controller controller = new Controller();
-		assertEquals("unknown", controller.getUsername());
+		assertEquals(Controller.UNKNOWN_USERNAME, controller.getUsername());
 	}
 
 	@Test
 	@WithAnonymousUser
 	public void givenAnonymousUser_thenUsernameUnkown() {
 		Controller controller = new Controller();
-		assertEquals("unknown", controller.getUsername());
+		assertEquals(Controller.UNKNOWN_USERNAME, controller.getUsername());
 	}
 
 	@Test

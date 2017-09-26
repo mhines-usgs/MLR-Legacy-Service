@@ -29,6 +29,8 @@ public class Controller {
 	@Autowired
 	private MonitoringLocationDao mLDao;
 
+	public static final String UNKNOWN_USERNAME = "unknown";
+
 	@GetMapping()
 	public List<MonitoringLocation> getMonitoringLocations(
 		@RequestParam(name = "agencyCode", required = false) String agencyCode,
@@ -79,7 +81,7 @@ public class Controller {
 	}
 
 	protected String getUsername() {
-		String username = "unknown";
+		String username = UNKNOWN_USERNAME;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (null != authentication && !(authentication instanceof AnonymousAuthenticationToken)) {
 			username= authentication.getName();
