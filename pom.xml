@@ -212,4 +212,11 @@
 
         </plugins>
     </build>
+    
+    <scm>
+		<connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
+		<url>https://github.com/USGS-CIDA/MLR-Legacy-Service</url>
+		<tag>HEAD</tag>
+	</scm>
 </project>
