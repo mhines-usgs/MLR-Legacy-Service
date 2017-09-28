@@ -176,7 +176,7 @@
                             <goal>start</goal>
                         </goals>
                         <configuration>
-                            <registry>cidasdpdasartip.cr.usgs.gov:8445</registry>
+                            <registry>cidasdpdasartip.cr.usgs.gov:8446</registry>
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
