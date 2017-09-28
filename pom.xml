@@ -10,6 +10,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <additionalparam>-Xdoclint:none</additionalparam>
         <springfox.version>2.7.0</springfox.version>
         <wma.artifactory.url>https://cida.usgs.gov/artifactory</wma.artifactory.url>
     </properties>
@@ -179,7 +180,7 @@
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
-                                    <name>mlrlegacydb:0.1-SNAPSHOT</name>
+                                    <name>mlrlegacydb:0.1.0</name>
                                     <alias>it-database</alias>
                                     <run>
                                         <env>
