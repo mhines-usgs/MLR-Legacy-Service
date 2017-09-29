@@ -17,14 +17,14 @@
 
     <distributionManagement>
         <repository>
-            <id>central</id>
+            <id>release</id>
             <name>cidasdpdasartip.cr.usgs.gov-releases</name>
-            <url>${wma.artifactory.url}/mlr-maven</url>
+            <url>${wma.artifactory.url}/mlr-maven-releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>cidasdpdasartip.cr.usgs.gov-snapshots</name>
-            <url>${wma.artifactory.url}/mlr-maven</url>
+            <url>${wma.artifactory.url}/mlr-maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -213,7 +213,7 @@
 
         </plugins>
     </build>
-    
+
     <scm>
 		<connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
 		<developerConnection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
