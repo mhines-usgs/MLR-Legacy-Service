@@ -2,6 +2,8 @@ package gov.usgs.wma.mlrlegacy.db;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +99,28 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 		MonitoringLocation ml = buildAMonitoringLocation();
 		ml.setId(ONE_MILLION);
 		dao.update(ml);
+		id = String.valueOf(ONE_MILLION);
+		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
+		createdDate = "2017-08-24 09:15";
+		createdBy = "site_cn ";
+		updatedDate = nowMinutes;
+		updatedBy = "site_mnx";
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+//	@ExpectedDatabase(
+//			table="legacy_location",
+//			query=QUERY_ALL_TO_MINUTE,
+//			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+//			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+//			)
+	public void patchFull() {
+		Map<String, Object> ml = new HashMap<>();
+		ml.put("id", ONE_MILLION);
+		ml.put("updatedBy", "site_mnx");
+//		ml.put("agencyCode", "USGSX");
+		dao.patch(ml);
 		id = String.valueOf(ONE_MILLION);
 		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
 		createdDate = "2017-08-24 09:15";

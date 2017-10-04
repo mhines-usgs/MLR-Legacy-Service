@@ -66,7 +66,7 @@ public class ControllerTest {
 
 		mlList.add(mlOne);
 		mlList.add(mlTwo);
-		Map<String, String> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 
 		given(dao.getByMap(params)).willReturn(mlList);
 
@@ -88,7 +88,7 @@ public class ControllerTest {
 
 		mlList.add(mlOne);
 
-		Map<String, String> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("agencyCode", "USGS");
 
 		given(dao.getByMap(params)).willReturn(mlList);
@@ -110,7 +110,7 @@ public class ControllerTest {
 
 		mlList.add(mlOne);
 
-		Map<String, String> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("siteNumber", "987654321");
 
 		given(dao.getByMap(params)).willReturn(mlList);

@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.NumberUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -35,7 +36,7 @@ public class Controller {
 	public List<MonitoringLocation> getMonitoringLocations(
 		@RequestParam(name = "agencyCode", required = false) String agencyCode,
 		@RequestParam(name = "siteNumber", required = false) String siteNumber) {
-		Map<String, String> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 		if (null != agencyCode) {
 			params.put("agencyCode", agencyCode);
 		}
@@ -78,6 +79,27 @@ public class Controller {
 			mLDao.update(ml);
 		}
 		return mLDao.getById(idInt);
+	}
+
+	@PatchMapping()
+	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml,
+			HttpServletResponse response) {
+
+//		if (null == mLDao.getById(idInt)) {
+//			response.setStatus(HttpStatus.NOT_FOUND.value());
+//		}
+//		else {
+//			ml.put("id", idInt);
+			ml.put("updatedBy", getUsername());
+			mLDao.patch(ml);
+//		}
+		List<MonitoringLocation> lst = mLDao.getByMap(ml);
+		if (lst.isEmpty()) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return null;
+		} else {
+			return lst.get(0);
+		}
 	}
 
 	protected String getUsername() {
