@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.usgs.wma</groupId>
     <artifactId>mlrLegacy</artifactId>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.9</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -218,6 +218,6 @@
 		<connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
 		<developerConnection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
 		<url>https://github.com/USGS-CIDA/MLR-Legacy-Service</url>
-		<tag>HEAD</tag>
+		<tag>mlrLegacy-0.9</tag>
 	</scm>
 </project>
