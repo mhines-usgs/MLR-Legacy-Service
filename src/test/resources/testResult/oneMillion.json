@@ -54,8 +54,8 @@
 	"remarks": "site_rmks_tx",
 	"siteWebReadyCode": "q",
 	"gwFileCode": "gw_file_cd                    ",
-	"created": "2017-08-24 09:15:23",
-	"createdBy": "site_cn ",
-	"updated": "2017-08-25 15:45:59",
-	"updatedBy": "site_mn "
+	"created": "[createdDate]",
+	"createdBy": "[createdBy]",
+	"updated": "[updatedDate]",
+	"updatedBy": "[updatedBy]"
 }

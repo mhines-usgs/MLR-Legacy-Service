@@ -19,7 +19,7 @@ public class ControllerRIT extends BaseControllerIT {
 		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations", String.class);
 
 		assertEquals(200, responseEntity.getStatusCodeValue());
-		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 	
 	@Test
@@ -27,7 +27,7 @@ public class ControllerRIT extends BaseControllerIT {
 		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?agencyCode=USGS", String.class);
 
 		assertEquals(200, responseEntity.getStatusCodeValue());
-		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 	
 	@Test
@@ -43,7 +43,7 @@ public class ControllerRIT extends BaseControllerIT {
 		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?siteNumber=123456789012345", String.class);
 
 		assertEquals(200, responseEntity.getStatusCodeValue());
-		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 	
 	@Test
@@ -59,7 +59,7 @@ public class ControllerRIT extends BaseControllerIT {
 		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations?agencyCode=USGS&siteNumber=123456789012345", String.class);
 
 		assertEquals(200, responseEntity.getStatusCodeValue());
-		JSONAssert.assertEquals("[" + getCompareFile("testResult/", "oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 	
 	@Test
@@ -75,7 +75,7 @@ public class ControllerRIT extends BaseControllerIT {
 		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations/1000000", String.class);
 
 		assertEquals(200, responseEntity.getStatusCodeValue());
-		JSONAssert.assertEquals(getCompareFile("testResult/", "oneMillion.json"), responseEntity.getBody(), JSONCompareMode.STRICT);
+		JSONAssert.assertEquals(getExpectedReadJson("oneMillion.json"), responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 
 	@Test

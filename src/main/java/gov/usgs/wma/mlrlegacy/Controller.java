@@ -30,18 +30,21 @@ public class Controller {
 	@Autowired
 	private MonitoringLocationDao mLDao;
 
-	public static final String UNKNOWN_USERNAME = "unknown";
+	public static final String UNKNOWN_USERNAME = "unknown ";
+	public static final String AGENCY_CODE = "agencyCode";
+	public static final String SITE_NUMBER = "siteNumber";
+	public static final String UPDATED_BY = "updatedBy";
 
 	@GetMapping()
 	public List<MonitoringLocation> getMonitoringLocations(
-		@RequestParam(name = "agencyCode", required = false) String agencyCode,
-		@RequestParam(name = "siteNumber", required = false) String siteNumber) {
+		@RequestParam(name = AGENCY_CODE, required = false) String agencyCode,
+		@RequestParam(name = SITE_NUMBER, required = false) String siteNumber) {
 		Map<String, Object> params = new HashMap<>();
 		if (null != agencyCode) {
-			params.put("agencyCode", agencyCode);
+			params.put(AGENCY_CODE, agencyCode);
 		}
 		if (null != siteNumber) {
-			params.put("siteNumber", siteNumber);
+			params.put(SITE_NUMBER, siteNumber);
 		}
 		return mLDao.getByMap(params);
 	}
@@ -85,14 +88,8 @@ public class Controller {
 	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml,
 			HttpServletResponse response) {
 
-//		if (null == mLDao.getById(idInt)) {
-//			response.setStatus(HttpStatus.NOT_FOUND.value());
-//		}
-//		else {
-//			ml.put("id", idInt);
-			ml.put("updatedBy", getUsername());
-			mLDao.patch(ml);
-//		}
+		ml.put(UPDATED_BY, getUsername());
+		mLDao.patch(ml);
 		List<MonitoringLocation> lst = mLDao.getByMap(ml);
 		if (lst.isEmpty()) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
