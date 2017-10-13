@@ -5,9 +5,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyMap;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -32,6 +34,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import gov.usgs.wma.mlrlegacy.db.BaseIT;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 
 @RunWith(SpringRunner.class)
@@ -58,15 +61,15 @@ public class ControllerTest {
 		MonitoringLocation mlTwo = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ONE);
-		mlOne.setAgencyCode("USGS");
+		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		mlOne.setSiteNumber("987654321");
 		mlTwo.setId(BigInteger.TEN);
-		mlTwo.setAgencyCode("USGS");
+		mlTwo.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		mlTwo.setSiteNumber("11112222");
 
 		mlList.add(mlOne);
 		mlList.add(mlTwo);
-		Map<String, String> params = new HashMap<>();
+		Map<String, Object> params = new HashMap<>();
 
 		given(dao.getByMap(params)).willReturn(mlList);
 
@@ -83,17 +86,17 @@ public class ControllerTest {
 		MonitoringLocation mlOne = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ONE);
-		mlOne.setAgencyCode("USGS");
+		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		mlOne.setSiteNumber("987654321");
 
 		mlList.add(mlOne);
 
-		Map<String, String> params = new HashMap<>();
-		params.put("agencyCode", "USGS");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
 
 		given(dao.getByMap(params)).willReturn(mlList);
 
-		mvc.perform(get("/monitoringLocations").param("agencyCode", "USGS"))
+		mvc.perform(get("/monitoringLocations").param(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.length()", is(equalTo(1))))
 				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
@@ -105,17 +108,17 @@ public class ControllerTest {
 		MonitoringLocation mlOne = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ONE);
-		mlOne.setAgencyCode("USGS");
+		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		mlOne.setSiteNumber("987654321");
 
 		mlList.add(mlOne);
 
-		Map<String, String> params = new HashMap<>();
-		params.put("siteNumber", "987654321");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.SITE_NUMBER, "987654321");
 
 		given(dao.getByMap(params)).willReturn(mlList);
 
-		mvc.perform(get("/monitoringLocations").param("siteNumber", "987654321"))
+		mvc.perform(get("/monitoringLocations").param(Controller.SITE_NUMBER, "987654321"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.length()", is(equalTo(1))))
 				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
@@ -125,7 +128,7 @@ public class ControllerTest {
 	public void givenML_whenGetById_thenReturnML() throws Exception {
 		MonitoringLocation ml = new MonitoringLocation();
 		ml.setId(BigInteger.ONE);
-		ml.setAgencyCode("USGS");
+		ml.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		ml.setSiteNumber("987654321");
 
 		given(dao.getById(BigInteger.ONE)).willReturn(ml);
@@ -133,8 +136,8 @@ public class ControllerTest {
 		mvc.perform(get("/monitoringLocations/1"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("id", is(equalTo(1))))
-			.andExpect(jsonPath("agencyCode", is(equalTo(ml.getAgencyCode()))))
-			.andExpect(jsonPath("siteNumber", is(equalTo(ml.getSiteNumber()))))
+			.andExpect(jsonPath(Controller.AGENCY_CODE, is(equalTo(ml.getAgencyCode()))))
+			.andExpect(jsonPath(Controller.SITE_NUMBER, is(equalTo(ml.getSiteNumber()))))
 		;
 	}
 
@@ -150,7 +153,7 @@ public class ControllerTest {
 	@Test
 	public void givenML_whenCreate_thenReturnMLWithId() throws Exception {
 		MonitoringLocation newMl = new MonitoringLocation();
-		newMl.setAgencyCode("USGS");
+		newMl.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		newMl.setSiteNumber("12345678");
 		newMl.setId(BigInteger.ONE);
 
@@ -162,8 +165,8 @@ public class ControllerTest {
 		mvc.perform(post("/monitoringLocations").content(requestBody).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("id", is(equalTo(1))))
-				.andExpect(jsonPath("agencyCode", is(equalTo("USGS"))))
-				.andExpect(jsonPath("siteNumber", is(equalTo("12345678"))));
+				.andExpect(jsonPath(Controller.AGENCY_CODE, is(equalTo(BaseIT.DEFAULT_AGENCY_CODE))))
+				.andExpect(jsonPath(Controller.SITE_NUMBER, is(equalTo("12345678"))));
 	}
 
 	@Test
@@ -172,7 +175,7 @@ public class ControllerTest {
 		MonitoringLocation ml = new MonitoringLocation();
 
 		ml.setId(BigInteger.ONE);
-		ml.setAgencyCode("USGS");
+		ml.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		ml.setSiteNumber("12345678");
 
 		Mockito.doNothing().when(dao).update(any(MonitoringLocation.class));
@@ -181,8 +184,8 @@ public class ControllerTest {
 		mvc.perform(put("/monitoringLocations/1").content(requestBody).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("id", is(equalTo(1))))
-				.andExpect(jsonPath("agencyCode", is(equalTo("USGS"))))
-				.andExpect(jsonPath("siteNumber", is(equalTo("12345678"))));
+				.andExpect(jsonPath(Controller.AGENCY_CODE, is(equalTo(BaseIT.DEFAULT_AGENCY_CODE))))
+				.andExpect(jsonPath(Controller.SITE_NUMBER, is(equalTo("12345678"))));
 	}
 
 	@Test
@@ -191,6 +194,36 @@ public class ControllerTest {
 		
 		given(dao.getById(BigInteger.ONE)).willReturn(null);
 		mvc.perform(put("/monitoringLocations/1").content(requestBody).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void givenML_whenPatch_thenReturnUpdatedML() throws Exception {
+		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setId(BigInteger.ONE);
+		ml.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
+		ml.setSiteNumber("12345678");
+		List<MonitoringLocation> lst = new ArrayList<>();
+		lst.add(ml);
+
+		Mockito.doNothing().when(dao).patch(anyMap());
+		given(dao.getByMap(anyMap())).willReturn(lst);
+
+		mvc.perform(patch("/monitoringLocations").content(requestBody).contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("id", is(equalTo(1))))
+				.andExpect(jsonPath(Controller.AGENCY_CODE, is(equalTo(BaseIT.DEFAULT_AGENCY_CODE))))
+				.andExpect(jsonPath(Controller.SITE_NUMBER, is(equalTo("12345678"))));
+	}
+
+	@Test
+	public void givenNewML_whenPatch_thenStatusNotFound() throws Exception {
+		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
+
+		Mockito.doNothing().when(dao).patch(anyMap());
+		given(dao.getByMap(anyMap())).willReturn(new ArrayList<MonitoringLocation>());
+		mvc.perform(patch("/monitoringLocations").content(requestBody).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 	}
 

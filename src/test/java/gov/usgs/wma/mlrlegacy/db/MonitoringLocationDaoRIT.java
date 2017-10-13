@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 
+import gov.usgs.wma.mlrlegacy.Controller;
 import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 
@@ -30,8 +31,8 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getByAgencyCode() {
-		Map<String, String> params = new HashMap<>();
-		params.put("agencyCode", "USGS");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
 		List<MonitoringLocation> locations = dao.getByMap(params);
 		assertEquals(1, locations.size());
 		assertOneMillion(locations.get(0));
@@ -39,8 +40,8 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getBySiteNumber() {
-		Map<String, String> params = new HashMap<>();
-		params.put("siteNumber", "123456789012345");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
 		List<MonitoringLocation> locations = dao.getByMap(params);
 		assertEquals(1, locations.size());
 		assertOneMillion(locations.get(0));
@@ -48,9 +49,9 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getByAgencyCodeAndSiteNumber() {
-		Map<String, String> params = new HashMap<>();
-		params.put("agencyCode", "USGS");
-		params.put("siteNumber", "123456789012345");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
+		params.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
 		List<MonitoringLocation> locations = dao.getByMap(params);
 		assertEquals(1, locations.size());
 		assertOneMillion(locations.get(0));
@@ -58,9 +59,9 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	
 	@Test
 	public void getByAgencyCodeAndSiteNumberNotFound() {
-		Map<String, String> params = new HashMap<>();
-		params.put("agencyCode", "USEPA");
-		params.put("siteNumber", "123456789012345");
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.AGENCY_CODE, "USEPA");
+		params.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
 		List<MonitoringLocation> locations = dao.getByMap(params);
 		assertEquals(0, locations.size());
 	}
@@ -73,8 +74,8 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 
 	public static void assertOneMillion(MonitoringLocation location) {
 		assertEquals(ONE_MILLION, location.getId());
-		assertEquals("USGS ", location.getAgencyCode());
-		assertEquals("123456789012345", location.getSiteNumber());
+		assertEquals(DEFAULT_AGENCY_CODE, location.getAgencyCode());
+		assertEquals(DEFAULT_SITE_NUMBER, location.getSiteNumber());
 		assertEquals("station_nm", location.getStationName());
 		assertEquals("STATIONIX", location.getStationIx());
 		assertEquals("lat_va     ", location.getLatitude());
@@ -126,10 +127,10 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		assertEquals("p", location.getSourceOfDepthCode());
 		assertEquals("project_no  ", location.getProjectNumber());
 		assertEquals("q", location.getSiteWebReadyCode());
-		assertEquals("site_cn ", location.getCreatedBy());
-		assertEquals("2017-08-24 09:15:23", location.getCreated());
-		assertEquals("site_mn ", location.getUpdatedBy());
-		assertEquals("2017-08-25 15:45:59", location.getUpdated());
+		assertEquals(DEFAULT_CREATED_BY, location.getCreatedBy());
+		assertEquals(DEFAULT_CREATED_DATE_S, location.getCreated());
+		assertEquals(DEFAULT_UPDATED_BY, location.getUpdatedBy());
+		assertEquals(DEFAULT_UPDATED_DATE_S, location.getUpdated());
 		assertEquals("mcd_c", location.getMinorCivilDivisionCode());
 	}
 

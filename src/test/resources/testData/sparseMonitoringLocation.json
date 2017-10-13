@@ -1,9 +1,5 @@
 {
 	"id": "[id]",
-	"agencyCode": "USGSX",
-	"siteNumber": "123456789012346",
-	"created": "2017-08-26 07:33:43",
-	"createdBy": "site_cnx",
-	"updated": "2017-08-27 23:59:59",
-	"updatedBy": "site_mnx"
+	"agencyCode": "[agency]",
+	"siteNumber": "[siteNbr]"
 }

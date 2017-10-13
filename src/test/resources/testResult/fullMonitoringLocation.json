@@ -1,7 +1,7 @@
 {
 	"id": "[id]",
-	"agencyCode": "USGSX",
-	"siteNumber": "123456789012346",
+	"agencyCode": "[agency]",
+	"siteNumber": "[siteNbr]",
 	"stationName": "station_nmx",
 	"stationIx": "STATIONIXX",
 	"siteTypeCode": "site_tx",
