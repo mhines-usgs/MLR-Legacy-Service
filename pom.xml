@@ -3,13 +3,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.usgs.wma</groupId>
     <artifactId>mlrLegacy</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.11-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <additionalparam>-Xdoclint:none</additionalparam>
         <springfox.version>2.7.0</springfox.version>
         <wma.artifactory.url>https://cida.usgs.gov/artifactory</wma.artifactory.url>
         <spring-cloud.version>Dalston.SR3</spring-cloud.version>
@@ -18,14 +19,14 @@
 
     <distributionManagement>
         <repository>
-            <id>central</id>
+            <id>release</id>
             <name>cidasdpdasartip.cr.usgs.gov-releases</name>
-            <url>${wma.artifactory.url}/mlr-maven</url>
+            <url>${wma.artifactory.url}/mlr-maven-releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>cidasdpdasartip.cr.usgs.gov-snapshots</name>
-            <url>${wma.artifactory.url}/mlr-maven</url>
+            <url>${wma.artifactory.url}/mlr-maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 
@@ -193,11 +194,11 @@
                             <goal>start</goal>
                         </goals>
                         <configuration>
-                            <registry>cidasdpdasartip.cr.usgs.gov:8445</registry>
+                            <registry>cidasdpdasartip.cr.usgs.gov:8446</registry>
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
-                                    <name>mlrlegacydb:0.1-SNAPSHOT</name>
+                                    <name>mlrlegacydb:0.1.0</name>
                                     <alias>it-database</alias>
                                     <run>
                                         <env>
@@ -230,4 +231,11 @@
 
         </plugins>
     </build>
+
+    <scm>
+		<connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
+		<developerConnection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
+		<url>https://github.com/USGS-CIDA/MLR-Legacy-Service</url>
+		<tag>HEAD</tag>
+	</scm>
 </project>

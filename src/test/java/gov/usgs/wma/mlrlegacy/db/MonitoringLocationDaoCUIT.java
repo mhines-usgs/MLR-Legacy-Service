@@ -2,6 +2,8 @@ package gov.usgs.wma.mlrlegacy.db;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +12,11 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 
+import gov.usgs.wma.mlrlegacy.Controller;
 import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 
 public class MonitoringLocationDaoCUIT extends BaseDaoIT {
-
-	public static final String QUERY_ALL_TO_MINUTE = "select legacy_location_id,agency_cd, site_no, station_nm, station_ix,"
-		+ "lat_va, long_va, dec_lat_va, dec_long_va, coord_meth_cd, coord_acy_cd,"
-		+ "coord_datum_cd, district_cd, land_net_ds, map_nm, country_cd,"
-		+ "state_cd, county_cd, map_scale_fc, alt_va, alt_meth_cd, alt_acy_va,"
-		+ "alt_datum_cd, huc_cd, agency_use_cd, basin_cd, site_tp_cd, topo_cd,"
-		+ "data_types_cd, instruments_cd, site_rmks_tx, inventory_dt, drain_area_va,"
-		+ "contrib_drain_area_va, tz_cd, local_time_fg, gw_file_cd, construction_dt,"
-		+ "reliability_cd, aqfr_cd, nat_aqfr_cd, site_use_1_cd, site_use_2_cd,"
-		+ "site_use_3_cd, water_use_1_cd, water_use_2_cd, water_use_3_cd,"
-		+ "nat_water_use_cd, aqfr_type_cd, well_depth_va, hole_depth_va,"
-		+ "depth_src_cd, project_no, site_web_cd, site_cn, site_mn, mcd_cd,"
-		+ "to_char(site_cr,'YYYY-MM-DD HH24:MI') site_crm,to_char(site_md,'YYYY-MM-DD HH24:MI') site_mdm from legacy_location";
 
 	@Autowired
 	private MonitoringLocationDao dao;
@@ -37,15 +27,16 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 			table="legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
 			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void createSparce() {
 		id = String.valueOf(dao.create(buildASparseMonitoringLocation()));
-		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
+		agency = UPDATED_AGENCY_CODE;
+		siteNbr = UPDATED_SITE_NUMBER;
 		createdDate = nowMinutes;
-		createdBy = "site_cnx";
+		createdBy = UPDATED_CREATED_BY;
 		updatedDate = nowMinutes;
-		updatedBy = "site_mnx";
+		updatedBy = UPDATED_MODIFIED_BY;
 	}
 
 	@Test
@@ -54,15 +45,14 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 			table="legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
 			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void createFull() {
 		id = String.valueOf(dao.create(buildAMonitoringLocation()));
-		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
 		createdDate = nowMinutes;
-		createdBy = "site_cnx";
+		createdBy = UPDATED_CREATED_BY;
 		updatedDate = nowMinutes;
-		updatedBy = "site_mnx";
+		updatedBy = UPDATED_MODIFIED_BY;
 	}
 
 	@Test
@@ -71,18 +61,19 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 			table="legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
 			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void updateSparse() {
 		MonitoringLocation ml = buildASparseMonitoringLocation();
 		ml.setId(ONE_MILLION);
 		dao.update(ml);
 		id = String.valueOf(ONE_MILLION);
-		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
-		createdDate = "2017-08-24 09:15";
-		createdBy = "site_cn ";
+		agency = UPDATED_AGENCY_CODE;
+		siteNbr = UPDATED_SITE_NUMBER;
+		createdDate = DEFAULT_CREATED_DATE_M;
+		createdBy = DEFAULT_CREATED_BY;
 		updatedDate = nowMinutes;
-		updatedBy = "site_mnx";
+		updatedBy = UPDATED_MODIFIED_BY;
 	}
 
 	@Test
@@ -91,27 +82,108 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 			table="legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
 			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers={IdModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void updateFull() {
 		MonitoringLocation ml = buildAMonitoringLocation();
 		ml.setId(ONE_MILLION);
 		dao.update(ml);
 		id = String.valueOf(ONE_MILLION);
-		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
-		createdDate = "2017-08-24 09:15";
-		createdBy = "site_cn ";
+		createdDate = DEFAULT_CREATED_DATE_M;
+		createdBy = DEFAULT_CREATED_BY;
 		updatedDate = nowMinutes;
-		updatedBy = "site_mnx";
+		updatedBy = UPDATED_MODIFIED_BY;
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_MINUTE,
+			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void patchSparse() {
+		Map<String, Object> ml = new HashMap<>();
+		ml.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
+		ml.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
+		ml.put(Controller.UPDATED_BY, UPDATED_MODIFIED_BY);
+		dao.patch(ml);
+		id = String.valueOf(ONE_MILLION);
+		createdDate = DEFAULT_CREATED_DATE_M;
+		createdBy = DEFAULT_CREATED_BY;
+		updatedDate = nowMinutes;
+		updatedBy = UPDATED_MODIFIED_BY;
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_MINUTE,
+			value="classpath:/testResult/oneFullPatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void patchFull() {
+		Map<String, Object> ml = buildAFullMonitoringLocationMap();
+		ml.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
+		ml.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
+		dao.patch(ml);
+		id = String.valueOf(ONE_MILLION);
+		String nowMinutes = LocalDateTime.now(ZoneId.of("UTC")).toString().replace("T", " ").substring(0, 16);
+		createdDate = DEFAULT_CREATED_DATE_M;
+		createdBy = DEFAULT_CREATED_BY;
+		updatedDate = nowMinutes;
+		updatedBy = UPDATED_MODIFIED_BY;
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_MINUTE,
+			value="classpath:/testResult/onePatchBlanksResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void patchFullBlanks() {
+		Map<String, Object> ml = buildAFullBlankMonitoringLocationMap();
+		ml.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
+		ml.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
+		dao.patch(ml);
+		id = String.valueOf(ONE_MILLION);
+		createdDate = DEFAULT_CREATED_DATE_M;
+		createdBy = DEFAULT_CREATED_BY;
+		updatedDate = nowMinutes;
+		updatedBy = UPDATED_MODIFIED_BY;
+	}
+
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_MINUTE,
+			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void patchFullNull() {
+		Map<String, Object> ml = buildAFullNullMonitoringLocationMap();
+		ml.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
+		ml.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
+		dao.patch(ml);
+		id = String.valueOf(ONE_MILLION);
+		createdDate = DEFAULT_CREATED_DATE_M;
+		createdBy = DEFAULT_CREATED_BY;
+		updatedDate = nowMinutes;
+		updatedBy = UPDATED_MODIFIED_BY;
 	}
 
 	public static MonitoringLocation buildASparseMonitoringLocation() {
 		MonitoringLocation ml = new MonitoringLocation();
-		ml.setAgencyCode("USGSX");
-		ml.setSiteNumber("123456789012346");
-		ml.setCreatedBy("site_cnx");
+		ml.setAgencyCode(UPDATED_AGENCY_CODE);
+		ml.setSiteNumber(UPDATED_SITE_NUMBER);
+		ml.setCreatedBy(UPDATED_CREATED_BY);
 		ml.setCreated("2017-08-26 07:33:43");
-		ml.setUpdatedBy("site_mnx");
+		ml.setUpdatedBy(UPDATED_MODIFIED_BY);
 		ml.setUpdated("2017-08-27 23:59:59");
 		return ml;
 	}
@@ -171,6 +243,87 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 		ml.setSiteWebReadyCode("j");
 		ml.setMinorCivilDivisionCode("mcd_x");
 		return ml;
+	}
+
+	public static Map<String, Object> buildAFullMonitoringLocationMap() {
+		Map<String, Object> ml = new HashMap<>();
+		ml.put("stationName", "station_nmx");
+		ml.put("stationIx", "STATIONIXX");
+		ml.put("latitude", "lat_va    x");
+		ml.put("longitude", "long_va    x");
+		ml.put("decimalLatitude", "43.38360141");
+		ml.put("decimalLongitude", "-88.97733141");
+		ml.put("coordinateMethodCode", "z");
+		ml.put("coordinateAccuracyCode", "y");
+		ml.put("coordinateDatumCode", "coord_datx");
+		ml.put("districtCode", "dix");
+		ml.put("landNet", "land_net_dx");
+		ml.put("mapName", "map_nx");
+		ml.put("countryCode", "UX");
+		ml.put("stateFipsCode", "56");
+		ml.put("countyCode", "016");
+		ml.put("mapScale", "map_scx");
+		ml.put("altitude", "alt_va x");
+		ml.put("altitudeMethodCode", "x");
+		ml.put("altitudeAccuracyValue", "aax");
+		ml.put("altitudeDatumCode", "alt_datumx");
+		ml.put("hydrologicUnitCode", "07010101010101");
+		ml.put("agencyUseCode", "w");
+		ml.put("basinCode", "ex");
+		ml.put("siteTypeCode", "site_tx");
+		ml.put("topographicCode", "v");
+		ml.put("dataTypesCode", "data_types_cd                x");
+		ml.put("instrumentsCode", "instruments_cd               x");
+		ml.put("remarks", "site_rmks_tv");
+		ml.put("siteEstablishmentDate", "inventox");
+		ml.put("drainageArea", "drain_ax");
+		ml.put("contributingDrainageArea", "contribx");
+		ml.put("timeZoneCode", "tz_cdx");
+		ml.put("daylightSavingsTimeFlag", "u");
+		ml.put("gwFileCode", "gw_file_cd                   x");
+		ml.put("firstConstructionDate", "construx");
+		ml.put("dataReliabilityCode", "t");
+		ml.put("aquiferCode", "aqfr_cdx");
+		ml.put("nationalAquiferCode", "nat_aqfr_x");
+		ml.put("primaryUseOfSite", "s");
+		ml.put("secondaryUseOfSite", "r");
+		ml.put("tertiaryUseOfSiteCode", "q");
+		ml.put("primaryUseOfWaterCode", "p");
+		ml.put("secondaryUseOfWaterCode", "o");
+		ml.put("tertiaryUseOfWaterCode", "m");
+		ml.put("nationalWaterUseCode", "nx");
+		ml.put("aquiferTypeCode", "l");
+		ml.put("wellDepth", "well_dex");
+		ml.put("holeDepth", "hole_dex");
+		ml.put("sourceOfDepthCode", "k");
+		ml.put("projectNumber", "project_no x");
+		ml.put("siteWebReadyCode", "j");
+		ml.put("minorCivilDivisionCode", "mcd_x");
+		ml.put(Controller.UPDATED_BY, UPDATED_MODIFIED_BY);
+		return ml;
+	}
+
+	public static Map<String, Object> buildAFullBlankMonitoringLocationMap() {
+		Map<String, Object> ml = new HashMap<>();
+		for (String key : buildAFullMonitoringLocationMap().keySet()) {
+			ml.put(key, " ");
+		}
+		//These three are nullable, so it would be possible to 
+		ml.put("decimalLatitude", null);
+		ml.put("decimalLongitude", null);
+		ml.put("minorCivilDivisionCode", "");
+		ml.put(Controller.UPDATED_BY, UPDATED_MODIFIED_BY);
+		return ml;
+	}
+
+	public static Map<String, Object> buildAFullNullMonitoringLocationMap() {
+		Map<String, Object> ml = new HashMap<>();
+		for (String key : buildAFullMonitoringLocationMap().keySet()) {
+			ml.put(key, null);
+		}
+		ml.put(Controller.UPDATED_BY, UPDATED_MODIFIED_BY);
+		return ml;
+
 	}
 
 }

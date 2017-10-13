@@ -16,7 +16,7 @@ public class MonitoringLocationDao {
 		this.sqlSession = sqlSession;
 	}
 
-	public List<MonitoringLocation> getByMap(Map<String, String> queryParams) {
+	public List<MonitoringLocation> getByMap(Map<String, Object> queryParams) {
 		return sqlSession.selectList("getByMap", queryParams);
 	}
 
@@ -31,6 +31,10 @@ public class MonitoringLocationDao {
 
 	public void update(MonitoringLocation ml) {
 		sqlSession.update("update", ml);
+	}
+
+	public void patch(Map<String, Object> ml) {
+		sqlSession.update("patch", ml);
 	}
 
 }
