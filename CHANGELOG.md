@@ -1,0 +1,69 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html). (Patch version X.Y.0 is implied if not specified.)
+
+## [Unreleased]
+
+## [0.11] - 2017-10-18
+### Added
+- PATCH (update) a partial Monitoring Location. Also referred to a a "merge".
+
+## [0.10] - 2017-10-05
+### Changed
+- No Changes - Testing Release process.
+
+## [0.9] - 2017-10-05
+### Changed
+- No Changes - Testing Release process.
+
+## [0.8] - 2017-10-02
+### Changed
+- Dockerfile changed to reflect new way of interacting with Maven Repository.
+- Related README updates.
+
+## [0.7] - 2017-09-29
+### Changed
+- Separate Release and Snapshot Maven Repositories
+
+## [0.6] - 2017-09-28
+### Changed
+- No Changes - Testing Release process.
+
+## [0.5] - 2017-09-28
+### Changed
+- No Changes - Testing Release process.
+
+## [0.4] - 2017-09-28
+### Changed
+- No Changes - Testing Release process.
+
+## [0.3] - 2017-09-28
+### Changed
+- No Changes - Testing Release process.
+
+## [0.2] - 2017-09-28
+### Changed
+- No Changes - Testing Release process.
+
+## 0.1 - 2017-09-28
+### Added
+- GET a list of all Monitoring Locations, optionally filtered by Agency Code and/or Site Number.
+- GET a Monitoring Location by it's URI.
+- POST (create) a new Monitoring Location.
+- PUT (update) an existing Monitoring Location.
+- Swagger Documentation.
+- Spring Boot Actuator Monitoring.
+
+[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/master...mlrLegacy-0.11
+[0.11]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.10...mlrLegacy-0.11
+[0.10]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.9...mlrLegacy-0.10
+[0.9]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.8...mlrLegacy-0.9
+[0.8]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.7...mlrLegacy-0.8
+[0.7]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.6...mlrLegacy-0.7
+[0.6]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.5...mlrLegacy-0.6
+[0.5]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.4...mlrLegacy-0.5
+[0.4]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.3...mlrLegacy-0.4
+[0.3]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.2...mlrLegacy-0.3
+[0.2]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.1...mlrLegacy-0.2
