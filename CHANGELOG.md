@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.11] - 2017-10-18
 ### Added
-- PATCH (update) a partial Monitoring Location. Also referred to a a "merge".
+- PATCH (update) a partial Monitoring Location. Also referred to as a "merge".
 
 ## [0.10] - 2017-10-05
 ### Changed
