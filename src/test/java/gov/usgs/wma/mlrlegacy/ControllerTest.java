@@ -33,6 +33,8 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import gov.usgs.wma.mlrlegacy.db.BaseIT;
 import springfox.documentation.spi.service.contexts.SecurityContext;
@@ -58,26 +60,26 @@ public class ControllerTest {
 	public void givenReturnData_whenGetByMap_thenReturnList() throws Exception {
 		List<MonitoringLocation> mlList = new ArrayList<>();
 		MonitoringLocation mlOne = new MonitoringLocation();
-		MonitoringLocation mlTwo = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ONE);
 		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		mlOne.setSiteNumber("987654321");
-		mlTwo.setId(BigInteger.TEN);
-		mlTwo.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
-		mlTwo.setSiteNumber("11112222");
 
 		mlList.add(mlOne);
-		mlList.add(mlTwo);
 		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
+		params.put(Controller.SITE_NUMBER, "987654321");
 
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<String, String>();
+		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
+		cruParams.set(Controller.SITE_NUMBER, "987654321");
+		
 		given(dao.getByMap(params)).willReturn(mlList);
 
-		mvc.perform(get("/monitoringLocations"))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.length()", is(equalTo(2))))
-				.andExpect(jsonPath("$[0].id", is(equalTo(1))))
-				.andExpect(jsonPath("$[1].id", is(equalTo(10))));
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.length()", is(equalTo(1))))
+			.andExpect(jsonPath("$[0].id", is(equalTo(1))));
 	}
 
 	@Test
@@ -93,10 +95,15 @@ public class ControllerTest {
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
+		params.put(Controller.SITE_NUMBER, BaseIT.NULL_SITE_NUMBER);
+		
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<String, String>();
+		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
+		cruParams.set(Controller.SITE_NUMBER, BaseIT.NULL_SITE_NUMBER);
 
 		given(dao.getByMap(params)).willReturn(mlList);
 
-		mvc.perform(get("/monitoringLocations").param(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE))
+		mvc.perform(get("/monitoringLocations").params(cruParams))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.length()", is(equalTo(1))))
 				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
@@ -115,10 +122,15 @@ public class ControllerTest {
 
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.SITE_NUMBER, "987654321");
+		params.put(Controller.AGENCY_CODE, BaseIT.NULL_AGENCY_CODE);
+		
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<String, String>();
+		cruParams.set(Controller.AGENCY_CODE, BaseIT.NULL_AGENCY_CODE);
+		cruParams.set(Controller.SITE_NUMBER, "987654321");
 
 		given(dao.getByMap(params)).willReturn(mlList);
 
-		mvc.perform(get("/monitoringLocations").param(Controller.SITE_NUMBER, "987654321"))
+		mvc.perform(get("/monitoringLocations").params(cruParams))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.length()", is(equalTo(1))))
 				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
