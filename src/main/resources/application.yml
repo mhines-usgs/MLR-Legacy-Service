@@ -1,3 +1,5 @@
+server:
+  port: 8080
 
 mybatis:
   type-aliases-package: gov.usgs.wma.mlrlegacy
@@ -14,3 +16,12 @@ spring:
     username: ${mlrLegacyDataUsername}
     password: ${mlrLegacyDataPassword}
     driver-class-name: org.postgresql.Driver
+
+security:
+  basic:
+    enabled: false
+  oauth2:
+    resource:
+      filter-order: 3
+      jwt:
+        keyUri: ${authPublicKeyUrl}

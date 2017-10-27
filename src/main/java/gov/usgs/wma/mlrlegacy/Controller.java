@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,6 +36,7 @@ public class Controller {
 	public static final String SITE_NUMBER = "siteNumber";
 	public static final String UPDATED_BY = "updatedBy";
 
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping()
 	public List<MonitoringLocation> getMonitoringLocations(
 		@RequestParam(name = AGENCY_CODE, required = false) String agencyCode,

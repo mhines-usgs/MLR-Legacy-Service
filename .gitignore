@@ -27,3 +27,4 @@ hs_err_pid*
 /application.yml
 /.env
 /mlrLegacyServiceDev.env
+/.CHANGELOG.md.html

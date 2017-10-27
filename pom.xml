@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>gov.usgs.wma</groupId>
     <artifactId>mlrLegacy</artifactId>
-    <version>0.12-SNAPSHOT</version>
+    <version>0.14-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -13,6 +13,8 @@
         <additionalparam>-Xdoclint:none</additionalparam>
         <springfox.version>2.7.0</springfox.version>
         <wma.artifactory.url>https://cida.usgs.gov/artifactory</wma.artifactory.url>
+        <spring-cloud.version>Dalston.SR3</spring-cloud.version>
+        <commons-io.version>2.4</commons-io.version>
     </properties>
 
     <distributionManagement>
@@ -31,7 +33,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.5.7.RELEASE</version>
+        <version>1.5.8.RELEASE</version>
     </parent>
 
     <dependencies>
@@ -49,6 +51,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
         </dependency>
 
         <dependency>
