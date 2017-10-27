@@ -70,7 +70,7 @@ public class ControllerTest {
 		params.put(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
 		params.put(Controller.SITE_NUMBER, "987654321");
 
-		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<String, String>();
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
 		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
 		cruParams.set(Controller.SITE_NUMBER, "987654321");
 		
@@ -80,60 +80,6 @@ public class ControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.length()", is(equalTo(1))))
 			.andExpect(jsonPath("$[0].id", is(equalTo(1))));
-	}
-
-	@Test
-	public void givenReturnData_whenGetByAgencyCode_theReturnList() throws Exception {
-		List<MonitoringLocation> mlList = new ArrayList<>();
-		MonitoringLocation mlOne = new MonitoringLocation();
-
-		mlOne.setId(BigInteger.ONE);
-		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
-		mlOne.setSiteNumber("987654321");
-
-		mlList.add(mlOne);
-
-		Map<String, Object> params = new HashMap<>();
-		params.put(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
-		params.put(Controller.SITE_NUMBER, BaseIT.NULL_SITE_NUMBER);
-		
-		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<String, String>();
-		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
-		cruParams.set(Controller.SITE_NUMBER, BaseIT.NULL_SITE_NUMBER);
-
-		given(dao.getByMap(params)).willReturn(mlList);
-
-		mvc.perform(get("/monitoringLocations").params(cruParams))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.length()", is(equalTo(1))))
-				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
-	}
-
-	@Test
-	public void givenReturnData_whenGetBySiteNumber_theReturnList() throws Exception {
-		List<MonitoringLocation> mlList = new ArrayList<>();
-		MonitoringLocation mlOne = new MonitoringLocation();
-
-		mlOne.setId(BigInteger.ONE);
-		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
-		mlOne.setSiteNumber("987654321");
-
-		mlList.add(mlOne);
-
-		Map<String, Object> params = new HashMap<>();
-		params.put(Controller.SITE_NUMBER, "987654321");
-		params.put(Controller.AGENCY_CODE, BaseIT.NULL_AGENCY_CODE);
-		
-		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<String, String>();
-		cruParams.set(Controller.AGENCY_CODE, BaseIT.NULL_AGENCY_CODE);
-		cruParams.set(Controller.SITE_NUMBER, "987654321");
-
-		given(dao.getByMap(params)).willReturn(mlList);
-
-		mvc.perform(get("/monitoringLocations").params(cruParams))
-				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.length()", is(equalTo(1))))
-				.andExpect(jsonPath("$[0].id", is(equalTo(1))));
 	}
 
 	@Test

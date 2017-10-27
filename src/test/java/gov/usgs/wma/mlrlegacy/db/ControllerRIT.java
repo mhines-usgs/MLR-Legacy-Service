@@ -15,11 +15,10 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 public class ControllerRIT extends BaseControllerIT {
 
 	@Test
-	public void getMonitoringLocationsFound() throws Exception {
+	public void getMonitoringLocationsNoAgencyCodeNoSiteNumberInvalidRequest() throws Exception {
 		ResponseEntity<String> responseEntity = restTemplate.getForEntity("/monitoringLocations", String.class);
 
 		assertEquals(400, responseEntity.getStatusCodeValue());
-		//JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 	
 
