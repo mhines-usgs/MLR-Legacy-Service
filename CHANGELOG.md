@@ -5,6 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html). (Patch version X.Y.0 is implied if not specified.)
 
 ## [Unreleased]
+### Changed
+- Agency Code and Site Number are now required for the GET /monitoringLocations endpoint.
+
+## [0.13] - 2017-10-23
+### Added
+- No Changes - Testing Release process.
+
+## [0.12] - 2017-10-23
+### Added
+- No Changes - Testing Release process.
 
 ## [0.11] - 2017-10-18
 ### Added
@@ -56,7 +66,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Swagger Documentation.
 - Spring Boot Actuator Monitoring.
 
-[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/master...mlrLegacy-0.11
+[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/master...mlrLegacy-0.13
+[0.13]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.12...mlrLegacy-0.13
+[0.12]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.11...mlrLegacy-0.12
 [0.11]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.10...mlrLegacy-0.11
 [0.10]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.9...mlrLegacy-0.10
 [0.9]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.8...mlrLegacy-0.9
