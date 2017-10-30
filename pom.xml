@@ -13,8 +13,6 @@
         <additionalparam>-Xdoclint:none</additionalparam>
         <springfox.version>2.7.0</springfox.version>
         <wma.artifactory.url>https://cida.usgs.gov/artifactory</wma.artifactory.url>
-        <spring-cloud.version>Dalston.SR3</spring-cloud.version>
-        <commons-io.version>2.4</commons-io.version>
     </properties>
 
     <distributionManagement>
@@ -190,7 +188,7 @@
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
-                                    <name>mlrlegacydb:0.1.0</name>
+                                    <name>mlrlegacydb:master-SNAPSHOT</name>
                                     <alias>it-database</alias>
                                     <run>
                                         <env>
