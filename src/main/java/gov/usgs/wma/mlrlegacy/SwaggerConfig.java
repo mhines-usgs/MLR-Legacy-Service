@@ -10,6 +10,7 @@ import com.google.common.base.Predicates;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -22,8 +23,10 @@ public class SwaggerConfig {
 	@Bean
 	public Docket gatewayApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
+				.tags(new Tag("Legacy Monitoring Locations", "Create, Read, and Update Legacy Monitoring Locations"))
+				.useDefaultResponseMessages(false)
 				.select() 
-				.paths(Predicates.or(PathSelectors.ant("/monitoringLocations/**"), PathSelectors.ant("/info/**"), PathSelectors.ant("/health/**")))
+					.paths(Predicates.or(PathSelectors.ant("/monitoringLocations/**"), PathSelectors.ant("/info/**"), PathSelectors.ant("/health/**")))
 				.build()
 				.securitySchemes(Collections.singletonList(apiKey()))
 		;

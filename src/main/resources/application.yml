@@ -25,3 +25,9 @@ security:
       filter-order: 3
       jwt:
         keyUri: ${authPublicKeyUrl}
+  maintenanceRoles: ${maintenanceRoles}
+
+logging:
+  level:
+    org:
+      springframework: ${springFrameworkLogLevel}

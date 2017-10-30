@@ -9,6 +9,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
@@ -158,6 +159,7 @@ public class ControllerCUIT extends BaseControllerIT {
 			value="classpath:/testResult/oneFullPatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
+	@WithMockUser(username="Known", roles="WIWSC_DBA")
 	public void patchFullMonitoringLocation() throws Exception {
 		id = String.valueOf(ONE_MILLION);
 		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("fullMonitoringLocation.json"), getHeaders());
