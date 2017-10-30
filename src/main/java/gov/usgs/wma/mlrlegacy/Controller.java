@@ -39,8 +39,8 @@ public class Controller {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping()
 	public List<MonitoringLocation> getMonitoringLocations(
-		@RequestParam(name = AGENCY_CODE, required = false) String agencyCode,
-		@RequestParam(name = SITE_NUMBER, required = false) String siteNumber) {
+		@RequestParam(name = AGENCY_CODE) String agencyCode,
+		@RequestParam(name = SITE_NUMBER) String siteNumber) {
 		Map<String, Object> params = new HashMap<>();
 		if (null != agencyCode) {
 			params.put(AGENCY_CODE, agencyCode);
