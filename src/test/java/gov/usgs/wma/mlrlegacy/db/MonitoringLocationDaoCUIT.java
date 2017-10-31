@@ -221,9 +221,9 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 		ml.setSiteEstablishmentDate("inventox");
 		ml.setDrainageArea("drain_ax");
 		ml.setContributingDrainageArea("contribx");
-		ml.setTimeZoneCode("tz_cdx");
+		ml.setTimeZoneCode("tz_cx");
 		ml.setDaylightSavingsTimeFlag("u");
-		ml.setGwFileCode("gw_file_cd                   x");
+		ml.setGwFileCode("gw_file_cd         x");
 		ml.setFirstConstructionDate("construx");
 		ml.setDataReliabilityCode("t");
 		ml.setAquiferCode("aqfr_cdx");
@@ -278,9 +278,9 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 		ml.put("siteEstablishmentDate", "inventox");
 		ml.put("drainageArea", "drain_ax");
 		ml.put("contributingDrainageArea", "contribx");
-		ml.put("timeZoneCode", "tz_cdx");
+		ml.put("timeZoneCode", "tz_cx");
 		ml.put("daylightSavingsTimeFlag", "u");
-		ml.put("gwFileCode", "gw_file_cd                   x");
+		ml.put("gwFileCode", "gw_file_cd         x");
 		ml.put("firstConstructionDate", "construx");
 		ml.put("dataReliabilityCode", "t");
 		ml.put("aquiferCode", "aqfr_cdx");

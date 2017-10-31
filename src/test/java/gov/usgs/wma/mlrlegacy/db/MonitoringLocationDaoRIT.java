@@ -107,9 +107,9 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		assertEquals("inventor", location.getSiteEstablishmentDate());
 		assertEquals("drain_ar", location.getDrainageArea());
 		assertEquals("contrib_", location.getContributingDrainageArea());
-		assertEquals("tz_cd ", location.getTimeZoneCode());
+		assertEquals("tz_cd", location.getTimeZoneCode());
 		assertEquals("g", location.getDaylightSavingsTimeFlag());
-		assertEquals("gw_file_cd                    ", location.getGwFileCode());
+		assertEquals("gw_file_cd          ", location.getGwFileCode());
 		assertEquals("construc", location.getFirstConstructionDate());
 		assertEquals("h", location.getDataReliabilityCode());
 		assertEquals("aqfr_cd ", location.getAquiferCode());
