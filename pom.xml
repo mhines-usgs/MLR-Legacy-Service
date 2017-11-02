@@ -188,7 +188,7 @@
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
-                                    <name>mlrlegacydb:master-SNAPSHOT</name>
+                                    <name>mlrlegacydb:0.2.0</name>
                                     <alias>it-database</alias>
                                     <run>
                                         <env>
