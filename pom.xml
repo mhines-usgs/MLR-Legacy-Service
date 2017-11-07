@@ -198,7 +198,7 @@
                                             <port>it-database.port:5432</port>
                                         </ports>
                                         <wait>
-<!--                                             <log>(?s)Setup Complete.*autovacuum launcher started</log> -->
+                                            <!--                                             <log>(?s)Setup Complete.*autovacuum launcher started</log> -->
                                             <time>20000</time>
                                         </wait>
                                     </run>
@@ -220,9 +220,9 @@
     </build>
 
     <scm>
-		<connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
-		<developerConnection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
-		<url>https://github.com/USGS-CIDA/MLR-Legacy-Service</url>
-		<tag>HEAD</tag>
-	</scm>
+        <connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
+        <developerConnection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
+        <url>https://github.com/USGS-CIDA/MLR-Legacy-Service</url>
+        <tag>HEAD</tag>
+    </scm>
 </project>
