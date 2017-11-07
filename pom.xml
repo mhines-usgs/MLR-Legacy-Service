@@ -198,7 +198,7 @@
                                             <port>it-database.port:5432</port>
                                         </ports>
                                         <wait>
-                                            <!--                                             <log>(?s)Setup Complete.*autovacuum launcher started</log> -->
+                                            <!-- <log>(?s)Setup Complete.*autovacuum launcher started</log> -->
                                             <time>20000</time>
                                         </wait>
                                     </run>
