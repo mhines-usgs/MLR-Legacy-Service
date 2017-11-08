@@ -18,7 +18,12 @@ import gov.usgs.wma.mlrlegacy.OAuth2ResourceServerConfig;
 		classes={DBTestConfig.class, Application.class,
 				OAuth2ResourceServerConfig.class,
 				MethodSecurityConfig.class},
-		webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT
+		webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT,
+		properties={"maintenanceRoles=ROLE_DBA_55",
+				"security.oauth2.resource.jwt.keyValue=secret",
+				"authPublicKeyUrl=",
+				"security.require-ssl=false",
+				"server.ssl.enabled=false"}
 	)
 public abstract class BaseControllerIT extends BaseIT {
 
