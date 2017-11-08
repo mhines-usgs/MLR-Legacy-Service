@@ -62,13 +62,13 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.3.0</version>
+            <version>1.3.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
-            <version>3.4.4</version>
+            <version>3.4.5</version>
         </dependency>
 
         <dependency>
@@ -93,6 +93,11 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
 
         <!-- Testing -->
 
@@ -111,7 +116,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter-test</artifactId>
-            <version>1.3.0</version>
+            <version>1.3.1</version>
             <scope>test</scope>
         </dependency>
 
@@ -175,7 +180,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.21.0</version>
+                <version>0.22.1</version>
                 <executions>
                     <execution>
                         <id>prepare-it-database</id>
@@ -201,7 +206,7 @@
                                             <port>it-database.port:5432</port>
                                         </ports>
                                         <wait>
-<!--                                             <log>(?s)Setup Complete.*autovacuum launcher started</log> -->
+                                            <!-- <log>(?s)Setup Complete.*autovacuum launcher started</log> -->
                                             <time>20000</time>
                                         </wait>
                                     </run>
@@ -223,9 +228,9 @@
     </build>
 
     <scm>
-		<connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
-		<developerConnection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
-		<url>https://github.com/USGS-CIDA/MLR-Legacy-Service</url>
-		<tag>HEAD</tag>
-	</scm>
+        <connection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</connection>
+        <developerConnection>scm:git:https://github.com/USGS-CIDA/MLR-Legacy-Service.git</developerConnection>
+        <url>https://github.com/USGS-CIDA/MLR-Legacy-Service</url>
+        <tag>HEAD</tag>
+    </scm>
 </project>
