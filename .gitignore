@@ -28,3 +28,4 @@ hs_err_pid*
 /.env
 /mlrLegacyServiceDev.env
 /.CHANGELOG.md.html
+**.jks

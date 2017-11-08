@@ -1,25 +1,23 @@
 package gov.usgs.wma.mlrlegacy.db;
 
-import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.TokenRequest;
-import org.springframework.security.oauth2.provider.client.BaseClientDetails;
-import org.springframework.security.oauth2.provider.token.TokenStore;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 
 import gov.usgs.wma.mlrlegacy.Application;
 import gov.usgs.wma.mlrlegacy.MethodSecurityConfig;
 import gov.usgs.wma.mlrlegacy.OAuth2ResourceServerConfig;
 
 @SpringBootTest(
-		classes={DBTestConfig.class, Application.class, OAuth2ResourceServerConfig.class, MethodSecurityConfig.class},
+		classes={DBTestConfig.class, Application.class,
+				OAuth2ResourceServerConfig.class,
+				MethodSecurityConfig.class},
 		webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT
 	)
 public abstract class BaseControllerIT extends BaseIT {
@@ -27,23 +25,41 @@ public abstract class BaseControllerIT extends BaseIT {
 	@Autowired
 	protected TestRestTemplate restTemplate;
 
-	@Autowired
-	protected TokenStore tokenStore;
+	@Value("${security.oauth2.resource.jwt.keyValue}")
+	private String secret;
 
-	@Before
-	public void setUp() {
-		final OAuth2AccessToken token = new DefaultOAuth2AccessToken("FOO");
-		final ClientDetails client = new BaseClientDetails("client", null, "read", "client_credentials", "ROLE_CLIENT");
-		final OAuth2Authentication authentication = new OAuth2Authentication(
-				new TokenRequest(null, "client", null, "client_credentials").createOAuth2Request(client), null);
+	public static String createToken(String username, String email, String ... roles) throws Exception {
+		String jwt = JWT.create()
+				.withClaim("user_name", username)
+				.withArrayClaim("authorities", roles)
+				.withClaim("email", email)
+				.sign(Algorithm.HMAC256("secret"))
+				;
+		return jwt;
+	}
 
-		tokenStore.storeAccessToken(token, authentication);
+	public static HttpHeaders getAuthorizedHeaders() {
+		return getHeaders(KNOWN_USER, "known@usgs.gov", "ROLE_DBA_55");
+	}
+
+	public static HttpHeaders getUnuthorizedHeaders() {
+		return getHeaders(KNOWN_USER, "known@usgs.gov", "ROLE_UNKNOWN");
 	}
 
 	public static HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.add(HttpHeaders.AUTHORIZATION, "Bearer FOO");
+		return headers;
+	}
+
+	public static HttpHeaders getHeaders(String username, String email, String ... roles) {
+		HttpHeaders headers = getHeaders();
+		try {
+			headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + createToken(username, email, roles));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return headers;
 	}
 

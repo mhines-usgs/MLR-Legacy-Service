@@ -26,8 +26,6 @@ import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.github.springtestdbunit.dataset.ReplacementDataSetModifier;
 import com.jayway.jsonpath.JsonPath;
 
-import gov.usgs.wma.mlrlegacy.Controller;
-
 @RunWith(SpringRunner.class)
 @ActiveProfiles("it")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
@@ -40,6 +38,7 @@ import gov.usgs.wma.mlrlegacy.Controller;
 @Transactional(propagation=Propagation.NOT_SUPPORTED)
 public abstract class BaseIT {
 
+	public static final String KNOWN_USER = "knownusr";
 	public static final BigInteger ONE_MILLION = BigInteger.valueOf(1000000);
 	public static final String DEFAULT_AGENCY_CODE = "USGS ";
 	public static final String DEFAULT_SITE_NUMBER = "123456789012345";
@@ -125,19 +124,19 @@ public abstract class BaseIT {
 		return getExpectedJson(file);
 	}
 
-	public String getExpectedCreateJson(String response, String file) throws IOException {
+	public String getExpectedCreateJson(String response, String file, String username) throws IOException {
 		createdDate = JsonPath.read(response, "$.created").toString();
-		createdBy = Controller.UNKNOWN_USERNAME;
+		createdBy = username;
 		updatedDate = JsonPath.read(response, "$.updated").toString();
-		updatedBy = Controller.UNKNOWN_USERNAME;
+		updatedBy = username;
 		return getExpectedJson(file);
 	}
 
-	public String getExpectedUpdateJson(String response, String file) throws IOException {
+	public String getExpectedUpdateJson(String response, String file, String username) throws IOException {
 		createdDate = DEFAULT_CREATED_DATE_S;
 		createdBy = DEFAULT_CREATED_BY;
 		updatedDate = JsonPath.read(response, "$.updated").toString();
-		updatedBy = Controller.UNKNOWN_USERNAME;
+		updatedBy = username;
 		return getExpectedJson(file);
 	}
 

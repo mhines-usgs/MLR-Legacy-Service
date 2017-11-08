@@ -93,7 +93,6 @@ public class Controller {
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PatchMapping()
 	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml, HttpServletResponse response) {
-
 		ml.put(UPDATED_BY, getUsername());
 		mLDao.patch(ml);
 		List<MonitoringLocation> lst = mLDao.getByMap(ml);
