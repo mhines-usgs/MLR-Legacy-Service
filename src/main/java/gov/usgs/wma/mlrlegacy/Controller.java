@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.annotations.Api;
+
+@Api(tags={"Legacy Monitoring Locations"})
 @RestController
 @RequestMapping("/monitoringLocations")
 public class Controller {
@@ -58,6 +62,7 @@ public class Controller {
 		return ml;
 	}
 
+	@PreAuthorize("hasPermission(#ml, null)")
 	@PostMapping()
 	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) {
 		ml.setCreatedBy(getUsername());
@@ -68,6 +73,7 @@ public class Controller {
 		return mLDao.getById(newId);
 	}
 
+	@PreAuthorize("hasPermission(#ml, null)")
 	@PutMapping("/{id}")
 	public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml,
 			HttpServletResponse response) {
@@ -84,10 +90,9 @@ public class Controller {
 		return mLDao.getById(idInt);
 	}
 
+	@PreAuthorize("hasPermission(#ml, null)")
 	@PatchMapping()
-	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml,
-			HttpServletResponse response) {
-
+	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml, HttpServletResponse response) {
 		ml.put(UPDATED_BY, getUsername());
 		mLDao.patch(ml);
 		List<MonitoringLocation> lst = mLDao.getByMap(ml);

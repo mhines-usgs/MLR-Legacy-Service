@@ -1,16 +1,24 @@
 # MLR-Legacy-Service
 Monitoring Location Legacy CRU Service
 
-## Database Configuration
+## Local Configuration
 You will need a postgreSQL database to run this application. A Dockerized version is available at https://github.com/USGS-CIDA/MLR_Legacy_DB.
-The connection configuration is located in src/main/results/application.yml. You will need to create an application.yml file in your local project's root directory to provide the variable values. It should contain:
+The configuration is located in src/main/results/application.yml. You will need to create an application.yml file in your local project's root directory to provide the variable values. It should contain:
 
 ```
 mlrLegacyDbHost: localhost
 mlrLegacyDbPort: 5435
 mlrLegacyDataUsername: mlr_legacy_data
 mlrLegacyDataPassword: changeMe
-mlrLegacyServicePassword: changeMe
+
+authPublicKeyUrl: https://your.auth.server.url/oauth/token_key
+
+springFrameworkLogLevel: info
+
+maintenanceRoles: ROLE\_ONE, ROLE\_TWO
+
+keystoreLocation: classpath:yourKeystore.jks
+keystorePassword: changeMe
 ```
 
 ## Automated Testing

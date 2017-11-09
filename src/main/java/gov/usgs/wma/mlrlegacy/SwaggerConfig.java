@@ -1,5 +1,7 @@
 package gov.usgs.wma.mlrlegacy;
 
+import java.util.Collections;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -7,6 +9,8 @@ import org.springframework.context.annotation.Profile;
 import com.google.common.base.Predicates;
 
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.Tag;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -19,9 +23,17 @@ public class SwaggerConfig {
 	@Bean
 	public Docket gatewayApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
+				.tags(new Tag("Legacy Monitoring Locations", "Create, Read, and Update Legacy Monitoring Locations"))
+				.useDefaultResponseMessages(false)
 				.select() 
-				.paths(Predicates.or(PathSelectors.ant("/monitoringLocations/**"), PathSelectors.ant("/info/**"), PathSelectors.ant("/health/**")))
-				.build();
+					.paths(Predicates.or(PathSelectors.ant("/monitoringLocations/**"), PathSelectors.ant("/info/**"), PathSelectors.ant("/health/**")))
+				.build()
+				.securitySchemes(Collections.singletonList(apiKey()))
+		;
+	}
+
+	private ApiKey apiKey() {
+		return new ApiKey("mykey", "Authorization", "header");
 	}
 
 }

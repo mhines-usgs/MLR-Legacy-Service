@@ -15,18 +15,26 @@ spring:
     password: ${mlrLegacyDataPassword}
     driver-class-name: org.postgresql.Driver
 
-mlrLegacyServicePassword: changeMe
-
 security:
+  require-ssl: true
   basic:
     enabled: false
-  require-ssl: true
+  oauth2:
+    resource:
+      filter-order: 3
+      jwt:
+        keyUri: ${authPublicKeyUrl}
+  maintenanceRoles: ${maintenanceRoles}
 
 server:
-    port: ${serverPort:8443}
-    ssl:
-        key-store: ${keystoreLocation}
-        key-store-password: ${keystorePassword}
-        key-password: ${keystorePassword}
-        key-alias: ${keystoreSSLKey:tomcat}
+  port: ${serverPort:8443}
+  ssl:
+    key-store: ${keystoreLocation}
+    key-store-password: ${keystorePassword}
+    key-password: ${keystorePassword}
+    key-alias: ${keystoreSSLKey:tomcat}
 
+logging:
+  level:
+    org:
+      springframework: ${springFrameworkLogLevel}
