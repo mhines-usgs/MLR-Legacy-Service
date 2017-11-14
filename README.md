@@ -15,7 +15,7 @@ authPublicKeyUrl: https://your.auth.server.url/oauth/token_key
 
 springFrameworkLogLevel: info
 
-maintenanceRoles: ROLE\_ONE, ROLE\_TWO
+maintenanceRoles: ROLE_ONE, ROLE_TWO
 
 keystoreLocation: classpath:yourKeystore.jks
 keystorePassword: changeMe
