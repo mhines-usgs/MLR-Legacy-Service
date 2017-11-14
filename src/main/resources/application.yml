@@ -37,5 +37,6 @@ server:
 
 logging:
   level:
+    root: ${springFrameworkLogLevel}
     org:
       springframework: ${springFrameworkLogLevel}
