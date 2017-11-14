@@ -74,7 +74,7 @@ public class ControllerCUIT extends BaseControllerIT {
 
 	@Test
 	public void createUnauthorized() throws Exception {
-		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getUnuthorizedHeaders());
+		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getUnauthorizedHeaders());
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/monitoringLocations", entity, String.class);
 		assertEquals(403, responseEntity.getStatusCodeValue());
 	}
@@ -154,7 +154,7 @@ public class ControllerCUIT extends BaseControllerIT {
 
 	@Test
 	public void updateUnauthorized() throws Exception {
-		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getUnuthorizedHeaders());
+		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getUnauthorizedHeaders());
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations/" + id, HttpMethod.PUT, entity, String.class);
 		assertEquals(403, responseEntity.getStatusCodeValue());
 	}
@@ -274,7 +274,7 @@ public class ControllerCUIT extends BaseControllerIT {
 
 	@Test
 	public void patchUnauthorized() throws Exception {
-		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getUnuthorizedHeaders());
+		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getUnauthorizedHeaders());
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?_method=patch", HttpMethod.POST, entity, String.class);
 		assertEquals(403, responseEntity.getStatusCodeValue());
 	}
