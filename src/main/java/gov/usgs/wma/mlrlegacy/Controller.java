@@ -71,7 +71,6 @@ public class Controller {
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PostMapping()
 	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
-		Set<ConstraintViolation<MonitoringLocation>> val_result = validator.validate(ml);
 		if (validator.validate(ml).isEmpty()) {
 		
 			ml.setCreatedBy(getUsername());
@@ -91,7 +90,6 @@ public class Controller {
 	public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml,
 			HttpServletResponse response) throws IOException {
 		BigInteger idInt = NumberUtils.parseNumber(id, BigInteger.class);
-		Set<ConstraintViolation<MonitoringLocation>> val_result = validator.validate(ml);
 		if (validator.validate(ml).isEmpty()) {
 			if (null == mLDao.getById(idInt)) {
 				response.setStatus(HttpStatus.NOT_FOUND.value());
