@@ -22,7 +22,7 @@ security:
   oauth2:
     resource:
       filter-order: 3
-      id: ${oauthResourceId}
+      id: ${oauthResourceId:oauth2-resource}
       jwt:
         keyUri: ${authPublicKeyUrl}
   maintenanceRoles: ${maintenanceRoles}
