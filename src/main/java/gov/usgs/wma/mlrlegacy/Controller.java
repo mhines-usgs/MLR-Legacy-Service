@@ -109,8 +109,8 @@ public class Controller {
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PatchMapping()
 	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml, HttpServletResponse response) throws IOException {
-		if (validator.validate(ml).isEmpty()) {
-			ml.put(UPDATED_BY, getUsername());
+		ml.put(UPDATED_BY, getUsername());
+		if (validator.validate(ml).isEmpty()) {	
 			mLDao.patch(ml);
 			List<MonitoringLocation> lst = mLDao.getByMap(ml);
 			if (lst.isEmpty()) {
