@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Global exception handler for Http requests
 - Security - User must be authenticated to access any service. User must also be authorized to PATCH, POST, or PUT.
+- Validation - Implements additional validations on allowable field lengths, data type and duplicate keys.
 
 ## [0.14.0] - 2017-11-2
 ### Changed
