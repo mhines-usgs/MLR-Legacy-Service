@@ -12,6 +12,7 @@ mlrLegacyDataUsername: mlr_legacy_data
 mlrLegacyDataPassword: changeMe
 
 authPublicKeyUrl: https://your.auth.server.url/oauth/token_key
+oauthResourceId: myResourceId
 
 springFrameworkLogLevel: info
 
