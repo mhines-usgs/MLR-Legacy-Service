@@ -22,6 +22,7 @@ security:
   oauth2:
     resource:
       filter-order: 3
+      id: ${oauthResourceId:oauth2-resource}
       jwt:
         keyUri: ${authPublicKeyUrl}
   maintenanceRoles: ${maintenanceRoles}
@@ -36,5 +37,6 @@ server:
 
 logging:
   level:
+    root: ${rootLogLevel:info}
     org:
       springframework: ${springFrameworkLogLevel}

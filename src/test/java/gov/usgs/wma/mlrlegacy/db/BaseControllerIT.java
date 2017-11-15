@@ -47,7 +47,7 @@ public abstract class BaseControllerIT extends BaseIT {
 		return getHeaders(KNOWN_USER, "known@usgs.gov", "ROLE_DBA_55");
 	}
 
-	public static HttpHeaders getUnuthorizedHeaders() {
+	public static HttpHeaders getUnauthorizedHeaders() {
 		return getHeaders(KNOWN_USER, "known@usgs.gov", "ROLE_UNKNOWN");
 	}
 

@@ -12,10 +12,11 @@ mlrLegacyDataUsername: mlr_legacy_data
 mlrLegacyDataPassword: changeMe
 
 authPublicKeyUrl: https://your.auth.server.url/oauth/token_key
+oauthResourceId: myResourceId
 
 springFrameworkLogLevel: info
 
-maintenanceRoles: ROLE\_ONE, ROLE\_TWO
+maintenanceRoles: ROLE_ONE, ROLE_TWO
 
 keystoreLocation: classpath:yourKeystore.jks
 keystorePassword: changeMe
