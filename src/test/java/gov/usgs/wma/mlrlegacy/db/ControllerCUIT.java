@@ -52,6 +52,9 @@ public class ControllerCUIT extends BaseControllerIT {
 	public void createFullMonitoringLocation() throws Exception {
 		agency = UPDATED_AGENCY_CODE;
 		siteNbr = UPDATED_SITE_NUMBER;
+		createdBy = DEFAULT_CREATED_BY;
+		updatedBy = DEFAULT_UPDATED_BY;
+		
 		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("fullMonitoringLocation.json"), getAuthorizedHeaders());
 
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/monitoringLocations", entity, String.class);
@@ -115,6 +118,8 @@ public class ControllerCUIT extends BaseControllerIT {
 		id = String.valueOf(ONE_MILLION);
 		agency = UPDATED_AGENCY_CODE;
 		siteNbr = UPDATED_SITE_NUMBER;
+		createdBy = UPDATED_CREATED_BY;
+		updatedBy = UPDATED_MODIFIED_BY;
 		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("fullMonitoringLocation.json"), getAuthorizedHeaders());
 
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations/" + id, HttpMethod.PUT, entity, String.class);
@@ -133,10 +138,12 @@ public class ControllerCUIT extends BaseControllerIT {
 			table="legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
-			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			modifiers={KeyModifier.class,CreatedModifier.class, UpdatedModifier.class}
 			)
 	public void updateMonitoringLocation_notFound() throws Exception {
 		id = String.valueOf(ONE_MILLION);
+		createdBy = UPDATED_CREATED_BY;
+		updatedBy = UPDATED_MODIFIED_BY;
 		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("fullMonitoringLocation.json"), getAuthorizedHeaders());
 
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations/1", HttpMethod.PUT, entity, String.class);
@@ -277,6 +284,24 @@ public class ControllerCUIT extends BaseControllerIT {
 		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getUnuthorizedHeaders());
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?_method=patch", HttpMethod.POST, entity, String.class);
 		assertEquals(403, responseEntity.getStatusCodeValue());
+	}
+	
+	@Test
+	@DatabaseSetup("classpath:/testData/setupOne/")
+	@ExpectedDatabase(
+			table="legacy_location",
+			query=QUERY_ALL_TO_SECOND,
+			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
+			)
+	public void addDuplicateMonitoringLocation() throws Exception {
+		agency = DEFAULT_AGENCY_CODE;
+		siteNbr = DEFAULT_SITE_NUMBER;
+		HttpEntity<String> entity = new HttpEntity<String>(getInputJson("sparseMonitoringLocation.json"), getAuthorizedHeaders());
+
+		ResponseEntity<String> responseEntity = restTemplate.postForEntity("/monitoringLocations", entity, String.class);
+
+		assertEquals(406, responseEntity.getStatusCodeValue());
 	}
 
 }

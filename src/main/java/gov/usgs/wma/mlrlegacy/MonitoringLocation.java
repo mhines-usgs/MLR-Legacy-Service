@@ -2,65 +2,186 @@ package gov.usgs.wma.mlrlegacy;
 
 import java.math.BigInteger;
 
+import javax.validation.constraints.Digits;
+
+import org.hibernate.validator.constraints.Length;
+
+@UniqueKey
 public class MonitoringLocation {
 	private BigInteger id;
+	
+	@Length(min=0, max=5)
 	private String agencyCode;
+	
+	@Length(min=0, max=15)
 	private String siteNumber;
+	
+	@Length(min=0, max=50)
 	private String stationName;
+	
+	@Length(min=0, max=50)
 	private String stationIx;
+	
+	@Length(min=0, max=7)
 	private String siteTypeCode;
+	
+	@Digits(integer=10,fraction=20)
 	private String decimalLatitude;
+	
+	@Digits(integer=10,fraction=20)
 	private String decimalLongitude;
+	
+	@Length(min=0, max=11)
 	private String latitude;
+	
+	@Length(min=0, max=12)
 	private String longitude;
+	
+	@Length(min=0, max=1)
 	private String coordinateAccuracyCode;
+	
+	@Length(min=0, max=10)
 	private String coordinateDatumCode;
+	
+	@Length(min=0, max=1)
 	private String coordinateMethodCode;
+	
+	@Length(min=0, max=8)
 	private String altitude;
+	
+	@Length(min=0, max=10)
 	private String altitudeDatumCode;
+	
+	@Length(min=0, max=1)
 	private String altitudeMethodCode;
+	
+	@Length(min=0, max=3)
 	private String altitudeAccuracyValue;
+	
+	@Length(min=0, max=3)
 	private String districtCode;
+	
+	@Length(min=0, max=2)
 	private String countryCode;
+	
+	@Length(min=0, max=2)
 	private String stateFipsCode;
+	
+	@Length(min=0, max=3)
 	private String countyCode;
+	
+	@Length(min=0, max=5)
 	private String minorCivilDivisionCode;
+	
+	@Length(min=0, max=16)
 	private String hydrologicUnitCode;
+	
+	@Length(min=0, max=2)
 	private String basinCode;
+	
+	@Length(min=0, max=10)
 	private String nationalAquiferCode;
+	
+	@Length(min=0, max=8)
 	private String aquiferCode;
+	
+	@Length(min=0, max=1)
 	private String aquiferTypeCode;
+	
+	@Length(min=0, max=1)
 	private String agencyUseCode;
+	
+	@Length(min=0, max=1)
 	private String dataReliabilityCode;
+	
+	@Length(min=0, max=23)
 	private String landNet;
+	
+	@Length(min=0, max=20)
 	private String mapName;
+	
+	@Length(min=0, max=7)
 	private String mapScale;
+	
+	@Length(min=0, max=2)
 	private String nationalWaterUseCode;
+	
+	@Length(min=0, max=1)
 	private String primaryUseOfSite;
+	
+	@Length(min=0, max=1)
 	private String secondaryUseOfSite;
+	
+	@Length(min=0, max=1)
 	private String tertiaryUseOfSiteCode;
+	
+	@Length(min=0, max=1)
 	private String primaryUseOfWaterCode;
+	
+	@Length(min=0, max=1)
 	private String secondaryUseOfWaterCode;
+	
+	@Length(min=0, max=1)
 	private String tertiaryUseOfWaterCode;
+	
+	@Length(min=0, max=1)
 	private String topographicCode;
+	
+	@Length(min=0, max=30)
 	private String dataTypesCode;
+	
+	@Length(min=0, max=30)
 	private String instrumentsCode;
+	
+	@Length(min=0, max=8)
 	private String contributingDrainageArea;
+	
+	@Length(min=0, max=8)
 	private String drainageArea;
+	
+	@Length(min=0, max=8)
 	private String firstConstructionDate;
+	
+	@Length(min=0, max=8)
 	private String siteEstablishmentDate;
+	
+	@Length(min=0, max=8)
 	private String holeDepth;
+	
+	@Length(min=0, max=8)
 	private String wellDepth;
+	
+	@Length(min=0, max=1)
 	private String sourceOfDepthCode;
+	
+	@Length(min=0, max=12)
 	private String projectNumber;
+	
+	@Length(min=0, max=5)
 	private String timeZoneCode;
+	
+	@Length(min=0, max=1)
 	private String daylightSavingsTimeFlag;
+	
+	@Length(min=0, max=50)
 	private String remarks;
+	
+	@Length(min=0, max=1)
 	private String siteWebReadyCode;
+	
+	@Length(min=0, max=20)
 	private String gwFileCode;
+	
+	@Length(min=0, max=255)
 	private String created;
+	
+	@Length(min=0, max=8)
 	private String createdBy;
+	
+	@Length(min=0, max=255)
 	private String updated;
+	
+	@Length(min=0, max=8)
 	private String updatedBy;
 
 	public BigInteger getId() {

@@ -149,7 +149,11 @@ public abstract class BaseIT {
 	public String replaceKey(String json) {
 		return json.replace("\"[id]\"", id == null ? "1" : id)
 				.replace("[agency]", agency == null ? DEFAULT_AGENCY_CODE : agency)
-				.replace("[siteNbr]", siteNbr == null ? DEFAULT_SITE_NUMBER : siteNbr);
+				.replace("[siteNbr]", siteNbr == null ? DEFAULT_SITE_NUMBER : siteNbr)
+				.replace("[createdDate]", createdDate == null ? DEFAULT_CREATED_DATE_S : createdDate)
+				.replace("[createdBy]", createdBy == null ? DEFAULT_CREATED_BY : createdBy)
+				.replace("[updatedDate]", updatedDate == null ? DEFAULT_UPDATED_DATE_S : updatedDate)
+				.replace("[updatedBy]", updatedBy == null ? DEFAULT_UPDATED_BY : updatedBy);
 	}
 
 }

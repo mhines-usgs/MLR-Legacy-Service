@@ -1,11 +1,15 @@
 package gov.usgs.wma.mlrlegacy;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,6 +37,8 @@ public class Controller {
 
 	@Autowired
 	private MonitoringLocationDao mLDao;
+	@Autowired
+	private Validator validator;
 
 	public static final String UNKNOWN_USERNAME = "unknown ";
 	public static final String AGENCY_CODE = "agencyCode";
@@ -64,43 +70,59 @@ public class Controller {
 
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PostMapping()
-	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) {
-		ml.setCreatedBy(getUsername());
-		ml.setUpdatedBy(getUsername());
-		BigInteger newId = mLDao.create(ml);
-
-		response.setStatus(HttpStatus.CREATED.value());
-		return mLDao.getById(newId);
+	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
+		if (validator.validate(ml).isEmpty()) {
+		
+			ml.setCreatedBy(getUsername());
+			ml.setUpdatedBy(getUsername());
+			BigInteger newId = mLDao.create(ml);
+	
+			response.setStatus(HttpStatus.CREATED.value());
+			return mLDao.getById(newId);
+		} else {
+			response.sendError(406, "Invalid data submitted to CRU.");
+			return null;
+		}
 	}
 
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PutMapping("/{id}")
 	public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws IOException {
 		BigInteger idInt = NumberUtils.parseNumber(id, BigInteger.class);
-
-		if (null == mLDao.getById(idInt)) {
-			response.setStatus(HttpStatus.NOT_FOUND.value());
+		Set<ConstraintViolation<MonitoringLocation>> val_result = validator.validate(ml);
+		if (validator.validate(ml).isEmpty()) {
+			if (null == mLDao.getById(idInt)) {
+				response.setStatus(HttpStatus.NOT_FOUND.value());
+			}
+			else {
+				ml.setId(idInt);
+				ml.setUpdatedBy(getUsername());
+				mLDao.update(ml);
+			}
+			return mLDao.getById(idInt);
+		} else {
+			response.sendError(406, "Invalid data submitted to CRU.");
+			return null;
 		}
-		else {
-			ml.setId(idInt);
-			ml.setUpdatedBy(getUsername());
-			mLDao.update(ml);
-		}
-		return mLDao.getById(idInt);
 	}
 
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PatchMapping()
-	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml, HttpServletResponse response) {
-		ml.put(UPDATED_BY, getUsername());
-		mLDao.patch(ml);
-		List<MonitoringLocation> lst = mLDao.getByMap(ml);
-		if (lst.isEmpty()) {
-			response.setStatus(HttpStatus.NOT_FOUND.value());
-			return null;
+	public MonitoringLocation patchMonitoringLocation(@RequestBody Map<String, Object> ml, HttpServletResponse response) throws IOException {
+		if (validator.validate(ml).isEmpty()) {
+			ml.put(UPDATED_BY, getUsername());
+			mLDao.patch(ml);
+			List<MonitoringLocation> lst = mLDao.getByMap(ml);
+			if (lst.isEmpty()) {
+				response.setStatus(HttpStatus.NOT_FOUND.value());
+				return null;
+			} else {
+				return lst.get(0);
+			}
 		} else {
-			return lst.get(0);
+			response.sendError(406, "Invalid data submitted to CRU.");
+			return null;
 		}
 	}
 
