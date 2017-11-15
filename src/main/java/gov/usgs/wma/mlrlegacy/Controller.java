@@ -71,10 +71,9 @@ public class Controller {
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PostMapping()
 	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
+		ml.setCreatedBy(getUsername());
+		ml.setUpdatedBy(getUsername());
 		if (validator.validate(ml).isEmpty()) {
-		
-			ml.setCreatedBy(getUsername());
-			ml.setUpdatedBy(getUsername());
 			BigInteger newId = mLDao.create(ml);
 	
 			response.setStatus(HttpStatus.CREATED.value());
@@ -90,20 +89,21 @@ public class Controller {
 	public MonitoringLocation updateMonitoringLocation(@PathVariable("id") String id, @RequestBody MonitoringLocation ml,
 			HttpServletResponse response) throws IOException {
 		BigInteger idInt = NumberUtils.parseNumber(id, BigInteger.class);
-		if (validator.validate(ml).isEmpty()) {
-			if (null == mLDao.getById(idInt)) {
-				response.setStatus(HttpStatus.NOT_FOUND.value());
-			}
-			else {
-				ml.setId(idInt);
-				ml.setUpdatedBy(getUsername());
-				mLDao.update(ml);
-			}
-			return mLDao.getById(idInt);
-		} else {
-			response.sendError(406, "Invalid data submitted to CRU.");
-			return null;
+		
+		if (null == mLDao.getById(idInt)) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
 		}
+		else {
+			ml.setId(idInt);
+			ml.setUpdatedBy(getUsername());
+			if (validator.validate(ml).isEmpty()) {
+			mLDao.update(ml);
+			} else {
+				response.sendError(406, "Invalid data submitted to CRU.");
+				return null;
+			}
+		}
+		return mLDao.getById(idInt);
 	}
 
 	@PreAuthorize("hasPermission(#ml, null)")

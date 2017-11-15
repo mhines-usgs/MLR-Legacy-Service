@@ -172,13 +172,11 @@ public class MonitoringLocation {
 	@Length(min=0, max=20)
 	private String gwFileCode;
 	
-	@Length(min=0, max=255)
 	private String created;
 	
 	@Length(min=0, max=8)
 	private String createdBy;
 	
-	@Length(min=0, max=255)
 	private String updated;
 	
 	@Length(min=0, max=8)
