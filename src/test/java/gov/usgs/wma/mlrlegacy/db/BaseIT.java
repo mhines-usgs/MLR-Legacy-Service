@@ -113,7 +113,13 @@ public abstract class BaseIT {
 	}
 
 	public String getInputJson(String file) throws IOException {
-		return replaceKey(getCompareFile("testData/", file));
+		createdDate = DEFAULT_CREATED_DATE_S;
+		createdBy = DEFAULT_CREATED_BY;
+		updatedDate = DEFAULT_UPDATED_DATE_S;
+		updatedBy = DEFAULT_UPDATED_BY;
+		return replaceKey(getCompareFile("testData/", file))
+				.replace("[createdDate]", createdDate).replace("[createdBy]", createdBy)
+				.replace("[updatedDate]", updatedDate).replace("[updatedBy]", updatedBy);
 	}
 
 	public String getExpectedReadJson(String file) throws IOException {
@@ -149,11 +155,7 @@ public abstract class BaseIT {
 	public String replaceKey(String json) {
 		return json.replace("\"[id]\"", id == null ? "1" : id)
 				.replace("[agency]", agency == null ? DEFAULT_AGENCY_CODE : agency)
-				.replace("[siteNbr]", siteNbr == null ? DEFAULT_SITE_NUMBER : siteNbr)
-				.replace("[createdDate]", createdDate == null ? DEFAULT_CREATED_DATE_S : createdDate)
-				.replace("[createdBy]", createdBy == null ? DEFAULT_CREATED_BY : createdBy)
-				.replace("[updatedDate]", updatedDate == null ? DEFAULT_UPDATED_DATE_S : updatedDate)
-				.replace("[updatedBy]", updatedBy == null ? DEFAULT_UPDATED_BY : updatedBy);
+				.replace("[siteNbr]", siteNbr == null ? DEFAULT_SITE_NUMBER : siteNbr);
 	}
 
 }

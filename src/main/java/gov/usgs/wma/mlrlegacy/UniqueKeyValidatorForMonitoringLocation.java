@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValida
 				filters.put(Controller.SITE_NUMBER, value.getSiteNumber());
 				List<MonitoringLocation> monitoringLocations = dao.getByMap(filters);
 				for (MonitoringLocation monitoringLocation : monitoringLocations) {
-					if (null == value.getId() || 0 != monitoringLocation.getId().compareTo(value.getId())) {
+					if (null == value.getId() || 0 == monitoringLocation.getId().compareTo(value.getId())) {
 						valid = false;
 						context.disableDefaultConstraintViolation();
 						context.buildConstraintViolationWithTemplate("Duplicate Agency Code and Site Number found in MLR.").addPropertyNode(Controller.SITE_NUMBER).addConstraintViolation();

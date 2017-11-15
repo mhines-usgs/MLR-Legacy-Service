@@ -71,6 +71,7 @@ public class Controller {
 	@PreAuthorize("hasPermission(#ml, null)")
 	@PostMapping()
 	public MonitoringLocation createMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
+		Set<ConstraintViolation<MonitoringLocation>> val_result = validator.validate(ml);
 		if (validator.validate(ml).isEmpty()) {
 		
 			ml.setCreatedBy(getUsername());
