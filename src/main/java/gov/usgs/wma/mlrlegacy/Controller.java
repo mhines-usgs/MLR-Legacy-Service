@@ -46,17 +46,18 @@ public class Controller {
 	public static final String UPDATED_BY = "updatedBy";
 
 	@GetMapping()
-	public List<MonitoringLocation> getMonitoringLocations(
+	public MonitoringLocation getMonitoringLocations(
 		@RequestParam(name = AGENCY_CODE) String agencyCode,
-		@RequestParam(name = SITE_NUMBER) String siteNumber) {
+		@RequestParam(name = SITE_NUMBER) String siteNumber,
+		HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<>();
-		if (null != agencyCode) {
-			params.put(AGENCY_CODE, agencyCode);
+		params.put(AGENCY_CODE, agencyCode);
+		params.put(SITE_NUMBER, siteNumber);
+		MonitoringLocation ml = mLDao.getByAK(params);
+		if (null == ml) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
 		}
-		if (null != siteNumber) {
-			params.put(SITE_NUMBER, siteNumber);
-		}
-		return mLDao.getByMap(params);
+		return ml;
 	}
 
 	@GetMapping("/{id}")
@@ -112,12 +113,12 @@ public class Controller {
 		ml.put(UPDATED_BY, getUsername());
 		if (validator.validate(ml).isEmpty()) {	
 			mLDao.patch(ml);
-			List<MonitoringLocation> lst = mLDao.getByMap(ml);
-			if (lst.isEmpty()) {
+			MonitoringLocation location = mLDao.getByAK(ml);
+			if (location == null) {
 				response.setStatus(HttpStatus.NOT_FOUND.value());
 				return null;
 			} else {
-				return lst.get(0);
+				return location;
 			}
 		} else {
 			response.sendError(406, "Invalid data submitted to CRU.");

@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import org.junit.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,27 +27,24 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 
 	@Test
 	public void getAll() {
-		List<MonitoringLocation> locations = dao.getByMap(null);
-		assertEquals(1, locations.size());
-		assertOneMillion(locations.get(0));
+		MonitoringLocation location = dao.getByAK(null);
+		assertNull(location);
 	}
 	
 	@Test
 	public void getByAgencyCode() {
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
-		List<MonitoringLocation> locations = dao.getByMap(params);
-		assertEquals(1, locations.size());
-		assertOneMillion(locations.get(0));
+		MonitoringLocation location = dao.getByAK(params);
+		assertNull(location);
 	}
 	
 	@Test
 	public void getBySiteNumber() {
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
-		List<MonitoringLocation> locations = dao.getByMap(params);
-		assertEquals(1, locations.size());
-		assertOneMillion(locations.get(0));
+		MonitoringLocation location = dao.getByAK(params);
+		assertNull(location);
 	}
 	
 	@Test
@@ -52,9 +52,8 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.AGENCY_CODE, DEFAULT_AGENCY_CODE);
 		params.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
-		List<MonitoringLocation> locations = dao.getByMap(params);
-		assertEquals(1, locations.size());
-		assertOneMillion(locations.get(0));
+		MonitoringLocation location = dao.getByAK(params);
+		assertOneMillion(location);
 	}
 	
 	@Test
@@ -62,8 +61,8 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.AGENCY_CODE, "USEPA");
 		params.put(Controller.SITE_NUMBER, DEFAULT_SITE_NUMBER);
-		List<MonitoringLocation> locations = dao.getByMap(params);
-		assertEquals(0, locations.size());
+		MonitoringLocation location = dao.getByAK(params);
+		assertNull(location);
 	}
 		
 	@Test

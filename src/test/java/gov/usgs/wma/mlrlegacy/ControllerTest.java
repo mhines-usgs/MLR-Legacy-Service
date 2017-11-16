@@ -57,15 +57,13 @@ public class ControllerTest {
 	private SecurityContext securityContext;
 
 	@Test
-	public void givenReturnData_whenGetByMap_thenReturnList() throws Exception {
-		List<MonitoringLocation> mlList = new ArrayList<>();
+	public void givenReturnData_whenGetByAK_thenReturnMonitoringLocation() throws Exception {
 		MonitoringLocation mlOne = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ONE);
 		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		mlOne.setSiteNumber("987654321");
 
-		mlList.add(mlOne);
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
 		params.put(Controller.SITE_NUMBER, "987654321");
@@ -74,12 +72,11 @@ public class ControllerTest {
 		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
 		cruParams.set(Controller.SITE_NUMBER, "987654321");
 		
-		given(dao.getByMap(params)).willReturn(mlList);
+		given(dao.getByAK(params)).willReturn(mlOne);
 
 		mvc.perform(get("/monitoringLocations").params(cruParams))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.length()", is(equalTo(1))))
-			.andExpect(jsonPath("$[0].id", is(equalTo(1))));
+			.andExpect(jsonPath("id", is(equalTo(1))));
 	}
 
 	@Test
@@ -162,11 +159,9 @@ public class ControllerTest {
 		ml.setId(BigInteger.ONE);
 		ml.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		ml.setSiteNumber("12345678");
-		List<MonitoringLocation> lst = new ArrayList<>();
-		lst.add(ml);
 
 		Mockito.doNothing().when(dao).patch(anyMap());
-		given(dao.getByMap(anyMap())).willReturn(lst);
+		given(dao.getByAK(anyMap())).willReturn(ml);
 
 		mvc.perform(patch("/monitoringLocations").content(requestBody).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
@@ -180,7 +175,7 @@ public class ControllerTest {
 		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
 
 		Mockito.doNothing().when(dao).patch(anyMap());
-		given(dao.getByMap(anyMap())).willReturn(new ArrayList<MonitoringLocation>());
+		given(dao.getByAK(anyMap())).willReturn(null);
 		mvc.perform(patch("/monitoringLocations").content(requestBody).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNotFound());
 	}

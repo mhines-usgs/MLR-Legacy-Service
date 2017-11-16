@@ -28,15 +28,15 @@ public class ControllerRIT extends BaseControllerIT {
 		HttpEntity<String> entity = new HttpEntity<String>("", getUnauthorizedHeaders());
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?agencyCode=USGS&siteNumber=123456789012345", HttpMethod.GET, entity, String.class);
 		assertEquals(200, responseEntity.getStatusCodeValue());
-		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+		JSONAssert.assertEquals(getExpectedReadJson("oneMillion.json"), responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 
 	@Test
 	public void getMonitoringLocationsByAgencyCodeAndSiteNumberNotFound() throws Exception {
 		HttpEntity<String> entity = new HttpEntity<String>("", getUnauthorizedHeaders());
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?agencyCode=USGS&siteNumber=123456789012349", HttpMethod.GET, entity, String.class);
-		assertEquals(200, responseEntity.getStatusCodeValue());
-		JSONAssert.assertEquals("[]", responseEntity.getBody(), JSONCompareMode.STRICT);
+		assertEquals(404, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals(null, responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 
 	@Test

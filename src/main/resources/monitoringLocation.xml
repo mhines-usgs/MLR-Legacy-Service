@@ -99,17 +99,11 @@
          where legacy_location_id = #{value, jdbcType=BIGINT}
     </select>
 
-    <select id="getByMap" parameterType="Map" resultMap="result">
+    <select id="getByAK" parameterType="Map" resultMap="result">
         select <include refid="baseCols"/>
         from legacy_location
-        <where>
-            <if test="agencyCode != null">
-                and agency_cd = #{agencyCode}
-            </if>
-            <if test="siteNumber != null">
-                and site_no = #{siteNumber}
-            </if>
-        </where>
+		where agency_cd = #{agencyCode, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
+        	and site_no = #{siteNumber, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
     </select>
 
     <insert id="create" parameterType="MonitoringLocation" useGeneratedKeys="true" keyProperty="id">

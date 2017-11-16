@@ -16,8 +16,8 @@ public class MonitoringLocationDao {
 		this.sqlSession = sqlSession;
 	}
 
-	public List<MonitoringLocation> getByMap(Map<String, Object> queryParams) {
-		return sqlSession.selectList("getByMap", queryParams);
+	public MonitoringLocation getByAK(Map<String, Object> queryParams) {
+		return sqlSession.selectOne("getByAK", queryParams);
 	}
 
 	public MonitoringLocation getById(BigInteger id) {
