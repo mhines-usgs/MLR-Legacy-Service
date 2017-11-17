@@ -3,6 +3,6 @@ language: java
 install: true
 
 script:
-  - mvn clean test jacoco:report
+  - mvn clean test jacoco:report coveralls:report 
 
 
