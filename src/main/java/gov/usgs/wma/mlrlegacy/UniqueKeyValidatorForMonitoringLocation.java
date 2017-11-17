@@ -30,8 +30,8 @@ public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValida
 				Map<String, Object> filters = new HashMap<String,Object>();
 				filters.put(Controller.AGENCY_CODE, value.getAgencyCode());
 				filters.put(Controller.SITE_NUMBER, value.getSiteNumber());
-				List<MonitoringLocation> monitoringLocations = dao.getByMap(filters);
-				for (MonitoringLocation monitoringLocation : monitoringLocations) {
+				MonitoringLocation monitoringLocation = dao.getByAK(filters);
+				if (monitoringLocation != null) {
 					if (null == value.getId() || 0 == monitoringLocation.getId().compareTo(value.getId())) {
 						valid = false;
 						context.disableDefaultConstraintViolation();

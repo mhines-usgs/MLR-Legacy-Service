@@ -14,7 +14,9 @@ spring:
     username: ${mlrLegacyDataUsername}
     password: ${mlrLegacyDataPassword}
     driver-class-name: org.postgresql.Driver
-
+  profiles:
+    active: default, swagger
+   
 security:
   require-ssl: true
   basic:
