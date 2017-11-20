@@ -5,14 +5,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html). (Patch version X.Y.0 is implied if not specified.)
 
 ## [Unreleased]
+
+## [0.15.0] - 2017-11-20
 ### Added
 - Global exception handler for Http requests
 - Security - User must be authenticated to access any service. User must also be authorized to PATCH, POST, or PUT.
 - Validation - Implements additional validations on allowable field lengths, data type and duplicate keys.
 - API - GET /monitoringLocations endpoint using Agency Code and Site Number now returns a single monitoring location object instead of an array of one monitoring location object.
 - add travis and coveralls
+- HTTPS Support
 
-## [0.14.0] - 2017-11-2
+## [0.14.0] - 2017-11-02
 ### Changed
 - Agency Code and Site Number are now required for the GET /monitoringLocations endpoint.
 
@@ -74,7 +77,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Swagger Documentation.
 - Spring Boot Actuator Monitoring.
 
-[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.14.0...master
+[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.15.0...master
+[0.15.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.14...mlrLegacy-0.15.0
 [0.14.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.13...mlrLegacy-0.14.0
 [0.13]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.12...mlrLegacy-0.13
 [0.12]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.11...mlrLegacy-0.12
