@@ -9,4 +9,4 @@ RUN  curl -k -X GET "https://cida.usgs.gov/artifactory/mlr-maven-centralized/gov
 EXPOSE 8443
 ENTRYPOINT [ "/entrypoint.sh" ]
 
-HEALTHCHECK CMD curl -k 'https://127.0.0.1:8443/health' | grep -q '{"status":"UP"}' || exit 1
+HEALTHCHECK CMD curl -k 'https://127.0.0.1:8443/health' | grep -q '{"status":"YUCK"}' || exit 1
