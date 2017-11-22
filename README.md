@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/USGS-CIDA/MLR-Legacy-Service.svg?branch=master)](https://travis-ci.org/USGS-CIDA/MLR-Legacy-Service) [![Coverage Status](https://coveralls.io/repos/github/USGS-CIDA/MLR-Legacy-Service/badge.svg?branch=master)](https://coveralls.io/github/USGS-CIDA/MLR-Legacy-Service?branch=master)
+
 # MLR-Legacy-Service
 Monitoring Location Legacy CRU Service
 
