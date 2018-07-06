@@ -51,13 +51,3 @@ It will be available at http://localhost:8080/monitoringLocations in you browser
 Swagger documentation is available at http://localhost:8080/swagger-ui.html
 
 ctrl-c will stop the application.
-
-## Using Docker
-To build the image you will need to provide the location of the jar within 
-https://cida.usgs.gov/artifactory/mlr-maven/gov/usgs/wma/mlrLegacy as follows:
-``` 
-% docker build --build-arg mlr_version=0.8-SNAPSHOT .
-```
-
-To run the image, you will need to provide as environment variables the variables listed above. The application
-will be available on part 8080 within the container.

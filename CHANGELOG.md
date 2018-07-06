@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Dockerfile Healthcheck
 
+### Removed
+- Dockerfile docker-entrypoint.sh
+- keystore location and password from application.yml
+
 ## [0.15.0] - 2017-11-20
 ### Added
 - Global exception handler for Http requests
