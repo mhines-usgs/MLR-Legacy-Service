@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Dockerfile docker-entrypoint.sh
 - keystore location and password from application.yml
 
+### Updated
+- application.yml to conform to other services' oauth config naming conventions
+
 ## [0.15.0] - 2017-11-20
 ### Added
 - Global exception handler for Http requests
