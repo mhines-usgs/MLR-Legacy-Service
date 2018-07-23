@@ -21,7 +21,7 @@ import gov.usgs.wma.mlrlegacy.OAuth2ResourceServerConfig;
 		webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT,
 		properties={"maintenanceRoles=ROLE_DBA_55",
 				"security.oauth2.resource.jwt.keyValue=secret",
-				"authPublicKeyUrl=",
+				"oauthResourceTokenKeyUri=",
 				"security.require-ssl=false",
 				"server.ssl.enabled=false"}
 	)
