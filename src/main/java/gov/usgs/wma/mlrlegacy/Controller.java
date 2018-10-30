@@ -62,14 +62,14 @@ public class Controller {
 	}
 
         @GetMapping(params = STATION_NAME)
-	public MonitoringLocation getMonitoringLocationsByName(
+	public List<MonitoringLocation> getMonitoringLocationsByName(
 		@RequestParam(name = STATION_NAME) String stationName,
 		HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<>();
 		params.put(STATION_NAME, stationName);
 		
-		MonitoringLocation ml = mLDao.getByAK(params);
-		if (null == ml) {
+		List<MonitoringLocation> ml = mLDao.getByName(params);
+		if (null == ml || ml.isEmpty()) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 		}
 		return ml;

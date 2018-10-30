@@ -97,15 +97,6 @@
     	mlr_legacy_data.
     </sql>
 
-    <!--Where clauses for dealing with optional parameters -->
-    <sql id="basicWhere">
-        <where>
-            <if test="agencyCd != null">AND agency_cd = #{agencyCode, jdbcType=CHAR, typeHandler=NotNullTypeHandler}></if>
-            <if test="siteNo != null">AND site_no = #{siteNumber, jdbcType=CHAR, typeHandler=NotNullTypeHandler}></if>
-            <if test="stationName != null">AND station_nm = #{stationName, jdbcType=CHAR, typeHandler=NotNullTypeHandler}></if>
-        </where>
-    </sql>
-
     <select id="getById" parameterType="BigInteger" resultMap="result">
         select <include refid="baseCols"/>
           from <include refid="schemaName"/>legacy_location
@@ -115,7 +106,14 @@
     <select id="getByAK" parameterType="Map" resultMap="result">
         select <include refid="baseCols"/>
         from <include refid="schemaName"/>legacy_location
-        <include refid="basicWhere"/>
+		where agency_cd = #{agencyCode, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
+        	and site_no = #{siteNumber, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
+    </select>
+    
+    <select id="getByName" parameterType="Map" resultMap="result">
+        select <include refid="baseCols"/>
+        from <include refid="schemaName"/>legacy_location
+		where station_nm = #{stationName, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
     </select>
 
     <insert id="create" parameterType="MonitoringLocation" useGeneratedKeys="true" keyProperty="id">
