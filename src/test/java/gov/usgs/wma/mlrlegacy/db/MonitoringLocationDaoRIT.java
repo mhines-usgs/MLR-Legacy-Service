@@ -64,7 +64,26 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		MonitoringLocation location = dao.getByAK(params);
 		assertNull(location);
 	}
-		
+	
+	@Test
+	public void getByStationName() {
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.STATION_NAME, DEFAULT_AGENCY_CODE);
+		List<MonitoringLocation> locations = dao.getByName(params);
+		assertNotNull(locations);
+		assertEquals(1, locations.size());
+		MonitoringLocation location = locations.get(0);
+		assertOneMillion(location);
+	}
+	
+	@Test
+	public void getByStationNameNotFound() {
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.STATION_NAME, "does not exist");
+		List<MonitoringLocation> locations = dao.getByName(params);
+		assertEquals(0, locations.size());
+	}
+	
 	@Test
 	public void getById() {
 		MonitoringLocation location = dao.getById(ONE_MILLION);
