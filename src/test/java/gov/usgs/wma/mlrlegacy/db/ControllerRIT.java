@@ -63,6 +63,23 @@ public class ControllerRIT extends BaseControllerIT {
 		assertEquals(404, responseEntity.getStatusCodeValue());
 		assertNull(responseEntity.getBody());
 	}
+	
+	@Test
+	public void getMonitoringLocationByNameFound() throws Exception {
+		HttpEntity<String> entity;
+		entity = new HttpEntity<String>("", getUnauthorizedHeaders());
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?stationName=station_nm", HttpMethod.GET, entity, String.class);
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+
+	@Test
+	public void getMonitoringLocationByNameNotFound() throws Exception {
+		HttpEntity<String> entity = new HttpEntity<>("", getUnauthorizedHeaders());
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?stationName=does_not_exist", HttpMethod.GET, entity, String.class);
+		assertEquals(404, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
 
 	@Test
 	public void getByIdNoToken() throws Exception {
