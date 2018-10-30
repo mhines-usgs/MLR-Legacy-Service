@@ -22,6 +22,7 @@ import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 @DatabaseSetup("classpath:/testData/setupOne/")
 public class MonitoringLocationDaoRIT extends BaseDaoIT {
 
+	private static final String MY_STATION_NAME = "station_nm";
 	@Autowired
 	private MonitoringLocationDao dao;
 
@@ -68,7 +69,7 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 	@Test
 	public void getByStationName() {
 		Map<String, Object> params = new HashMap<>();
-		params.put(Controller.STATION_NAME, DEFAULT_AGENCY_CODE);
+		params.put(Controller.STATION_NAME, MY_STATION_NAME);
 		List<MonitoringLocation> locations = dao.getByName(params);
 		assertNotNull(locations);
 		assertEquals(1, locations.size());
@@ -94,7 +95,7 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		assertEquals(ONE_MILLION, location.getId());
 		assertEquals(DEFAULT_AGENCY_CODE, location.getAgencyCode());
 		assertEquals(DEFAULT_SITE_NUMBER, location.getSiteNumber());
-		assertEquals("station_nm", location.getStationName());
+		assertEquals(MY_STATION_NAME, location.getStationName());
 		assertEquals("STATIONIX", location.getStationIx());
 		assertEquals("lat_va     ", location.getLatitude());
 		assertEquals("long_va     ", location.getLongitude());
