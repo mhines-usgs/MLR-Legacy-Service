@@ -44,7 +44,7 @@ public class Controller {
 	public static final String AGENCY_CODE = "agencyCode";
 	public static final String SITE_NUMBER = "siteNumber";
 	public static final String UPDATED_BY = "updatedBy";
-        public static final String STATION_NAME = "stationName";
+	public static final String STATION_NAME = "stationName";
 
 	@GetMapping(params = {AGENCY_CODE, SITE_NUMBER})
 	public MonitoringLocation getMonitoringLocations(
@@ -61,7 +61,7 @@ public class Controller {
 		return ml;
 	}
 
-        @GetMapping(params = STATION_NAME)
+	@GetMapping(params = STATION_NAME)
 	public List<MonitoringLocation> getMonitoringLocationsByName(
 		@RequestParam(name = STATION_NAME) String stationName,
 		HttpServletResponse response) {
@@ -74,7 +74,7 @@ public class Controller {
 		}
 		return ml;
 	}
-        
+
 	@GetMapping("/{id}")
 	public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id, HttpServletResponse response) {
 		MonitoringLocation ml = mLDao.getById(NumberUtils.parseNumber(id, BigInteger.class));

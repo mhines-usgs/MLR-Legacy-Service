@@ -79,63 +79,63 @@ public class ControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("id", is(equalTo(1))));
 	}
-        
-        @Test
+
+	@Test
 	public void givenReturnNoData_whenGetByAgencyCodeAndSiteNumber_thenReturn404() throws Exception {
-                MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
 		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
 		cruParams.set(Controller.SITE_NUMBER, "987654321");
 		
 		given(dao.getByName(any())).willReturn(null);
 
 		mvc.perform(get("/monitoringLocations").params(cruParams))
-                    .andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
-        
-        @Test
+
+	@Test
 	public void givenReturnData_whenGetByStationName_thenReturnMonitoringLocation() throws Exception {
-                final String MY_STATION_NAME = "The Local Watering Hole";
+		final String MY_STATION_NAME = "The Local Watering Hole";
 		MonitoringLocation mlOne = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ZERO);
 		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
 		mlOne.setSiteNumber("987654321");
-                mlOne.setStationName(MY_STATION_NAME);
-               
-                MonitoringLocation mlTwo = new MonitoringLocation();
-                mlTwo.setId(BigInteger.ONE);
+		mlOne.setStationName(MY_STATION_NAME);
+
+		MonitoringLocation mlTwo = new MonitoringLocation();
+		mlTwo.setId(BigInteger.ONE);
 		mlTwo.setAgencyCode("Some other agency");
 		mlTwo.setSiteNumber("123456");
-                mlTwo.setStationName(MY_STATION_NAME);
-                
-                List<MonitoringLocation> monitoringLocations = Arrays.asList(mlOne, mlTwo);
-                
+		mlTwo.setStationName(MY_STATION_NAME);
+
+		List<MonitoringLocation> monitoringLocations = Arrays.asList(mlOne, mlTwo);
+
 		Map<String, Object> params = new HashMap<>();
 		params.put(Controller.STATION_NAME, MY_STATION_NAME);
 
 		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
 		cruParams.set(Controller.STATION_NAME, MY_STATION_NAME);
-		
+
 		given(dao.getByName(params)).willReturn(monitoringLocations);
 
-                List<Integer> expectedIds = Arrays.asList(0,1);
+		List<Integer> expectedIds = Arrays.asList(0, 1);
 		mvc.perform(get("/monitoringLocations").params(cruParams))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$..['id']", is(equalTo(expectedIds))));
 	}
-        
-        @Test
+
+	@Test
 	public void givenReturnNull_whenGetByStationName_thenReturn404() throws Exception {
 		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
 		cruParams.set(Controller.STATION_NAME, "stationy");
-		
+
 		given(dao.getByName(any())).willReturn(null);
 
 		mvc.perform(get("/monitoringLocations").params(cruParams))
-                    .andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
-        
-        @Test
+
+	@Test
 	public void givenReturnEmptyList_whenGetByStationName_thenReturn404() throws Exception {
 		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
 		cruParams.set(Controller.STATION_NAME, "stationy");
@@ -143,9 +143,9 @@ public class ControllerTest {
 		given(dao.getByName(any())).willReturn(emptyList);
 
 		mvc.perform(get("/monitoringLocations").params(cruParams))
-                    .andExpect(status().isNotFound());
+			.andExpect(status().isNotFound());
 	}
-        
+
 	@Test
 	public void givenML_whenGetById_thenReturnML() throws Exception {
 		MonitoringLocation ml = new MonitoringLocation();
