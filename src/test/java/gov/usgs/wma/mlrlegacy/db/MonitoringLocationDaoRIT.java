@@ -19,7 +19,9 @@ import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 import static org.junit.Assert.assertNotEquals;
 
-
+/**
+ * DAO integration tests for Read operations
+ */
 @DatabaseSetup("classpath:/testData/setupOne/")
 public class MonitoringLocationDaoRIT extends BaseDaoIT {
 

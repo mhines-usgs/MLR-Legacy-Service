@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 
-
+/**
+ * Controller integration tests for Read operations
+ */
 @DatabaseSetup("classpath:/testData/setupOne/")
 public class ControllerRIT extends BaseControllerIT {
 

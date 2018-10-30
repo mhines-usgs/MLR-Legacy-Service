@@ -16,6 +16,9 @@ import gov.usgs.wma.mlrlegacy.Controller;
 import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
 
+/**
+ * DAO integration tests for Create and Update operations
+ */
 public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 
 	@Autowired
