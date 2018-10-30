@@ -17,6 +17,7 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import gov.usgs.wma.mlrlegacy.Controller;
 import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
+import static org.junit.Assert.assertNotEquals;
 
 
 @DatabaseSetup("classpath:/testData/setupOne/")
@@ -77,6 +78,30 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		assertOneMillion(location);
 	}
 	
+	/**
+	 * We want to ensure that the DAO returns multiple matching results,
+	 * while excluding non-matching results. Accordingly, we set up a db
+	 * with two matching results and one non-matching result.
+	 */
+	@DatabaseSetup("classpath:/testData/setupThree/")
+	@Test
+	public void getByStationNameMultipleResults() {
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.STATION_NAME, MY_STATION_NAME);
+		List<MonitoringLocation> locations = dao.getByName(params);
+		assertNotNull(locations);
+
+		assertEquals(2, locations.size());
+		MonitoringLocation location0 = locations.get(0);
+		MonitoringLocation location1 = locations.get(1);
+
+		assertOneMillion(location0);
+
+		assertEquals(MY_STATION_NAME, location0.getStationName());
+		assertEquals(MY_STATION_NAME, location1.getStationName());
+		assertNotEquals(location0.getId(), location1.getId());
+	}
+
 	@Test
 	public void getByStationNameNotFound() {
 		Map<String, Object> params = new HashMap<>();
