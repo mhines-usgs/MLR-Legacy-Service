@@ -44,8 +44,9 @@ public class Controller {
 	public static final String AGENCY_CODE = "agencyCode";
 	public static final String SITE_NUMBER = "siteNumber";
 	public static final String UPDATED_BY = "updatedBy";
+        public static final String STATION_NAME = "stationName";
 
-	@GetMapping()
+	@GetMapping(params = {AGENCY_CODE, SITE_NUMBER})
 	public MonitoringLocation getMonitoringLocations(
 		@RequestParam(name = AGENCY_CODE) String agencyCode,
 		@RequestParam(name = SITE_NUMBER) String siteNumber,
@@ -60,6 +61,20 @@ public class Controller {
 		return ml;
 	}
 
+        @GetMapping(params = STATION_NAME)
+	public MonitoringLocation getMonitoringLocationsByName(
+		@RequestParam(name = STATION_NAME) String stationName,
+		HttpServletResponse response) {
+		Map<String, Object> params = new HashMap<>();
+		params.put(STATION_NAME, stationName);
+		
+		MonitoringLocation ml = mLDao.getByAK(params);
+		if (null == ml) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+		}
+		return ml;
+	}
+        
 	@GetMapping("/{id}")
 	public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id, HttpServletResponse response) {
 		MonitoringLocation ml = mLDao.getById(NumberUtils.parseNumber(id, BigInteger.class));

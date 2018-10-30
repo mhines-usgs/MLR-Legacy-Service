@@ -57,7 +57,7 @@ public class ControllerTest {
 	private SecurityContext securityContext;
 
 	@Test
-	public void givenReturnData_whenGetByAK_thenReturnMonitoringLocation() throws Exception {
+	public void givenReturnData_whenGetByAgencyCodeAndSiteNumber_thenReturnMonitoringLocation() throws Exception {
 		MonitoringLocation mlOne = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ONE);
@@ -78,7 +78,53 @@ public class ControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("id", is(equalTo(1))));
 	}
+        
+        @Test
+	public void givenReturnNoData_whenGetByAgencyCodeAndSiteNumber_thenReturn404() throws Exception {
+                MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
+		cruParams.set(Controller.SITE_NUMBER, "987654321");
+		
+		given(dao.getByAK(any())).willReturn(null);
 
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+                    .andExpect(status().isNotFound());
+	}
+        
+        @Test
+	public void givenReturnData_whenGetByStationName_thenReturnMonitoringLocation() throws Exception {
+                final String MY_STATION_NAME = "The Local Watering Hole";
+		MonitoringLocation mlOne = new MonitoringLocation();
+
+		mlOne.setId(BigInteger.ONE);
+		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
+		mlOne.setSiteNumber("987654321");
+                mlOne.setStationName(MY_STATION_NAME);
+
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.STATION_NAME, MY_STATION_NAME);
+
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		cruParams.set(Controller.STATION_NAME, MY_STATION_NAME);
+		
+		given(dao.getByAK(params)).willReturn(mlOne);
+
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("id", is(equalTo(1))));
+	}
+        
+        @Test
+	public void givenReturnNoData_whenGetByStationName_thenReturn404() throws Exception {
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		cruParams.set(Controller.STATION_NAME, "stationy");
+		
+		given(dao.getByAK(any())).willReturn(null);
+
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+                    .andExpect(status().isNotFound());
+	}
+        
 	@Test
 	public void givenML_whenGetById_thenReturnML() throws Exception {
 		MonitoringLocation ml = new MonitoringLocation();
