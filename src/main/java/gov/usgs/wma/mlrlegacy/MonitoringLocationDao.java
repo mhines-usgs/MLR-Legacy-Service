@@ -20,6 +20,10 @@ public class MonitoringLocationDao {
 		return sqlSession.selectOne("getByAK", queryParams);
 	}
 
+	public List<MonitoringLocation> getByNormalizedName(Map<String, Object> queryParams) {
+		return sqlSession.selectList("getByNormalizedName", queryParams);
+	}
+
 	public MonitoringLocation getById(BigInteger id) {
 		return sqlSession.selectOne("getById", id);
 	}

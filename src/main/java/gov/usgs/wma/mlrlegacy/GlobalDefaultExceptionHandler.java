@@ -14,6 +14,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,7 +35,8 @@ private static final Logger LOG = LoggerFactory.getLogger(GlobalDefaultException
 			responseMap.put(ERROR_MESSAGE_KEY, "You are not authorized to perform this action.");
 		} else if (ex instanceof MissingServletRequestParameterException
 				|| ex instanceof HttpMediaTypeNotSupportedException
-				|| ex instanceof HttpMediaTypeNotAcceptableException) {
+				|| ex instanceof HttpMediaTypeNotAcceptableException
+				|| ex instanceof UnsatisfiedServletRequestParameterException) {
 			response.setStatus(HttpStatus.BAD_REQUEST.value());
 			responseMap.put(ERROR_MESSAGE_KEY, ex.getLocalizedMessage());
 		} else if (ex instanceof HttpMessageNotReadableException) {
