@@ -44,7 +44,7 @@ public class Controller {
 	public static final String AGENCY_CODE = "agencyCode";
 	public static final String SITE_NUMBER = "siteNumber";
 	public static final String UPDATED_BY = "updatedBy";
-	public static final String STATION_NAME = "stationName";
+	public static final String NORMALIZED_STATION_NAME = "normalizedStationName";
 
 	@GetMapping(params = {AGENCY_CODE, SITE_NUMBER})
 	public MonitoringLocation getMonitoringLocations(
@@ -61,14 +61,20 @@ public class Controller {
 		return ml;
 	}
 
-	@GetMapping(params = STATION_NAME)
-	public List<MonitoringLocation> getMonitoringLocationsByName(
-		@RequestParam(name = STATION_NAME) String stationName,
+	/**
+	 * 
+	 * @param normalizedStationName also known as "station_ix"
+	 * @param response
+	 * @return an array of the matching monitoring locations
+	 */
+	@GetMapping(params = NORMALIZED_STATION_NAME)
+	public List<MonitoringLocation> getMonitoringLocationsByNormalizedName(
+		@RequestParam(name = NORMALIZED_STATION_NAME) String normalizedStationName,
 		HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<>();
-		params.put(STATION_NAME, stationName);
+		params.put(NORMALIZED_STATION_NAME, normalizedStationName);
 		
-		List<MonitoringLocation> ml = mLDao.getByName(params);
+		List<MonitoringLocation> ml = mLDao.getByNormalizedName(params);
 		if (null == ml || ml.isEmpty()) {
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 		}

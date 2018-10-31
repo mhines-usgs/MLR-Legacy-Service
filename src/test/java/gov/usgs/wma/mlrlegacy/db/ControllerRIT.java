@@ -65,18 +65,18 @@ public class ControllerRIT extends BaseControllerIT {
 	}
 	
 	@Test
-	public void getMonitoringLocationByNameFound() throws Exception {
+	public void getMonitoringLocationByNormalizedNameFound() throws Exception {
 		HttpEntity<String> entity;
 		entity = new HttpEntity<String>("", getUnauthorizedHeaders());
-		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?stationName=station_nm", HttpMethod.GET, entity, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?normalizedStationName=STATIONIX", HttpMethod.GET, entity, String.class);
 		assertEquals(200, responseEntity.getStatusCodeValue());
 		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 
 	@Test
-	public void getMonitoringLocationByNameNotFound() throws Exception {
+	public void getMonitoringLocationByNormalizedNameNotFound() throws Exception {
 		HttpEntity<String> entity = new HttpEntity<>("", getUnauthorizedHeaders());
-		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?stationName=does_not_exist", HttpMethod.GET, entity, String.class);
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?normalizedStationName=DOESNOTEXIST", HttpMethod.GET, entity, String.class);
 		assertEquals(404, responseEntity.getStatusCodeValue());
 		JSONAssert.assertEquals("[]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}

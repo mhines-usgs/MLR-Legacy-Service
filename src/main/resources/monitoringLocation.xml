@@ -110,10 +110,10 @@
         	and site_no = #{siteNumber, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
     </select>
     
-    <select id="getByName" parameterType="Map" resultMap="result">
+    <select id="getByNormalizedName" parameterType="Map" resultMap="result">
         select <include refid="baseCols"/>
         from <include refid="schemaName"/>legacy_location
-		where station_nm = #{stationName, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
+		where station_ix = #{normalizedStationName, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
     </select>
 
     <insert id="create" parameterType="MonitoringLocation" useGeneratedKeys="true" keyProperty="id">
