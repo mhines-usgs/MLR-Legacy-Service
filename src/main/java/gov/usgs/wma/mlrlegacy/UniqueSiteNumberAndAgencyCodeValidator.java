@@ -4,6 +4,7 @@ package gov.usgs.wma.mlrlegacy;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -34,27 +35,22 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseMonitoringLocati
 	 * @return
 	 */
 	@Override
-	protected ValidationResult validateUpdate(MonitoringLocation monitoringLocationUpdate) {
+	protected ValidationResult validateUpdate(MonitoringLocation mlUpdate) {
 		boolean valid = true;
 		List<String> msgs = new ArrayList<>();
-		//it's OK if the stationIx isn't populated because it could be provided in the database
-		if (null != monitoringLocationUpdate.getStationIx()) {
+		if (null != mlUpdate.getAgencyCode() && null != mlUpdate.getSiteNumber()) {
 			Map<String, Object> filters = new HashMap<>();
-			filters.put(Controller.NORMALIZED_STATION_NAME, monitoringLocationUpdate.getStationIx());
-			List<MonitoringLocation> existingMonitoringLocations = mlDao.getByNormalizedName(filters);
-			if (1 == existingMonitoringLocations.size()) {
-				//it's OK if there's one existing record as long as it has the same siteNumber and site
-				MonitoringLocation otherMl = existingMonitoringLocations.get(0);
-				valid = sameId(monitoringLocationUpdate, otherMl);
-			} else if (1 < existingMonitoringLocations.size()) {
-				valid = false;
-			}
-			if (!valid) {
-				String msg = buildDuplicateStationIxErrorMessage(monitoringLocationUpdate, existingMonitoringLocations);
-				msgs.add(msg);
+			filters.put(Controller.AGENCY_CODE, mlUpdate.getAgencyCode());
+			filters.put(Controller.SITE_NUMBER, mlUpdate.getSiteNumber());
+			MonitoringLocation existingMonitoringLocation = mlDao.getByAK(filters);
+			if (existingMonitoringLocation != null) {
+				if (isCreate(mlUpdate) || sameId(existingMonitoringLocation, mlUpdate)) {
+					valid = false;
+					msgs.add(buildDuplicateSiteIdAndAgencyCodeMessage(mlUpdate, existingMonitoringLocation));
+				}
 			}
 		}
-		ValidationResult result = new ValidationResultImpl(valid, msgs);
+		ValidationResultImpl result = new ValidationResultImpl(valid, msgs);
 		return result;
 	}
 	
@@ -63,24 +59,22 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseMonitoringLocati
 	 * @return
 	 */
 	@Override
-	protected ValidationResult validateCreate(MonitoringLocation monitoringLocationCreation) {
-		boolean valid;
+	protected ValidationResult validateCreate(MonitoringLocation mlCreation) {
+		boolean valid = true;
 		List<String> msgs = new ArrayList<>();
-
-		if(null == monitoringLocationCreation.getStationIx()) {
-			//creations must define a stationIx
-			valid = false;
-		} else {
+		if (null != mlCreation.getAgencyCode() && null != mlCreation.getSiteNumber()) {
 			Map<String, Object> filters = new HashMap<>();
-			filters.put(Controller.NORMALIZED_STATION_NAME, monitoringLocationCreation.getStationIx());
-			List<MonitoringLocation> existingMonitoringLocations = mlDao.getByNormalizedName(filters);
-			valid = existingMonitoringLocations.isEmpty();
-			if (!valid) {
-				String msg = buildDuplicateStationIxErrorMessage(monitoringLocationCreation, existingMonitoringLocations);
-				msgs.add(msg);
+			filters.put(Controller.AGENCY_CODE, mlCreation.getAgencyCode());
+			filters.put(Controller.SITE_NUMBER, mlCreation.getSiteNumber());
+			MonitoringLocation existingMonitoringLocation = mlDao.getByAK(filters);
+			if (existingMonitoringLocation != null) {
+				if (isCreate(mlCreation) || sameId(existingMonitoringLocation, mlCreation)) {
+					valid = false;
+					msgs.add(buildDuplicateSiteIdAndAgencyCodeMessage(mlCreation, existingMonitoringLocation));
+				}
 			}
 		}
-		ValidationResult result = new ValidationResultImpl(valid, msgs);
+		ValidationResultImpl result = new ValidationResultImpl(valid, msgs);
 		return result;
 	}
 	
@@ -90,12 +84,12 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseMonitoringLocati
 	 * @param existingMls
 	 * @return human-facing error message
 	 */
-	protected String buildDuplicateStationIxErrorMessage(MonitoringLocation ml, Collection<MonitoringLocation> existingMls) {
+	protected String buildDuplicateSiteIdAndAgencyCodeMessage(MonitoringLocation ml, MonitoringLocation existingMl) {
 		String msg = "The supplied monitoring location had a duplicate normalized station name (stationIx): '" +
 			ml.getStationIx() + "'.\n"; 
-		msg += "The following " + existingMls.size() + " monitoring location(s) had the same normalized station name:\n";
+		msg += "The following monitoring location had the same normalized station name:\n";
 		
-		msg += serializeMls(existingMls);
+		msg += serializeMls(Arrays.asList(existingMl));
 		return msg;
 	}
 }
