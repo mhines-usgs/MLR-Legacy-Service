@@ -6,7 +6,7 @@ import javax.validation.constraints.Digits;
 
 import org.hibernate.validator.constraints.Length;
 
-@UniqueKey
+@UniqueKey(groups = {javax.validation.groups.Default.class, UniqueMonitoringLocation.class})
 public class MonitoringLocation {
 	private BigInteger id;
 	
