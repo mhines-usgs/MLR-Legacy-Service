@@ -1,5 +1,9 @@
 package gov.usgs.wma.mlrlegacy;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -8,16 +12,25 @@ import java.util.stream.Collectors;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValidator<UniqueKey, MonitoringLocation> {
+	private static transient final Logger LOG = LoggerFactory.getLogger(UniqueKeyValidatorForMonitoringLocation.class);
+	
+	private final MonitoringLocationDao dao;
+	private final ObjectMapper objectMapper;
 	
 	@Autowired
-	private MonitoringLocationDao dao;
-
+	public UniqueKeyValidatorForMonitoringLocation(MonitoringLocationDao dao, ObjectMapper objectMapper) {
+		this.dao = dao;
+		this.objectMapper = objectMapper;
+	}
+	
 	@Override
 	public void initialize(UniqueKey constraintAnnotation) {
 		// Nothing for us to do here at this time.
@@ -54,8 +67,13 @@ public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValida
 			if (existingMonitoringLocation != null) {
 				if (isCreate(newOrUpdatedMonitoringLocation) || sameId(existingMonitoringLocation, newOrUpdatedMonitoringLocation)) {
 					valid = false;
+					String msg = "Monitoring Locations with Duplicate Agency Code and Site Number were found:\n";
+					msg += serializeMls(Arrays.asList(existingMonitoringLocation));
 					context.disableDefaultConstraintViolation();
-					context.buildConstraintViolationWithTemplate("Duplicate Agency Code and Site Number found in MLR.").addPropertyNode(Controller.SITE_NUMBER).addConstraintViolation();
+					context.buildConstraintViolationWithTemplate(msg)
+						.addPropertyNode(Controller.SITE_NUMBER)
+						.addPropertyNode(Controller.AGENCY_CODE)
+						.addConstraintViolation();
 				}
 			}
 		}
@@ -121,19 +139,25 @@ public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValida
 	 */
 	protected boolean isValidNormalizedStationNameCreate(MonitoringLocation monitoringLocationCreation, ConstraintValidatorContext context) {
 		boolean valid;
+		String msg = "";
 		if(null == monitoringLocationCreation.getStationIx()) {
 			//creations must define a stationIx
 			valid = false;
+			msg = "The Monitoring Location did not define a required field: the normalized station name (stationIx)";
 		} else {
 			Map<String, Object> filters = new HashMap<>();
 			filters.put(Controller.NORMALIZED_STATION_NAME, monitoringLocationCreation.getStationIx());
 			List<MonitoringLocation> existingMonitoringLocations = dao.getByNormalizedName(filters);
 			valid = existingMonitoringLocations.isEmpty();
 			if (!valid) {
-				String msg = buildDuplicateStationIxErrorMessage(monitoringLocationCreation, existingMonitoringLocations);
+				msg = buildDuplicateStationIxErrorMessage(monitoringLocationCreation, existingMonitoringLocations);
 				context.disableDefaultConstraintViolation();
 				context.buildConstraintViolationWithTemplate(msg).addPropertyNode(Controller.NORMALIZED_STATION_NAME).addConstraintViolation();
 			}
+		}
+		if (!valid) {
+			context.disableDefaultConstraintViolation();
+			context.buildConstraintViolationWithTemplate(msg).addPropertyNode(Controller.NORMALIZED_STATION_NAME).addConstraintViolation();
 		}
 		
 		return valid;
@@ -172,6 +196,27 @@ public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValida
 	
 	/**
 	 * 
+	 * @param mls
+	 * @return 
+	 */
+	protected String serializeMls(Collection<MonitoringLocation> mls) {
+		List<String> mlMsgs = new ArrayList<>();
+		for (MonitoringLocation ml : mls) {
+			String existingMlMsg;
+			try {
+				existingMlMsg = objectMapper.writeValueAsString(ml);
+			} catch (JsonProcessingException ex) {
+				existingMlMsg = "{\"msg\":\"error serializing monitoring location\"}";
+				LOG.warn("Problem serializing monitoring location", ex);
+			}
+			mlMsgs.add(existingMlMsg);
+		}
+		String msg = "[" + String.join(",", mlMsgs) + "]";
+		return msg;
+	}
+	
+	/**
+	 * 
 	 * @param ml
 	 * @param existingMls
 	 * @return human-facing error message
@@ -181,9 +226,7 @@ public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValida
 		String msg = "The supplied monitoring location had a duplicate normalized station name (stationIx): '" +
 			ml.getStationIx() + "'.\n"; 
 		msg += "The following " + existingMls.size() + " monitoring location(s) had the same normalized station name: ";
-		List<String> existingMlsMsgs = existingMls.stream().map(MonitoringLocation::toString).collect(Collectors.toList());
-		String existingMlsMsg = String.join(",", existingMlsMsgs);
-		msg+= existingMlsMsg;
+		msg += serializeMls(existingMls);
 		return msg;
 	}
 }

@@ -1,5 +1,6 @@
 package gov.usgs.wma.mlrlegacy;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
+import java.util.stream.Collectors;
 
 @Api(tags={"Legacy Monitoring Locations"})
 @RestController
@@ -39,6 +41,8 @@ public class Controller {
 	private MonitoringLocationDao mLDao;
 	@Autowired
 	private Validator validator;
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	public static final String UNKNOWN_USERNAME = "unknown ";
 	public static final String AGENCY_CODE = "agencyCode";
@@ -80,7 +84,19 @@ public class Controller {
 		}
 		return ml;
 	}
-
+	
+	@PostMapping("/validate")
+	public List<String> validateUniqueMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
+		Set<ConstraintViolation<MonitoringLocation>> violations = validator.validate(ml, UniqueMonitoringLocation.class);
+		if(violations.isEmpty()) {
+			response.setStatus(200);
+		} else {
+			response.setStatus(406);
+		}
+		List<String> msgs = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
+		return msgs;
+	}
+	
 	@GetMapping("/{id}")
 	public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id, HttpServletResponse response) {
 		MonitoringLocation ml = mLDao.getById(NumberUtils.parseNumber(id, BigInteger.class));

@@ -179,7 +179,7 @@ public class ControllerTest {
 		newMl.setSiteNumber("12345678");
 		newMl.setId(BigInteger.ONE);
 
-		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
+		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\", \"stationIx\":\"ABC\"}";
 
 		given(dao.create(any(MonitoringLocation.class))).willReturn(BigInteger.ONE);
 		given(dao.getById(BigInteger.ONE)).willReturn(newMl);
