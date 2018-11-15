@@ -13,6 +13,8 @@ import org.hibernate.validator.constraints.Length;
 public class MonitoringLocation {
 	private BigInteger id;
 	
+	private String transactionType;
+	
 	@Length(min=0, max=5)
 	private String agencyCode;
 	
@@ -192,7 +194,14 @@ public class MonitoringLocation {
 	public void setId(BigInteger id) {
 		this.id = id;
 	}
+	
+	public String getTransactionType() {
+		return transactionType;
+	}
 
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
 	public String getAgencyCode() {
 		return agencyCode;
 	}
