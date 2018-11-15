@@ -52,6 +52,12 @@ public class ControllerTest {
 	private MonitoringLocationDao dao;
 
 	@MockBean
+	private UniqueNormalizedStationNameValidator uniqueNormalizedStationNameValidator;
+	
+	@MockBean
+	private UniqueSiteIdAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator;
+	
+	@MockBean
 	private Authentication authentication;
 
 	@MockBean
@@ -174,13 +180,16 @@ public class ControllerTest {
 
 	@Test
 	public void givenML_whenCreate_thenReturnMLWithId() throws Exception {
+		final String SITE_NUMBER = "12345678";
 		MonitoringLocation newMl = new MonitoringLocation();
 		newMl.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
-		newMl.setSiteNumber("12345678");
+		newMl.setSiteNumber(SITE_NUMBER);
 		newMl.setId(BigInteger.ONE);
 
-		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\", \"stationIx\":\"ABC\"}";
-
+		String requestBody = "{\"agencyCode\": \"" + BaseIT.DEFAULT_AGENCY_CODE+ "\", \"siteNumber\": \"" + SITE_NUMBER +"\", \"stationIx\":\"ABC\"}";
+		given(uniqueNormalizedStationNameValidator.isValid(any(), any())).willReturn(true);
+		given(uniqueSiteIdAndAgencyCodeValidator.isValid(any(), any())).willReturn(true);
+		
 		given(dao.create(any(MonitoringLocation.class))).willReturn(BigInteger.ONE);
 		given(dao.getById(BigInteger.ONE)).willReturn(newMl);
 
@@ -193,15 +202,18 @@ public class ControllerTest {
 
 	@Test
 	public void givenML_whenUpdate_thenReturnUpdatedML() throws Exception {
-		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
+		final String SITE_NUMBER = "12345678";
+		String requestBody = "{\"agencyCode\": \"" + BaseIT.DEFAULT_AGENCY_CODE + "\", \"siteNumber\": \"" + SITE_NUMBER +"\"}";
 		MonitoringLocation ml = new MonitoringLocation();
 
 		ml.setId(BigInteger.ONE);
 		ml.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
-		ml.setSiteNumber("12345678");
+		ml.setSiteNumber(SITE_NUMBER);
 
 		Mockito.doNothing().when(dao).update(any(MonitoringLocation.class));
 		given(dao.getById(BigInteger.ONE)).willReturn(ml);
+		given(uniqueNormalizedStationNameValidator.isValid(any(), any())).willReturn(true);
+		given(uniqueSiteIdAndAgencyCodeValidator.isValid(any(), any())).willReturn(true);
 
 		mvc.perform(put("/monitoringLocations/1").content(requestBody).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
