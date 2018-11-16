@@ -31,18 +31,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Api(tags={"Legacy Monitoring Locations"})
 @RestController
 @RequestMapping("/monitoringLocations")
 public class Controller {
-
+	private static final transient Logger LOG = LoggerFactory.getLogger(Controller.class);
+	
 	@Autowired
 	private MonitoringLocationDao mLDao;
 	@Autowired
 	private Validator validator;
-	@Autowired
-	private ObjectMapper objectMapper;
 
 	public static final String UNKNOWN_USERNAME = "unknown ";
 	public static final String AGENCY_CODE = "agencyCode";
@@ -94,6 +95,7 @@ public class Controller {
 			response.setStatus(406);
 		}
 		List<String> msgs = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
+		LOG.debug("Returned the following validation messages:" + String.join(",", msgs));
 		return msgs;
 	}
 	

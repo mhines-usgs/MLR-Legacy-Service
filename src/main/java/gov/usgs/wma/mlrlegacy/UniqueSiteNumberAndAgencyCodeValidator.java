@@ -58,11 +58,13 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseUniqueMonitoring
 							existingMonitoringLocation.getAgencyCode(),
 							existingMonitoringLocation.getSiteNumber()
 						);
+						msg += "\nExisting location:\n";
 						msg += serializeMls(Arrays.asList(existingMonitoringLocation));
 					}
 				} else {
 					valid = false;
-					msg = "Unable to classify parameterized Monitoring Location as a Create, Update, or Patch.";
+					msg = "Unable to classify Monitoring Location as a Create, Update, or Patch.\n";
+					msg += serializeMls(Arrays.asList(newOrUpdatedMonitoringLocation));
 				}
 			}
 		}
