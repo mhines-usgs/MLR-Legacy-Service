@@ -55,7 +55,7 @@ public class ControllerTest {
 	private UniqueNormalizedStationNameValidator uniqueNormalizedStationNameValidator;
 	
 	@MockBean
-	private UniqueSiteIdAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator;
+	private UniqueSiteNumberAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator;
 	
 	@MockBean
 	private Authentication authentication;

@@ -2,6 +2,7 @@ package gov.usgs.wma.mlrlegacy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,14 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * Common functionality for validators verifying MonitoringLocation uniqueness
  * 
  */
 public abstract class BaseUniqueMonitoringLocationValidator {
 
 	private static transient final Logger LOG = LoggerFactory.getLogger(BaseUniqueMonitoringLocationValidator.class);
 	protected static final String TRANSACTION_TYPE = "transactionType";
-
+	public static final String SERIALIZATION_ERROR_MESSAGE = "{\"msg\":\"error serializing monitoring location\"}";
 	protected final MonitoringLocationDao dao;
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
@@ -33,7 +34,7 @@ public abstract class BaseUniqueMonitoringLocationValidator {
 	 * @return true if it's a create (as opposed to an update)
 	 */
 	protected boolean isCreate(MonitoringLocation ml) {
-		boolean isCreate = null == ml.getId();
+		boolean isCreate = "A".equals(ml.getTransactionType());
 		return isCreate;
 	}
 	/**
@@ -42,26 +43,41 @@ public abstract class BaseUniqueMonitoringLocationValidator {
 	 * @return true if it's an update (as opposed to a create)
 	 */	
 	protected boolean isUpdate(MonitoringLocation ml) {
-		boolean isUpdate = !isCreate(ml);
+		boolean isUpdate = 
+			"M".equals(ml.getTransactionType())
+			&&
+			null != ml.getId();
+		
 		return isUpdate;
 	}
 	
+	protected boolean isPatch(MonitoringLocation ml) {
+		boolean isPatch =
+			"M".equals((ml.getTransactionType()))
+			&&
+			null == ml.getId();
+		return isPatch;
+	}
 	/**
 	 * 
 	 * @param ml1
 	 * @param ml2
-	 * @return true if they have the same Id, false otherwise
+	 * @return true if they have the same agency code and site number,
+	 * false otherwise
 	 */
-	protected boolean sameId(MonitoringLocation ml1, MonitoringLocation ml2) {
-		//It's better to use .compareTo() than .equals() for BigDecimals
-		boolean same = 0 == ml1.getId().compareTo(ml2.getId());
+	protected boolean same(MonitoringLocation ml1, MonitoringLocation ml2) {
+		boolean same = Objects.equal(ml1.getAgencyCode(), ml2.getAgencyCode())
+			&& Objects.equal(ml1.getSiteNumber(), ml2.getSiteNumber());
 		return same;
 	}
 	
 	/**
-	 * 
+	 * Serializes each MonitoringLocation as JSON. If a MonitoringLocation
+	 * can't be serialized, the String 
+	 * `BaseUniqueMonitoringLocationValidator.SERIALIZATION_ERROR_MESSAGE` 
+	 * is used instead
 	 * @param mls
-	 * @return 
+	 * @return a String with a JSON Array of MonitoringLocations
 	 */
 	protected String serializeMls(Collection<MonitoringLocation> mls) {
 		List<String> mlMsgs = new ArrayList<>();
@@ -70,7 +86,7 @@ public abstract class BaseUniqueMonitoringLocationValidator {
 			try {
 				existingMlMsg = getObjectMapper().writeValueAsString(ml);
 			} catch (JsonProcessingException ex) {
-				existingMlMsg = "{\"msg\":\"error serializing monitoring location\"}";
+				existingMlMsg = SERIALIZATION_ERROR_MESSAGE;
 				LOG.warn("Problem serializing monitoring location", ex);
 			}
 			mlMsgs.add(existingMlMsg);

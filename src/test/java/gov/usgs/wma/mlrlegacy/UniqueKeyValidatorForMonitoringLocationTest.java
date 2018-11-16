@@ -1,11 +1,6 @@
 package gov.usgs.wma.mlrlegacy;
 
 import javax.validation.ConstraintValidatorContext;
-import org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorContextImpl;
-import org.hibernate.validator.internal.engine.path.PathImpl;
-import org.hibernate.validator.spi.time.TimeProvider;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -16,26 +11,15 @@ import static org.mockito.Mockito.when;
  *
  */
 public class UniqueKeyValidatorForMonitoringLocationTest {
-	private UniqueSiteIdAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator;
+	private UniqueSiteNumberAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator;
 	private UniqueNormalizedStationNameValidator uniqueNormalizedStationNameValidator;
 	private UniqueKeyValidatorForMonitoringLocation instance;
 
 	@Before
 	public void setUp() {
-		uniqueSiteIdAndAgencyCodeValidator = mock(UniqueSiteIdAndAgencyCodeValidator.class);
+		uniqueSiteIdAndAgencyCodeValidator = mock(UniqueSiteNumberAndAgencyCodeValidator.class);
 		uniqueNormalizedStationNameValidator = mock(UniqueNormalizedStationNameValidator.class);
 		instance = new UniqueKeyValidatorForMonitoringLocation(uniqueSiteIdAndAgencyCodeValidator, uniqueNormalizedStationNameValidator);
-	}
-
-	private ConstraintValidatorContextImpl createEmptyConstraintValidatorContextImpl() {
-		PathImpl path = PathImpl.createRootPath();
-		path.addBeanNode();
-		TimeProvider timeProvider = mock(TimeProvider.class);
-		ConstraintValidatorContextImpl context = new ConstraintValidatorContextImpl(
-			null, timeProvider, path, null
-		);
-		context.disableDefaultConstraintViolation();
-		return context;
 	}
 
 	@Test
@@ -67,7 +51,7 @@ public class UniqueKeyValidatorForMonitoringLocationTest {
 		MonitoringLocation newOrUpdatedMonitoringLocation = mock(MonitoringLocation.class);
 		ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
 		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(false);
-		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(true);
+		when(uniqueNormalizedStationNameValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(true);
 		boolean result = instance.isValid(newOrUpdatedMonitoringLocation, context);
 		assertFalse(result);
 	}
@@ -77,7 +61,7 @@ public class UniqueKeyValidatorForMonitoringLocationTest {
 		MonitoringLocation newOrUpdatedMonitoringLocation = mock(MonitoringLocation.class);
 		ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
 		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(true);
-		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(false);
+		when(uniqueNormalizedStationNameValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(false);
 		boolean result = instance.isValid(newOrUpdatedMonitoringLocation, context);
 		assertFalse(result);
 	}
@@ -87,7 +71,7 @@ public class UniqueKeyValidatorForMonitoringLocationTest {
 		MonitoringLocation newOrUpdatedMonitoringLocation = mock(MonitoringLocation.class);
 		ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
 		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(false);
-		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(false);
+		when(uniqueNormalizedStationNameValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(false);
 		boolean result = instance.isValid(newOrUpdatedMonitoringLocation, context);
 		assertFalse(result);
 	}
@@ -97,8 +81,8 @@ public class UniqueKeyValidatorForMonitoringLocationTest {
 		MonitoringLocation newOrUpdatedMonitoringLocation = mock(MonitoringLocation.class);
 		ConstraintValidatorContext context = mock(ConstraintValidatorContext.class);
 		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(true);
-		when(uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(true);
+		when(uniqueNormalizedStationNameValidator.isValid(newOrUpdatedMonitoringLocation, context)).thenReturn(true);
 		boolean result = instance.isValid(newOrUpdatedMonitoringLocation, context);
-		assertFalse(result);
+		assertTrue(result);
 	}
 }

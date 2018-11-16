@@ -1,45 +1,111 @@
 package gov.usgs.wma.mlrlegacy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Collection;
+import java.util.Arrays;
 import javax.validation.ConstraintValidatorContext;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-/**
- *
- */
 public class UniqueNormalizedStationNameValidatorTest {
 	private MonitoringLocationDao dao;
+	private ConstraintValidatorContext context;
 	private UniqueNormalizedStationNameValidator instance;
 	
 	@Before
 	public void setUp() {
-		//most tests want a real object mapper
-		//...and a mocked DAO
 		dao = mock(MonitoringLocationDao.class);
+		context = ConstraintValidatorContextMockFactory.get();
 		instance = new UniqueNormalizedStationNameValidator(dao);
 	}
 	
-	/**
-	 * Test of isValid method, of class UniqueNormalizedStationNameValidator.
-	 */
-	@Ignore
 	@Test
-	public void testIsValid() {
-//		MonitoringLocation ml = new MonitoringLocation();
-//		ConstraintValidatorContext context = null;
-//		UniqueNormalizedStationNameValidator instance = null;
-//		boolean expResult = false;
-////		boolean result = instance.isValid(newOrUpdatedMonitoringLocation, context);
-//		assertEquals(expResult, result);
-//		// TODO review the generated test code and remove the default call to fail.
-//		fail("The test case is a prototype.");
+	public void testMissingStationIxOnCreate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("A");
+		ml.setStationIx(null);
+		boolean valid = instance.isValid(ml, context);
+		assertFalse(valid);
+	}
+	
+	@Test
+	public void testOneDuplicateFoundOnCreate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("A");
+		ml.setStationIx("WATERINGHOLE");
+		
+		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList(ml));
+		boolean valid = instance.isValid(ml, context);
+		assertFalse(valid);
+	}
+	
+	@Test
+	public void testManyDuplicatesFoundOnCreate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("A");
+		ml.setStationIx("WATERINGHOLE");
+		
+		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList(ml, ml, ml));
+		boolean valid = instance.isValid(ml, context);
+		assertFalse(valid);
+	}
+	
+	@Test
+	public void testNoDuplicateFoundOnCreate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("A");
+		ml.setStationIx("WATERINGHOLE");
+		
+		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList());
+		boolean valid = instance.isValid(ml, context);
+		assertTrue(valid);
+	}
+	
+	@Test
+	public void testMissingStationIxOnUpdate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("M");
+		ml.setStationIx(null);
+		boolean valid = instance.isValid(ml, context);
+		assertTrue(valid);
+	}
+	
+	@Test
+	public void testOneMatchingMLFoundOnUpdate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("M");
+		ml.setAgencyCode("USGS");
+		ml.setSiteNumber("1");
+		ml.setStationIx("WATERINGHOLE");
+		
+		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList(ml));
+		boolean valid = instance.isValid(ml, context);
+		assertTrue(valid);
+	}
+	
+	@Test
+	public void testManyDuplicatesFoundOnUpdate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("M");
+		ml.setAgencyCode("USGS");
+		ml.setSiteNumber("1");
+		ml.setStationIx("WATERINGHOLE");
+		
+		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList(ml, ml));
+		boolean valid = instance.isValid(ml, context);
+		assertFalse(valid);
+	}
+	
+	@Test
+	public void testNoDuplicateFoundOnUpdate() {
+		MonitoringLocation ml = new MonitoringLocation();
+		ml.setTransactionType("M");
+		ml.setStationIx("WATERINGHOLE");
+		
+		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList());
+		boolean valid = instance.isValid(ml, context);
+		assertTrue(valid);
 	}
 }

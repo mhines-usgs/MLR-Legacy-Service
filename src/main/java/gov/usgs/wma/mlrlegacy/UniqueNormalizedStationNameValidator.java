@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -59,9 +58,9 @@ public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLo
 			filters.put(Controller.NORMALIZED_STATION_NAME, monitoringLocationUpdate.getStationIx());
 			List<MonitoringLocation> existingMonitoringLocations = dao.getByNormalizedName(filters);
 			if (1 == existingMonitoringLocations.size()) {
-				//it's OK if there's one existing record as long as it has the same siteNumber and site
+				//it's OK if there's one existing record as long as it has the same siteNumber and agencyCode
 				MonitoringLocation otherMl = existingMonitoringLocations.get(0);
-				valid = sameId(monitoringLocationUpdate, otherMl);
+				valid = same(monitoringLocationUpdate, otherMl);
 			} else if (1 < existingMonitoringLocations.size()) {
 				valid = false;
 			}
@@ -94,8 +93,6 @@ public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLo
 			valid = existingMonitoringLocations.isEmpty();
 			if (!valid) {
 				msg = buildDuplicateStationIxErrorMessage(monitoringLocationCreation, existingMonitoringLocations);
-				context.disableDefaultConstraintViolation();
-				context.buildConstraintViolationWithTemplate(msg).addPropertyNode(Controller.NORMALIZED_STATION_NAME).addConstraintViolation();
 			}
 		}
 		if (!valid) {
