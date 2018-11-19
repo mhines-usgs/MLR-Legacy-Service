@@ -27,20 +27,21 @@ public abstract class BaseUniqueMonitoringLocationValidator {
 	}
 	
 	public abstract boolean isValid(MonitoringLocation newOrUpdatedMonitoringLocation, ConstraintValidatorContext context);
-		
+
 	/**
 	 * 
 	 * @param ml
-	 * @return true if it's a create (as opposed to an update)
+	 * @return true if it's a create (as opposed to an update or patch)
 	 */
 	protected boolean isCreate(MonitoringLocation ml) {
 		boolean isCreate = "A".equals(ml.getTransactionType());
 		return isCreate;
 	}
+
 	/**
 	 * 
 	 * @param ml
-	 * @return true if it's an update (as opposed to a create)
+	 * @return true if it's an update (as opposed to a create or a patch)
 	 */	
 	protected boolean isUpdate(MonitoringLocation ml) {
 		boolean isUpdate = 
@@ -50,7 +51,12 @@ public abstract class BaseUniqueMonitoringLocationValidator {
 		
 		return isUpdate;
 	}
-	
+
+	/**
+	 * 
+	 * @param ml
+	 * @return true if it's a patch (as opposed to a create or an update)
+	 */
 	protected boolean isPatch(MonitoringLocation ml) {
 		boolean isPatch =
 			"M".equals((ml.getTransactionType()))
@@ -58,6 +64,7 @@ public abstract class BaseUniqueMonitoringLocationValidator {
 			null == ml.getId();
 		return isPatch;
 	}
+
 	/**
 	 * 
 	 * @param ml1
