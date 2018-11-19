@@ -45,7 +45,7 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseUniqueMonitoring
 					msg = "An existing Monitoring Location with the same Agency Code and Site Number was found:\n";
 					msg += serializeMls(Arrays.asList(existingMonitoringLocation));
 				} else if (isUpdate(newOrUpdatedMonitoringLocation)){
-					if(isValidUpdate(newOrUpdatedMonitoringLocation, existingMonitoringLocation)){
+					if(isThisUpdateValid(newOrUpdatedMonitoringLocation, existingMonitoringLocation)){
 						valid = true;
 					} else {
 						valid = false;
@@ -77,11 +77,16 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseUniqueMonitoring
 		}
 		return valid;
 	}
-	
-	protected boolean isValidUpdate(MonitoringLocation newOrUpdatedMonitoringLocation, MonitoringLocation existingMl) {
-		boolean validUpdate = isUpdate(newOrUpdatedMonitoringLocation) 
-			&&
-			Objects.equals(newOrUpdatedMonitoringLocation.getId(), existingMl.getId());
+
+	/**
+	 * 
+	 * @param updatedMonitoringLocation the caller is responsible for 
+	 * ensuring that this is an update rather than a create or a patch.
+	 * @param existingMl
+	 * @return true if this is a valid update to the existing MonitoringLocation
+	 */
+	protected boolean isThisUpdateValid(MonitoringLocation updatedMonitoringLocation, MonitoringLocation existingMl) {
+		boolean validUpdate = Objects.equals(updatedMonitoringLocation.getId(), existingMl.getId());
 		return validUpdate;
 	}
 
