@@ -1,46 +1,44 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValidator<UniqueKey, MonitoringLocation> {
+	private static transient final Logger LOG = LoggerFactory.getLogger(UniqueKeyValidatorForMonitoringLocation.class);
+	
+	private final UniqueSiteNumberAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator;
+	
+	private final UniqueNormalizedStationNameValidator uniqueNormalizedStationNameValidator;
 	
 	@Autowired
-	private MonitoringLocationDao dao;
-
+	public UniqueKeyValidatorForMonitoringLocation(
+		UniqueSiteNumberAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator,
+		UniqueNormalizedStationNameValidator uniqueNormalizedStationNameValidator
+	) {
+		this.uniqueSiteIdAndAgencyCodeValidator = uniqueSiteIdAndAgencyCodeValidator;
+		this.uniqueNormalizedStationNameValidator = uniqueNormalizedStationNameValidator;
+	}
+	
 	@Override
 	public void initialize(UniqueKey constraintAnnotation) {
 		// Nothing for us to do here at this time.
 	}
 
 	@Override
-	public boolean isValid(MonitoringLocation value, ConstraintValidatorContext context) {
+	public boolean isValid(MonitoringLocation newOrUpdatedMonitoringLocation, ConstraintValidatorContext context) {
 		boolean valid = true;
-
-		if (null != value && null != context) {
-			if (null != value.getAgencyCode() && null != value.getSiteNumber()) {
-				Map<String, Object> filters = new HashMap<String,Object>();
-				filters.put(Controller.AGENCY_CODE, value.getAgencyCode());
-				filters.put(Controller.SITE_NUMBER, value.getSiteNumber());
-				MonitoringLocation monitoringLocation = dao.getByAK(filters);
-				if (monitoringLocation != null) {
-					if (null == value.getId() || 0 == monitoringLocation.getId().compareTo(value.getId())) {
-						valid = false;
-						context.disableDefaultConstraintViolation();
-						context.buildConstraintViolationWithTemplate("Duplicate Agency Code and Site Number found in MLR.").addPropertyNode(Controller.SITE_NUMBER).addConstraintViolation();
-					}
-				}
-			}
+		if (null != newOrUpdatedMonitoringLocation && null != context) {
+			valid = this.uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context);
+			valid &= this.uniqueNormalizedStationNameValidator.isValid(newOrUpdatedMonitoringLocation, context);
 		}
-
 		return valid;
 	}
+
 }

@@ -1,14 +1,27 @@
 package gov.usgs.wma.mlrlegacy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigInteger;
 
 import javax.validation.constraints.Digits;
 
 import org.hibernate.validator.constraints.Length;
 
-@UniqueKey
+@UniqueKey(groups = {
+	javax.validation.groups.Default.class,
+	UniqueMonitoringLocation.class
+})
 public class MonitoringLocation {
 	private BigInteger id;
+	
+	/**
+	 * This field is ignored during serialization, but included during
+	 * deserialization.
+	 * http://www.davismol.net/2015/03/21/jackson-using-jsonignore-and-jsonproperty-annotations-to-exclude-a-property-only-from-json-deserialization/
+	 */
+	@JsonIgnore
+	private String transactionType;
 	
 	@Length(min=0, max=5)
 	private String agencyCode;
@@ -189,7 +202,31 @@ public class MonitoringLocation {
 	public void setId(BigInteger id) {
 		this.id = id;
 	}
+	
+	/**
+	 * This field is never persisted in the database, but it is present on
+	 * incoming values posted to the web service. We @JsonIgnore this so that
+	 * no "transactionType" keys are included in the CRU services' responses
+	 * http://www.davismol.net/2015/03/21/jackson-using-jsonignore-and-jsonproperty-annotations-to-exclude-a-property-only-from-json-deserialization/
+	 */
+	@JsonIgnore
+	public String getTransactionType() {
+		return transactionType;
+	}
 
+	/**
+	 * We don't @JsonIgnore `setTransactionType()`, instead we @JsonProperty
+	 * it because we still want the CRU services to read this field from 
+	 * requests they receive.
+	 * http://www.davismol.net/2015/03/21/jackson-using-jsonignore-and-jsonproperty-annotations-to-exclude-a-property-only-from-json-deserialization/
+	 * 
+	 * @param transactionType 
+	 */
+	@JsonProperty
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+	
 	public String getAgencyCode() {
 		return agencyCode;
 	}
