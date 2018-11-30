@@ -24,9 +24,25 @@ public class ControllerRIT extends BaseControllerIT {
 	}
 
 	@Test
-	public void getMonitoringLocationsByAgencyCodeAndSiteNumberFound() throws Exception {
+	public void getMonitoringLocationsByAgencyCodeAndSiteNumberFoundUpperCase() throws Exception {
 		HttpEntity<String> entity = new HttpEntity<String>("", getUnauthorizedHeaders());
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?agencyCode=USGS&siteNumber=123456789012345", HttpMethod.GET, entity, String.class);
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals(getExpectedReadJson("oneMillion.json"), responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+
+	@Test
+	public void getMonitoringLocationsByAgencyCodeAndSiteNumberFoundLowerCase() throws Exception {
+		HttpEntity<String> entity = new HttpEntity<String>("", getUnauthorizedHeaders());
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?agencyCode=usgs&siteNumber=123456789012345", HttpMethod.GET, entity, String.class);
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals(getExpectedReadJson("oneMillion.json"), responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+
+	@Test
+	public void getMonitoringLocationsByAgencyCodeAndSiteNumberFoundMixedCase() throws Exception {
+		HttpEntity<String> entity = new HttpEntity<String>("", getUnauthorizedHeaders());
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?agencyCode=UsgS&siteNumber=123456789012345", HttpMethod.GET, entity, String.class);
 		assertEquals(200, responseEntity.getStatusCodeValue());
 		JSONAssert.assertEquals(getExpectedReadJson("oneMillion.json"), responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
