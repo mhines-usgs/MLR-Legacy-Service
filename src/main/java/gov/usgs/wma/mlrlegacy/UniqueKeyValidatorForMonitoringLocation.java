@@ -1,7 +1,6 @@
 package gov.usgs.wma.mlrlegacy;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.ConstraintValidator;
