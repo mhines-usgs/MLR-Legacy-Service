@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
