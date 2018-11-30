@@ -2,23 +2,14 @@ package gov.usgs.wma.mlrlegacy.db;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.jayway.jsonpath.JsonPath;
-import static gov.usgs.wma.mlrlegacy.db.BaseControllerIT.getAuthorizedHeaders;
-import static gov.usgs.wma.mlrlegacy.db.BaseIT.KNOWN_USER;
 import java.io.IOException;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import org.junit.Before;
 
 /**
  * Controller integration tests for Validation operations

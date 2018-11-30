@@ -135,6 +135,7 @@ public class BaseUniqueMonitoringLocationValidatorTest {
 	}
 	
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testSerializationError() throws JsonProcessingException {
 		ObjectMapper objectMapper = mock(ObjectMapper.class);
 		when(objectMapper.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
