@@ -1,6 +1,7 @@
 package gov.usgs.wma.mlrlegacy.db;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
@@ -15,8 +16,12 @@ import com.github.springtestdbunit.annotation.DatabaseSetup;
 import gov.usgs.wma.mlrlegacy.Controller;
 import gov.usgs.wma.mlrlegacy.MonitoringLocation;
 import gov.usgs.wma.mlrlegacy.MonitoringLocationDao;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
-
+/**
+ * DAO integration tests for Read operations
+ */
 @DatabaseSetup("classpath:/testData/setupOne/")
 public class MonitoringLocationDaoRIT extends BaseDaoIT {
 
@@ -62,7 +67,50 @@ public class MonitoringLocationDaoRIT extends BaseDaoIT {
 		MonitoringLocation location = dao.getByAK(params);
 		assertNull(location);
 	}
-		
+	
+	@Test
+	public void getByNormalizedStationName() {
+		final String MY_NORMALIZED_STATION_NAME = "STATIONIX";
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.NORMALIZED_STATION_NAME, MY_NORMALIZED_STATION_NAME);
+		List<MonitoringLocation> locations = dao.getByNormalizedName(params);
+		assertNotNull(locations);
+		assertEquals(1, locations.size());
+		MonitoringLocation location = locations.get(0);
+		assertOneMillion(location);
+	}
+	
+	/**
+	 * We want to ensure that the DAO returns multiple matching results,
+	 * while excluding non-matching results. Accordingly, we set up a db
+	 * with two matching results and one non-matching result.
+	 */
+	@DatabaseSetup("classpath:/testData/setupThree/")
+	@Test
+	public void getByStationNameMultipleResults() {
+		final String MY_NORMALIZED_STATION_NAME = "STATIONNM";
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.NORMALIZED_STATION_NAME, MY_NORMALIZED_STATION_NAME);
+		List<MonitoringLocation> locations = dao.getByNormalizedName(params);
+		assertNotNull(locations);
+
+		assertEquals(2, locations.size());
+		MonitoringLocation location0 = locations.get(0);
+		MonitoringLocation location1 = locations.get(1);
+
+		assertEquals(MY_NORMALIZED_STATION_NAME, location0.getStationIx());
+		assertEquals(MY_NORMALIZED_STATION_NAME, location1.getStationIx());
+		assertNotEquals(location0.getId(), location1.getId());
+	}
+
+	@Test
+	public void getByStationNameNotFound() {
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.NORMALIZED_STATION_NAME, "DOESNOTEXIST");
+		List<MonitoringLocation> locations = dao.getByNormalizedName(params);
+		assertEquals(0, locations.size());
+	}
+	
 	@Test
 	public void getById() {
 		MonitoringLocation location = dao.getById(ONE_MILLION);

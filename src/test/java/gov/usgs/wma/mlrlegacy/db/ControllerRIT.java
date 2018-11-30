@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 
-
+/**
+ * Controller integration tests for Read operations
+ */
 @DatabaseSetup("classpath:/testData/setupOne/")
 public class ControllerRIT extends BaseControllerIT {
 
@@ -76,6 +78,23 @@ public class ControllerRIT extends BaseControllerIT {
 		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations/1000001", HttpMethod.GET, entity, String.class);
 		assertEquals(404, responseEntity.getStatusCodeValue());
 		assertNull(responseEntity.getBody());
+	}
+	
+	@Test
+	public void getMonitoringLocationByNormalizedNameFound() throws Exception {
+		HttpEntity<String> entity;
+		entity = new HttpEntity<String>("", getUnauthorizedHeaders());
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?normalizedStationName=STATIONIX", HttpMethod.GET, entity, String.class);
+		assertEquals(200, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[" + getExpectedReadJson("oneMillion.json") + "]", responseEntity.getBody(), JSONCompareMode.STRICT);
+	}
+
+	@Test
+	public void getMonitoringLocationByNormalizedNameNotFound() throws Exception {
+		HttpEntity<String> entity = new HttpEntity<>("", getUnauthorizedHeaders());
+		ResponseEntity<String> responseEntity = restTemplate.exchange("/monitoringLocations?normalizedStationName=DOESNOTEXIST", HttpMethod.GET, entity, String.class);
+		assertEquals(404, responseEntity.getStatusCodeValue());
+		JSONAssert.assertEquals("[]", responseEntity.getBody(), JSONCompareMode.STRICT);
 	}
 
 	@Test

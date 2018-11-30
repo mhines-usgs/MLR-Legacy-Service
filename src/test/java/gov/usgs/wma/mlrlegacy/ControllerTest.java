@@ -16,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -35,6 +36,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import gov.usgs.wma.mlrlegacy.db.BaseIT;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 
 @RunWith(SpringRunner.class)
@@ -49,13 +53,19 @@ public class ControllerTest {
 	private MonitoringLocationDao dao;
 
 	@MockBean
+	private UniqueNormalizedStationNameValidator uniqueNormalizedStationNameValidator;
+	
+	@MockBean
+	private UniqueSiteNumberAndAgencyCodeValidator uniqueSiteIdAndAgencyCodeValidator;
+	
+	@MockBean
 	private Authentication authentication;
 
 	@MockBean
 	private SecurityContext securityContext;
 
 	@Test
-	public void givenReturnData_whenGetByAK_thenReturnMonitoringLocation() throws Exception {
+	public void givenReturnData_whenGetByAgencyCodeAndSiteNumber_thenReturnMonitoringLocation() throws Exception {
 		MonitoringLocation mlOne = new MonitoringLocation();
 
 		mlOne.setId(BigInteger.ONE);
@@ -75,6 +85,72 @@ public class ControllerTest {
 		mvc.perform(get("/monitoringLocations").params(cruParams))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("id", is(equalTo(1))));
+	}
+
+	@Test
+	public void givenReturnNoData_whenGetByAgencyCodeAndSiteNumber_thenReturn404() throws Exception {
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		cruParams.set(Controller.AGENCY_CODE, BaseIT.DEFAULT_AGENCY_CODE);
+		cruParams.set(Controller.SITE_NUMBER, "987654321");
+		
+		given(dao.getByNormalizedName(any())).willReturn(null);
+
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void givenReturnData_whenGetByStationName_thenReturnMonitoringLocation() throws Exception {
+		final String MY_NORMALIZED_STATION_NAME = "THELOCALWATERINGHOLE";
+		MonitoringLocation mlOne = new MonitoringLocation();
+
+		mlOne.setId(BigInteger.ZERO);
+		mlOne.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
+		mlOne.setSiteNumber("987654321");
+		mlOne.setStationName(MY_NORMALIZED_STATION_NAME);
+
+		MonitoringLocation mlTwo = new MonitoringLocation();
+		mlTwo.setId(BigInteger.ONE);
+		mlTwo.setAgencyCode("Some other agency");
+		mlTwo.setSiteNumber("123456");
+		mlTwo.setStationName(MY_NORMALIZED_STATION_NAME);
+
+		List<MonitoringLocation> monitoringLocations = Arrays.asList(mlOne, mlTwo);
+
+		Map<String, Object> params = new HashMap<>();
+		params.put(Controller.NORMALIZED_STATION_NAME, MY_NORMALIZED_STATION_NAME);
+
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		cruParams.set(Controller.NORMALIZED_STATION_NAME, MY_NORMALIZED_STATION_NAME);
+
+		given(dao.getByNormalizedName(params)).willReturn(monitoringLocations);
+
+		List<Integer> expectedIds = Arrays.asList(0, 1);
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$..['id']", is(equalTo(expectedIds))));
+	}
+
+	@Test
+	public void givenReturnNull_whenGetByStationName_thenReturn404() throws Exception {
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		cruParams.set(Controller.NORMALIZED_STATION_NAME, "STATIONY");
+
+		given(dao.getByNormalizedName(any())).willReturn(null);
+
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+			.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void givenReturnEmptyList_whenGetByStationName_thenReturn404() throws Exception {
+		MultiValueMap<String, String> cruParams = new LinkedMultiValueMap<>();
+		cruParams.set(Controller.NORMALIZED_STATION_NAME, "STATIONY");
+		List<MonitoringLocation> emptyList = new ArrayList<>();
+		given(dao.getByNormalizedName(any())).willReturn(emptyList);
+
+		mvc.perform(get("/monitoringLocations").params(cruParams))
+			.andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -105,13 +181,16 @@ public class ControllerTest {
 
 	@Test
 	public void givenML_whenCreate_thenReturnMLWithId() throws Exception {
+		final String SITE_NUMBER = "12345678";
 		MonitoringLocation newMl = new MonitoringLocation();
 		newMl.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
-		newMl.setSiteNumber("12345678");
+		newMl.setSiteNumber(SITE_NUMBER);
 		newMl.setId(BigInteger.ONE);
 
-		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
-
+		String requestBody = "{\"agencyCode\": \"" + BaseIT.DEFAULT_AGENCY_CODE+ "\", \"siteNumber\": \"" + SITE_NUMBER +"\", \"stationIx\":\"ABC\"}";
+		given(uniqueNormalizedStationNameValidator.isValid(any(), any())).willReturn(true);
+		given(uniqueSiteIdAndAgencyCodeValidator.isValid(any(), any())).willReturn(true);
+		
 		given(dao.create(any(MonitoringLocation.class))).willReturn(BigInteger.ONE);
 		given(dao.getById(BigInteger.ONE)).willReturn(newMl);
 
@@ -124,15 +203,18 @@ public class ControllerTest {
 
 	@Test
 	public void givenML_whenUpdate_thenReturnUpdatedML() throws Exception {
-		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
+		final String SITE_NUMBER = "12345678";
+		String requestBody = "{\"agencyCode\": \"" + BaseIT.DEFAULT_AGENCY_CODE + "\", \"siteNumber\": \"" + SITE_NUMBER +"\"}";
 		MonitoringLocation ml = new MonitoringLocation();
 
 		ml.setId(BigInteger.ONE);
 		ml.setAgencyCode(BaseIT.DEFAULT_AGENCY_CODE);
-		ml.setSiteNumber("12345678");
+		ml.setSiteNumber(SITE_NUMBER);
 
 		Mockito.doNothing().when(dao).update(any(MonitoringLocation.class));
 		given(dao.getById(BigInteger.ONE)).willReturn(ml);
+		given(uniqueNormalizedStationNameValidator.isValid(any(), any())).willReturn(true);
+		given(uniqueSiteIdAndAgencyCodeValidator.isValid(any(), any())).willReturn(true);
 
 		mvc.perform(put("/monitoringLocations/1").content(requestBody).contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())

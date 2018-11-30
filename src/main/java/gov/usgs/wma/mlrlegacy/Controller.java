@@ -1,11 +1,15 @@
 package gov.usgs.wma.mlrlegacy;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +30,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Api(tags={"Legacy Monitoring Locations"})
 @RestController
 @RequestMapping("/monitoringLocations")
 public class Controller {
-
+	private static final transient Logger LOG = LoggerFactory.getLogger(Controller.class);
+	
 	@Autowired
 	private MonitoringLocationDao mLDao;
 	@Autowired
@@ -41,8 +49,9 @@ public class Controller {
 	public static final String AGENCY_CODE = "agencyCode";
 	public static final String SITE_NUMBER = "siteNumber";
 	public static final String UPDATED_BY = "updatedBy";
+	public static final String NORMALIZED_STATION_NAME = "normalizedStationName";
 
-	@GetMapping()
+	@GetMapping(params = {AGENCY_CODE, SITE_NUMBER})
 	public MonitoringLocation getMonitoringLocations(
 		@RequestParam(name = AGENCY_CODE) String agencyCode,
 		@RequestParam(name = SITE_NUMBER) String siteNumber,
@@ -57,6 +66,39 @@ public class Controller {
 		return ml;
 	}
 
+	/**
+	 * 
+	 * @param normalizedStationName also known as "station_ix"
+	 * @param response
+	 * @return an array of the matching monitoring locations
+	 */
+	@GetMapping(params = NORMALIZED_STATION_NAME)
+	public List<MonitoringLocation> getMonitoringLocationsByNormalizedName(
+		@RequestParam(name = NORMALIZED_STATION_NAME) String normalizedStationName,
+		HttpServletResponse response) {
+		Map<String, Object> params = new HashMap<>();
+		params.put(NORMALIZED_STATION_NAME, normalizedStationName);
+		
+		List<MonitoringLocation> ml = mLDao.getByNormalizedName(params);
+		if (null == ml || ml.isEmpty()) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+		}
+		return ml;
+	}
+	
+	@PostMapping("/validate")
+	public List<String> validateUniqueMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
+		Set<ConstraintViolation<MonitoringLocation>> violations = validator.validate(ml, UniqueMonitoringLocation.class);
+		if(violations.isEmpty()) {
+			response.setStatus(200);
+		} else {
+			response.setStatus(406);
+		}
+		List<String> msgs = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
+		LOG.debug("Returned the following validation messages:" + String.join(",", msgs));
+		return msgs;
+	}
+	
 	@GetMapping("/{id}")
 	public MonitoringLocation getMonitoringLocation(@PathVariable("id") String id, HttpServletResponse response) {
 		MonitoringLocation ml = mLDao.getById(NumberUtils.parseNumber(id, BigInteger.class));

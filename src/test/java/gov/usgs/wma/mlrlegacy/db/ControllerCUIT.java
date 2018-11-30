@@ -15,6 +15,9 @@ import com.github.springtestdbunit.annotation.ExpectedDatabase;
 import com.github.springtestdbunit.assertion.DatabaseAssertionMode;
 import com.jayway.jsonpath.JsonPath;
 
+/**
+ * Controller integration tests for Create and Update operations
+  */
 public class ControllerCUIT extends BaseControllerIT {
 
 	@Test

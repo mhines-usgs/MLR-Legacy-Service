@@ -4,6 +4,7 @@ package gov.usgs.wma.mlrlegacy;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.context.request.WebRequest;
 
 public class GlobalDefaultExceptionHandlerTest {
@@ -83,5 +85,17 @@ public class GlobalDefaultExceptionHandlerTest {
 		Map<String, String> actual = controller.handleUncaughtException(new HttpMessageNotReadableException("ok to see\nhide this\nand this"), request, response);
 		assertEquals(expected, actual.get(GlobalDefaultExceptionHandler.ERROR_MESSAGE_KEY));
 		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
-	}	
+	}
+	
+	@Test
+	public void handleUnsatisfiedServletRequestParameterException() throws IOException {
+		HttpServletResponse response = new MockHttpServletResponse();
+		String expected = "Parameter conditions \"a, b\" not met for actual request parameters: c={3}";
+		String[] paramConditions = new String[] {"a", "b"};
+		Map<String, String[]> params = new HashMap<>();
+		params.put("c", new String[]{"3"});
+		Map<String, String> actual = controller.handleUncaughtException(new UnsatisfiedServletRequestParameterException(paramConditions, params), request, response);
+		assertEquals(expected, actual.get(GlobalDefaultExceptionHandler.ERROR_MESSAGE_KEY));
+		assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatus());
+	}
 }

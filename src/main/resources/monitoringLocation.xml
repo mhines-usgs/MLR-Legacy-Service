@@ -109,6 +109,12 @@
 		where agency_cd = #{agencyCode, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
         	and site_no = #{siteNumber, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
     </select>
+    
+    <select id="getByNormalizedName" parameterType="Map" resultMap="result">
+        select <include refid="baseCols"/>
+        from <include refid="schemaName"/>legacy_location
+		where station_ix = #{normalizedStationName, jdbcType=CHAR, typeHandler=NotNullTypeHandler}
+    </select>
 
     <insert id="create" parameterType="MonitoringLocation" useGeneratedKeys="true" keyProperty="id">
         insert into <include refid="schemaName"/>legacy_location(<include refid="dataCols" />, <include refid="timestampCols" />)

@@ -1,6 +1,7 @@
 package gov.usgs.wma.mlrlegacy;
 
 import java.math.BigInteger;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -17,6 +18,10 @@ public class MonitoringLocationDao {
 
 	public MonitoringLocation getByAK(Map<String, Object> queryParams) {
 		return sqlSession.selectOne("getByAK", queryParams);
+	}
+
+	public List<MonitoringLocation> getByNormalizedName(Map<String, Object> queryParams) {
+		return sqlSession.selectList("getByNormalizedName", queryParams);
 	}
 
 	public MonitoringLocation getById(BigInteger id) {

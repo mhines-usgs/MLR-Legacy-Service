@@ -56,5 +56,6 @@
 	"created": "[createdDate]",
 	"createdBy": "[createdBy]",
 	"updated": "[updatedDate]",
-	"updatedBy": "[updatedBy]"
+	"updatedBy": "[updatedBy]",
+	"transactionType": "A"
 }
