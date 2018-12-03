@@ -30,4 +30,5 @@ hs_err_pid*
 /.CHANGELOG.md.html
 **.jks
 /local_keystore.jks.old
+/.vscode/
 /nbproject/

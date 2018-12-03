@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -57,7 +56,7 @@ public class Controller {
 		@RequestParam(name = SITE_NUMBER) String siteNumber,
 		HttpServletResponse response) {
 		Map<String, Object> params = new HashMap<>();
-		params.put(AGENCY_CODE, agencyCode);
+		params.put(AGENCY_CODE, agencyCode.toUpperCase());
 		params.put(SITE_NUMBER, siteNumber);
 		MonitoringLocation ml = mLDao.getByAK(params);
 		if (null == ml) {

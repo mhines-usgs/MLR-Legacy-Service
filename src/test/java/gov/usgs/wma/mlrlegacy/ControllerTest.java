@@ -15,10 +15,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +38,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import gov.usgs.wma.mlrlegacy.db.BaseIT;
-import java.util.Arrays;
+
 import springfox.documentation.spi.service.contexts.SecurityContext;
 
 @RunWith(SpringRunner.class)
@@ -232,6 +233,7 @@ public class ControllerTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void givenML_whenPatch_thenReturnUpdatedML() throws Exception {
 		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
 		MonitoringLocation ml = new MonitoringLocation();
@@ -250,6 +252,7 @@ public class ControllerTest {
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void givenNewML_whenPatch_thenStatusNotFound() throws Exception {
 		String requestBody = "{\"agencyCode\": \"USGS\", \"siteNumber\": \"12345678\"}";
 
