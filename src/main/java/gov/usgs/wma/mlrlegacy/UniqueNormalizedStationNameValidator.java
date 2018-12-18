@@ -1,12 +1,19 @@
 package gov.usgs.wma.mlrlegacy;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * No two monitoring locations should share the same normalized station 
@@ -110,11 +117,32 @@ public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLo
 	 * @return human-facing error message
 	 */
 	protected String buildDuplicateStationIxErrorMessage(MonitoringLocation ml, Collection<MonitoringLocation> existingMls) {
-		String msg = "The supplied monitoring location had a duplicate normalized station name (stationIx): '" +
-			ml.getStationIx() + "'.\n"; 
-		msg += "The following " + existingMls.size() + " monitoring location(s) had the same normalized station name: ";
-		msg += serializeMls(existingMls);
-		return msg;
+		ObjectMapper mapper = new ObjectMapper();
+		Map<String, String> msgMap = new HashMap<>();
+		String msgMapStr = "";
+		String msg = "Duplicate normalized station name locations found for '" +
+			ml.getStationIx() + "': ";
+		String duplicateStationNames = existingMls.stream()
+				.map(site -> 
+					site.getAgencyCode().trim() + "-" + site.getSiteNumber().trim() + 
+					", stateFipsCode: " + site.getStateFipsCode())
+				.collect(Collectors.joining("; "));
+		msg += duplicateStationNames ;
+		msgMap.put("stationIx", msg);
+		try {
+			msgMapStr = mapper.writeValueAsString(msgMap);
+		} catch (JsonGenerationException e) {
+			msgMapStr = msg;
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			msgMapStr = msg;
+			e.printStackTrace();
+		} catch (IOException e) {
+			msgMapStr = msg;
+			e.printStackTrace();
+		}
+		
+		return msgMapStr;
 	}
 
 }

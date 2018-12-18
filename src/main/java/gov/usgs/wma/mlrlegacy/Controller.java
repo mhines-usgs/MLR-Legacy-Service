@@ -2,6 +2,7 @@ package gov.usgs.wma.mlrlegacy;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +29,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.swagger.annotations.Api;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +92,12 @@ public class Controller {
 	}
 	
 	@PostMapping("/validate")
-	public List<String> validateUniqueMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
+	public Map<String, Object> validateUniqueMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		TypeReference<Map<String, String>> mapType = new TypeReference<Map<String, String>>() {};
+		Map<String, String> msgMap = new HashMap<>();
+		Map<String, Object> errorMap = new HashMap<>();
+		
 		Set<ConstraintViolation<MonitoringLocation>> violations = validator.validate(ml, UniqueMonitoringLocation.class);
 		if(violations.isEmpty()) {
 			response.setStatus(200);
@@ -94,8 +105,16 @@ public class Controller {
 			response.setStatus(406);
 		}
 		List<String> msgs = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
+		
+		if (msgs.size() > 0) {
+			String dupStationName = msgs.stream()
+					.filter(m -> m.contains("stationIx"))
+					.collect(Collectors.joining(""));
+			msgMap = mapper.readValue(dupStationName, mapType);
+			errorMap.put("error_message", msgMap);
+		}
 		LOG.debug("Returned the following validation messages:" + String.join(",", msgs));
-		return msgs;
+		return errorMap;
 	}
 	
 	@GetMapping("/{id}")

@@ -31,7 +31,7 @@ public class UniqueKeyValidatorForMonitoringLocation implements ConstraintValida
 		boolean valid = true;
 		if (null != newOrUpdatedMonitoringLocation && null != context) {
 			valid = this.uniqueSiteIdAndAgencyCodeValidator.isValid(newOrUpdatedMonitoringLocation, context);
-			valid &= this.uniqueNormalizedStationNameValidator.isValid(newOrUpdatedMonitoringLocation, context);
+			valid = this.uniqueNormalizedStationNameValidator.isValid(newOrUpdatedMonitoringLocation, context);
 		}
 		return valid;
 	}

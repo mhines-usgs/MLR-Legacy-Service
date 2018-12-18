@@ -34,6 +34,9 @@ public class UniqueNormalizedStationNameValidatorTest {
 	public void testOneDuplicateFoundOnCreate() {
 		MonitoringLocation ml = new MonitoringLocation();
 		ml.setTransactionType("A");
+		ml.setAgencyCode("USGS");
+		ml.setSiteNumber("123456789");
+		ml.setStateFipsCode("55");
 		ml.setStationIx("WATERINGHOLE");
 		
 		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList(ml));
@@ -45,6 +48,9 @@ public class UniqueNormalizedStationNameValidatorTest {
 	public void testManyDuplicatesFoundOnCreate() {
 		MonitoringLocation ml = new MonitoringLocation();
 		ml.setTransactionType("A");
+		ml.setAgencyCode("USGS");
+		ml.setSiteNumber("123456789");
+		ml.setStateFipsCode("55");
 		ml.setStationIx("WATERINGHOLE");
 		
 		when(dao.getByNormalizedName(any())).thenReturn(Arrays.asList(ml, ml, ml));
