@@ -29,8 +29,8 @@ public class ControllerValidateIT extends BaseControllerIT {
 		String responseBody = responseEntity.getBody();
 		assertEquals(responseBody, 200, responseEntity.getStatusCodeValue());
 
-		String[] msgs = (new ObjectMapper()).readValue(responseBody, String[].class);
-		assertEquals(0, msgs.length);
+		String msgs = responseBody;
+		assertTrue(msgs.equals("{}"));
 	}
 	
 	@DatabaseSetup("classpath:/testData/setupOne/")
@@ -43,8 +43,8 @@ public class ControllerValidateIT extends BaseControllerIT {
 		String responseBody = responseEntity.getBody();
 		assertEquals(responseBody, 406, responseEntity.getStatusCodeValue());
 		
-		String[] msgs = (new ObjectMapper()).readValue(responseBody, String[].class);
-		assertNotEquals(0, msgs.length);
+		String msgs = responseBody;
+		assertTrue(msgs.equals("{\"error_message\":{\"duplicate_site\":\"Duplicate Agency Code and Site Number found in MLR.\"}}"));
 	}
 	
 	@DatabaseSetup("classpath:/testData/setupOne/")
