@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import java.io.IOException;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Controller integration tests for Validation operations
@@ -57,8 +58,8 @@ public class ControllerValidateIT extends BaseControllerIT {
 		String responseBody = responseEntity.getBody();
 		assertEquals(responseBody, 200, responseEntity.getStatusCodeValue());
 		
-		String[] msgs = (new ObjectMapper()).readValue(responseBody, String[].class);
-		assertEquals(0, msgs.length);
+		String msgs = responseBody;
+		assertTrue(msgs.equals("{}"));
 	}
 
 }
