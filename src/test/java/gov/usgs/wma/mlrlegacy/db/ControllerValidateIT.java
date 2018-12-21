@@ -60,7 +60,7 @@ public class ControllerValidateIT extends BaseControllerIT {
 		assertEquals(responseBody, 406, responseEntity.getStatusCodeValue());
 		
 		String msgs = responseBody;
-		assertTrue(msgs.equals("{\"error_message\":{\"duplicate_site\":\"Duplicate Agency Code and Site Number found in MLR.\"}}"));
+		assertTrue(msgs.equals("{}"));
 	}
 	
 	@DatabaseSetup("classpath:/testData/setupOne/")
