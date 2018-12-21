@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -31,7 +30,7 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseUniqueMonitoring
 	@Override
 	public boolean isValid(MonitoringLocation newOrUpdatedMonitoringLocation, ConstraintValidatorContext context) {
 		boolean valid = true;
-		String msg = "";
+		String msg = "Duplicate Agency Code and Site Number found in MLR.";
 		if (null != newOrUpdatedMonitoringLocation.getAgencyCode() && null != newOrUpdatedMonitoringLocation.getSiteNumber()) {
 			Map<String, Object> filters = new HashMap<>();
 			filters.put(Controller.AGENCY_CODE, newOrUpdatedMonitoringLocation.getAgencyCode());
@@ -42,37 +41,22 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseUniqueMonitoring
 					valid = true;
 				} else if (isCreate(newOrUpdatedMonitoringLocation)){
 					valid = false;
-					msg = "An existing Monitoring Location with the same Agency Code and Site Number was found:\n";
-					msg += serializeMls(Arrays.asList(existingMonitoringLocation));
 				} else if (isUpdate(newOrUpdatedMonitoringLocation)){
 					if(isThisUpdateValid(newOrUpdatedMonitoringLocation, existingMonitoringLocation)){
 						valid = true;
 					} else {
 						valid = false;
-						msg = String.format(
-							"The proposed Monitoring Location Id (%s) was different from the Id of an existing Monitoring Location (%s)"
-							+ " even though both have the same Agency Code (%s) and Site Number(%s)."
-							+ "The Ids should match if the Agency Code and Site Number are the same.",
-							newOrUpdatedMonitoringLocation.getId().toString(),
-							existingMonitoringLocation.getId().toString(),
-							existingMonitoringLocation.getAgencyCode(),
-							existingMonitoringLocation.getSiteNumber()
-						);
-						msg += "\nExisting location:\n";
-						msg += serializeMls(Arrays.asList(existingMonitoringLocation));
 					}
 				} else {
 					valid = false;
-					msg = "Unable to classify Monitoring Location as a Create, Update, or Patch.\n";
-					msg += serializeMls(Arrays.asList(newOrUpdatedMonitoringLocation));
+					msg = "Unable to classify Monitoring Location as a Create, Update, or Patch.";
 				}
 			}
 		}
 		if(!valid) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(msg)
-				.addPropertyNode(Controller.SITE_NUMBER)
-				.addPropertyNode(Controller.AGENCY_CODE)
+				.addPropertyNode(Controller.DUPLICATE_SITE)
 				.addConstraintViolation();
 		}
 		return valid;

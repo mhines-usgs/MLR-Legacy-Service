@@ -4,7 +4,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import javax.validation.ConstraintValidatorContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLocationValidator {
-
+	private Logger log = LoggerFactory.getLogger(UniqueNormalizedStationNameValidator.class);
 	
 	public UniqueNormalizedStationNameValidator(@Autowired MonitoringLocationDao dao) {
 		super(dao);
@@ -97,7 +102,7 @@ public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLo
 		}
 		if (!valid) {
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(msg).addPropertyNode(Controller.NORMALIZED_STATION_NAME).addConstraintViolation();
+			context.buildConstraintViolationWithTemplate(msg).addPropertyNode(Controller.STATION_IX).addConstraintViolation();
 		}
 		
 		return valid;
@@ -110,10 +115,14 @@ public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLo
 	 * @return human-facing error message
 	 */
 	protected String buildDuplicateStationIxErrorMessage(MonitoringLocation ml, Collection<MonitoringLocation> existingMls) {
-		String msg = "The supplied monitoring location had a duplicate normalized station name (stationIx): '" +
-			ml.getStationIx() + "'.\n"; 
-		msg += "The following " + existingMls.size() + " monitoring location(s) had the same normalized station name: ";
-		msg += serializeMls(existingMls);
+		String msg = "Duplicate normalized station name locations found for '" +
+			ml.getStationIx() + "': ";
+		String duplicateStationNames = existingMls.stream()
+				.map(site -> 
+					site.getAgencyCode().trim() + "-" + site.getSiteNumber().trim() + 
+					", " + Controller.STATE_FIPS_CODE + ": " + site.getStateFipsCode())
+				.collect(Collectors.joining("; "));
+		msg += duplicateStationNames ;
 		return msg;
 	}
 
