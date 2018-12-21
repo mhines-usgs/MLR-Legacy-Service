@@ -49,22 +49,6 @@ public class ControllerValidateIT extends BaseControllerIT {
 	
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@Test
-	public void testCreateDupStnName() throws IOException {
-		agency = UPDATED_AGENCY_CODE;
-		siteNbr = UPDATED_SITE_NUMBER;
-		HttpEntity<String> entity = new HttpEntity<>(getInputJson("createFullMonitoringLocationDupStnName.json"), getUnauthorizedHeaders());
-
-		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URL, entity, String.class);
-
-		String responseBody = responseEntity.getBody();
-		assertEquals(responseBody, 406, responseEntity.getStatusCodeValue());
-		
-		String msgs = responseBody;
-		assertTrue(msgs.equals("{}"));
-	}
-	
-	@DatabaseSetup("classpath:/testData/setupOne/")
-	@Test
 	public void testPatchExistingLocation() throws IOException {
 		id = "1000000";
 		HttpEntity<String> entity = new HttpEntity<>(getInputJson("patchFullBlankMonitoringLocation.json"), getUnauthorizedHeaders());
