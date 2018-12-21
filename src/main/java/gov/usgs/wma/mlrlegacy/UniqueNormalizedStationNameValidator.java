@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +7,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintValidatorContext;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * No two monitoring locations should share the same normalized station 
@@ -22,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @Component
 public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLocationValidator {
-
+	private Logger log = LoggerFactory.getLogger(UniqueNormalizedStationNameValidator.class);
 	
 	public UniqueNormalizedStationNameValidator(@Autowired MonitoringLocationDao dao) {
 		super(dao);
@@ -104,7 +102,7 @@ public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLo
 		}
 		if (!valid) {
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(msg).addPropertyNode(Controller.NORMALIZED_STATION_NAME).addConstraintViolation();
+			context.buildConstraintViolationWithTemplate(msg).addPropertyNode(Controller.STATION_IX).addConstraintViolation();
 		}
 		
 		return valid;
@@ -117,32 +115,15 @@ public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLo
 	 * @return human-facing error message
 	 */
 	protected String buildDuplicateStationIxErrorMessage(MonitoringLocation ml, Collection<MonitoringLocation> existingMls) {
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> msgMap = new HashMap<>();
-		String msgMapStr = "";
 		String msg = "Duplicate normalized station name locations found for '" +
 			ml.getStationIx() + "': ";
 		String duplicateStationNames = existingMls.stream()
 				.map(site -> 
 					site.getAgencyCode().trim() + "-" + site.getSiteNumber().trim() + 
-					", stateFipsCode: " + site.getStateFipsCode())
+					", " + Controller.STATE_FIPS_CODE + ": " + site.getStateFipsCode())
 				.collect(Collectors.joining("; "));
 		msg += duplicateStationNames ;
-		msgMap.put("stationIx", msg);
-		try {
-			msgMapStr = mapper.writeValueAsString(msgMap);
-		} catch (JsonGenerationException e) {
-			msgMapStr = msg;
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			msgMapStr = msg;
-			e.printStackTrace();
-		} catch (IOException e) {
-			msgMapStr = msg;
-			e.printStackTrace();
-		}
-		
-		return msgMapStr;
+		return msg;
 	}
 
 }

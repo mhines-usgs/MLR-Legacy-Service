@@ -1,6 +1,5 @@
 package gov.usgs.wma.mlrlegacy;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -57,8 +56,7 @@ public class UniqueSiteNumberAndAgencyCodeValidator extends BaseUniqueMonitoring
 		if(!valid) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(msg)
-				.addPropertyNode(Controller.SITE_NUMBER)
-				.addPropertyNode(Controller.AGENCY_CODE)
+				.addPropertyNode(Controller.DUPLICATE_SITE)
 				.addConstraintViolation();
 		}
 		return valid;

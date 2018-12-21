@@ -28,9 +28,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.swagger.annotations.Api;
 import java.util.stream.Collectors;
 
@@ -51,8 +48,11 @@ public class Controller {
 	public static final String UNKNOWN_USERNAME = "unknown ";
 	public static final String AGENCY_CODE = "agencyCode";
 	public static final String SITE_NUMBER = "siteNumber";
+	public static final String DUPLICATE_SITE = "duplicate_site";
+	public static final String STATE_FIPS_CODE = "stateFipsCode";
 	public static final String UPDATED_BY = "updatedBy";
 	public static final String NORMALIZED_STATION_NAME = "normalizedStationName";
+	public static final String STATION_IX = "stationIx";
 
 	@GetMapping(params = {AGENCY_CODE, SITE_NUMBER})
 	public MonitoringLocation getMonitoringLocations(
@@ -91,8 +91,6 @@ public class Controller {
 	
 	@PostMapping("/validate")
 	public Map<String, Object> validateUniqueMonitoringLocation(@RequestBody MonitoringLocation ml, HttpServletResponse response) throws IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		TypeReference<Map<String, String>> mapType = new TypeReference<Map<String, String>>() {};
 		Map<String, String> msgMap = new HashMap<>();
 		Map<String, Object> errorMap = new HashMap<>();
 		
@@ -101,17 +99,16 @@ public class Controller {
 			response.setStatus(200);
 		} else {
 			response.setStatus(406);
+			Map<String, String> msgs = violations.stream()
+					.map(
+						v -> {
+							msgMap.put(v.getPropertyPath().toString(), v.getMessage());
+							return msgMap;
+						})
+					.collect(Collectors.toList()).get(0);
+			errorMap.put(GlobalDefaultExceptionHandler.ERROR_MESSAGE_KEY, msgs);
+			LOG.debug("Returned the following validation messages:" + String.join(",", msgs.toString()));
 		}
-		List<String> msgs = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.toList());
-		
-		if (msgs.size() > 0) {
-			String dupStationName = msgs.stream()
-					.filter(m -> m.contains("stationIx"))
-					.collect(Collectors.joining(""));
-			msgMap = mapper.readValue(dupStationName, mapType);
-			errorMap.put("error_message", msgMap);
-		}
-		LOG.debug("Returned the following validation messages:" + String.join(",", msgs));
 		return errorMap;
 	}
 	
