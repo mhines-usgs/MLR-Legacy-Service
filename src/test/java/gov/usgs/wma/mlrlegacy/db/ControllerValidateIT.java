@@ -41,10 +41,10 @@ public class ControllerValidateIT extends BaseControllerIT {
 		ResponseEntity<String> responseEntity = restTemplate.postForEntity(URL, entity, String.class);
 
 		String responseBody = responseEntity.getBody();
-		assertEquals(responseBody, 406, responseEntity.getStatusCodeValue());
+		assertEquals(responseBody, 200, responseEntity.getStatusCodeValue());
 		
 		String msgs = responseBody;
-		assertTrue(msgs.equals("{\"error_message\":{\"duplicate_site\":\"Duplicate Agency Code and Site Number found in MLR.\"}}"));
+		assertTrue(msgs.equals("{\"validation_errors\":{\"duplicate_site\":\"Duplicate Agency Code and Site Number found in MLR.\"}}"));
 	}
 	
 	@DatabaseSetup("classpath:/testData/setupOne/")
