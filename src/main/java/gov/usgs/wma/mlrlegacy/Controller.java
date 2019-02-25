@@ -52,6 +52,7 @@ public class Controller {
 	public static final String STATE_FIPS_CODE = "stateFipsCode";
 	public static final String UPDATED_BY = "updatedBy";
 	public static final String NORMALIZED_STATION_NAME = "normalizedStationName";
+	public static final String VALIDATION_ERRORS_KEY = "validation_errors";
 	public static final String STATION_IX = "stationIx";
 
 	@GetMapping(params = {AGENCY_CODE, SITE_NUMBER})
@@ -98,7 +99,7 @@ public class Controller {
 		if(violations.isEmpty()) {
 			response.setStatus(200);
 		} else {
-			response.setStatus(406);
+			response.setStatus(200);
 			Map<String, String> msgs = violations.stream()
 					.map(
 						v -> {
@@ -106,7 +107,7 @@ public class Controller {
 							return msgMap;
 						})
 					.collect(Collectors.toList()).get(0);
-			errorMap.put(GlobalDefaultExceptionHandler.ERROR_MESSAGE_KEY, msgs);
+			errorMap.put(VALIDATION_ERRORS_KEY, msgs);
 			LOG.debug("Returned the following validation messages:" + String.join(",", msgs.toString()));
 		}
 		return errorMap;

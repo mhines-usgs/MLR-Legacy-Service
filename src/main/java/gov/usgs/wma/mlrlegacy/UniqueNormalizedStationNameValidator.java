@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.ConstraintValidatorContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +17,7 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component
-public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLocationValidator {
-	private Logger log = LoggerFactory.getLogger(UniqueNormalizedStationNameValidator.class);
-	
+public class UniqueNormalizedStationNameValidator extends BaseUniqueMonitoringLocationValidator {	
 	public UniqueNormalizedStationNameValidator(@Autowired MonitoringLocationDao dao) {
 		super(dao);
 	}
