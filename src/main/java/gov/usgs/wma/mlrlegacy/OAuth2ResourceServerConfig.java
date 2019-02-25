@@ -41,7 +41,7 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
 				.cors()
 			.and()
 				.csrf().disable()
-			.exceptionHandling().authenticationEntryPoint(standardAuthEntryPoint());
+			.exceptionHandling().authenticationEntryPoint(standardAuthEntryPoint())
 		;
 	}
 
