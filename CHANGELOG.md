@@ -4,16 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html). (Patch version X.Y.0 is implied if not specified.)
 
-## [Unreleased]
+## [0.17.1] - 2019-03-01
+### Changed
+- Updated error handling to return error messages in a standardized JSON
+
+## [0.17.0] - 2019-01-31
+### Changed
+- Simplified validation error output for duplicate station name
+- Formatted multiple validation error output in cases where duplicate station name and duplicate site number/agency codes are submitted.
+
+## [0.16.1] - 2018-11-27
+### Added
+- CRU validation for duplicate station name
+
+## [0.16.0] - 2018-08-23
 ### Added
 - Dockerfile Healthcheck
+
+### Changed
+- application.yml to conform to other services' oauth config naming conventions
+- prefix table name with schema name since connecting as mlr_legacy_user.
 
 ### Removed
 - Dockerfile docker-entrypoint.sh
 - keystore location and password from application.yml
-
-### Updated
-- application.yml to conform to other services' oauth config naming conventions
 
 ## [0.15.0] - 2017-11-20
 ### Added
@@ -86,7 +100,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Swagger Documentation.
 - Spring Boot Actuator Monitoring.
 
-[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.15.0...master
+[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17.1...master
+[0.17.1]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17...mlrLegacy-0.17.1
+[0.17.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.16.1...mlrLegacy-0.17.0
+[0.16.1]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.16...mlrLegacy-0.16.1
+[0.16.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.15...mlrLegacy-0.16.0
 [0.15.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.14...mlrLegacy-0.15.0
 [0.14.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.13...mlrLegacy-0.14.0
 [0.13]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.12...mlrLegacy-0.13
