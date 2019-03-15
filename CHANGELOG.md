@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html). (Patch version X.Y.0 is implied if not specified.)
 
+## [0.17.2] - 2019-03-15
+### Changed
+- Updated hibernate layer to catch up with database field size restrictions for timeZoneCode and siteNumber
+
 ## [0.17.1] - 2019-03-01
 ### Changed
 - Updated error handling to return error messages in a standardized JSON
