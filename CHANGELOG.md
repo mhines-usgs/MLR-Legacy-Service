@@ -104,7 +104,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Swagger Documentation.
 - Spring Boot Actuator Monitoring.
 
-[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17.1...master
+[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17.2...master
+[0.17.2]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17.1...mlrLegacy-0.17.2
 [0.17.1]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17...mlrLegacy-0.17.1
 [0.17.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.16.1...mlrLegacy-0.17.0
 [0.16.1]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.16...mlrLegacy-0.16.1
