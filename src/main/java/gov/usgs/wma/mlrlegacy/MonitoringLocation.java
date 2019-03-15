@@ -26,7 +26,7 @@ public class MonitoringLocation {
 	@Length(min=0, max=5)
 	private String agencyCode;
 	
-	@Length(min=0, max=15)
+	@Length(min=8, max=15)
 	private String siteNumber;
 	
 	@Length(min=0, max=50)
@@ -170,7 +170,7 @@ public class MonitoringLocation {
 	@Length(min=0, max=12)
 	private String projectNumber;
 	
-	@Length(min=0, max=5)
+	@Length(min=0, max=6)
 	private String timeZoneCode;
 	
 	@Length(min=0, max=1)
