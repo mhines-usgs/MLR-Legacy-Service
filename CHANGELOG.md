@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html). (Patch version X.Y.0 is implied if not specified.)
 
+## [0.17.2] - 2019-03-15
+### Changed
+- Updated hibernate layer to catch up with database field size restrictions for timeZoneCode and siteNumber
+
 ## [0.17.1] - 2019-03-01
 ### Changed
 - Updated error handling to return error messages in a standardized JSON
@@ -100,7 +104,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Swagger Documentation.
 - Spring Boot Actuator Monitoring.
 
-[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17.1...master
+[Unreleased]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17.2...master
+[0.17.2]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17.1...mlrLegacy-0.17.2
 [0.17.1]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.17...mlrLegacy-0.17.1
 [0.17.0]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.16.1...mlrLegacy-0.17.0
 [0.16.1]: https://github.com/USGS-CIDA/MLR-Legacy-Service/compare/mlrLegacy-0.16...mlrLegacy-0.16.1
