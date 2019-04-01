@@ -12,7 +12,7 @@
       - name: jacoco
         language: java
         script:
-          - mvn clean verify --settings .travis/settings.xml jacoco:report coveralls:report
+          - mvn clean verify --settings .travis.settings.xml jacoco:report coveralls:report
       - name: docker_build
         language: bash
         services: docker
