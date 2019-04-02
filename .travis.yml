@@ -11,7 +11,7 @@
     include:
       - name: jacoco
         language: java
-        before_script:
+        before_install:
           - openssl genrsa -out .travis/wildcard.key 2048
           - openssl req -nodes -newkey rsa:2048 -keyout  .travis/wildcard.key -out  .travis/wildcard.csr -subj "/C=US/ST=Wisconsin/L=Middleon/O=US Geological Survey/OU=WMA/CN=*"
           - openssl x509 -req -days 9999 -in .travis/wildcard.csr -signkey .travis/wildcard.key  -out .travis/wildcard.crt
