@@ -216,7 +216,7 @@
                             <showLogs>true</showLogs>
                             <images>
                                 <image>
-                                    <name>mlrlegacydb:0.2.0</name>
+                                    <name>mlr/mlr-legacy-db:latest</name>
                                     <alias>it-database</alias>
                                     <run>
                                         <env>
