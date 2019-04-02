@@ -23,7 +23,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/emptyDatabase/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -47,7 +47,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/emptyDatabase/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -88,7 +88,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -112,7 +112,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -138,7 +138,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class, UpdatedModifier.class}
@@ -174,7 +174,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -196,7 +196,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneFullPatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -218,7 +218,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/onePatchBlanksResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -240,7 +240,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -262,7 +262,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOne/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
@@ -294,7 +294,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@Test
 	@DatabaseSetup("classpath:/testData/setupOneSparse/")
 	@ExpectedDatabase(
-			table="legacy_location",
+			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
 			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}

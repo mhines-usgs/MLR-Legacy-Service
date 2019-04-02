@@ -53,7 +53,7 @@ public abstract class BaseIT {
 	public static final String UPDATED_CREATED_BY = "site_cnx";
 	public static final String UPDATED_MODIFIED_BY = "site_mnx";
 
-	public static final String QUERY_ALL_SELECT = "select legacy_location_id,agency_cd, site_no, station_nm, station_ix,"
+	public static final String QUERY_ALL_SELECT = "select mlr_legacy_data.legacy_location_id,agency_cd, site_no, station_nm, station_ix,"
 			+ "lat_va, long_va, dec_lat_va, dec_long_va, coord_meth_cd, coord_acy_cd,"
 			+ "coord_datum_cd, district_cd, land_net_ds, map_nm, country_cd,"
 			+ "state_cd, county_cd, map_scale_fc, alt_va, alt_meth_cd, alt_acy_va,"
@@ -65,7 +65,7 @@ public abstract class BaseIT {
 			+ "nat_water_use_cd, aqfr_type_cd, well_depth_va, hole_depth_va,"
 			+ "depth_src_cd, project_no, site_web_cd, site_cn, site_mn, mcd_cd";
 
-	public static final String QUERY_ALL_FROM = " from legacy_location";
+	public static final String QUERY_ALL_FROM = " from mlr_legacy_data.legacy_location";
 
 	public static final String QUERY_ALL_TO_SECOND = QUERY_ALL_SELECT + ", to_char(site_cr,'YYYY-MM-DD HH24:MI:SS') site_crm, to_char(site_md,'YYYY-MM-DD HH24:MI:SS') site_mdm" + QUERY_ALL_FROM;
 	public static final String QUERY_ALL_TO_MINUTE = QUERY_ALL_SELECT + ", to_char(site_cr,'YYYY-MM-DD HH24:MI') site_crm, to_char(site_md,'YYYY-MM-DD HH24:MI') site_mdm" + QUERY_ALL_FROM;
