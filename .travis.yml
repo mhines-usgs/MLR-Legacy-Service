@@ -12,7 +12,7 @@
       - name: jacoco
         language: java
         script:
-          - mvn clean verify -P it --settings ${PWD}/.travis/settings.xml jacoco:report coveralls:report
+          - mvn clean verify -P it --settings .travis/settings.xml jacoco:report coveralls:report
           - openssl genrsa -out .travis/wildcard.key 2048
           - openssl req -nodes -newkey rsa:2048 -keyout  .travis/wildcard.key -out  .travis/wildcard.csr -subj "/C=US/ST=Wisconsin/L=Middleon/O=US Geological Survey/OU=WMA/CN=*"
           - openssl x509 -req -days 9999 -in .travis/wildcard.csr -signkey .travis/wildcard.key  -out .travis/wildcard.crt
