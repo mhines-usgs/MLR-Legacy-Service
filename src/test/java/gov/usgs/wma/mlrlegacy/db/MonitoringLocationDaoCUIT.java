@@ -29,7 +29,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparseResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void createSparce() {
@@ -47,7 +47,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void createFull() {
@@ -63,7 +63,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparseResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void updateSparse() {
@@ -84,7 +84,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void updateFull() {
@@ -103,7 +103,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparsePatchDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchSparse() {
@@ -124,7 +124,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/oneFullPatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneFullPatchDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchFull() {
@@ -145,7 +145,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/onePatchBlanksResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/onePatchBlanksResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchFullBlanks() {
@@ -165,7 +165,7 @@ public class MonitoringLocationDaoCUIT extends BaseDaoIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_MINUTE,
-			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparseResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchFullNull() {

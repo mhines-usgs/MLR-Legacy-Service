@@ -25,7 +25,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparseResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void createSparseMonitoringLocation() throws Exception {
@@ -49,7 +49,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void createFullMonitoringLocation() throws Exception {
@@ -90,7 +90,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparseResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void updateSparseMonitoringLocation() throws Exception {
@@ -114,7 +114,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void updateFullMonitoringLocation() throws Exception {
@@ -140,7 +140,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparsePatchDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class, UpdatedModifier.class}
 			)
 	public void updateMonitoringLocation_notFound() throws Exception {
@@ -176,7 +176,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparsePatchDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchSparseMonitoringLocation() throws Exception {
@@ -198,7 +198,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneFullPatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneFullPatchDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchFullMonitoringLocation() throws Exception {
@@ -220,7 +220,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/onePatchBlanksResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/onePatchBlanksResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchFullBlanksMonitoringLocation() throws Exception {
@@ -242,7 +242,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneSparseResultDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparseResultDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchFullNullMonitoringLocation() throws Exception {
@@ -264,7 +264,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparsePatchDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void patchMonitoringLocation_notFound() throws Exception {
@@ -296,7 +296,7 @@ public class ControllerCUIT extends BaseControllerIT {
 	@ExpectedDatabase(
 			table="mlr_legacy_data.legacy_location",
 			query=QUERY_ALL_TO_SECOND,
-			value="classpath:/testResult/oneSparsePatchDb/legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
+			value="classpath:/testResult/oneSparsePatchDb/mlr_legacy_data.legacy_location.csv",assertionMode=DatabaseAssertionMode.NON_STRICT_UNORDERED,
 			modifiers={KeyModifier.class,CreatedModifier.class,UpdatedModifier.class}
 			)
 	public void addDuplicateMonitoringLocation() throws Exception {
