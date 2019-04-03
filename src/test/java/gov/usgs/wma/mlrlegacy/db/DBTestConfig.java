@@ -22,6 +22,7 @@ public class DBTestConfig {
 		bean.setDatatypeFactory(new PostgresqlDataTypeFactory());
 
 		DatabaseDataSourceConnectionFactoryBean dbConnectionFactory = new DatabaseDataSourceConnectionFactoryBean(dataSource);
+		dbConnectionFactory.setSchema("mlr_legacy_data");
 		dbConnectionFactory.setDatabaseConfig(bean);
 		return dbConnectionFactory;
 	}
